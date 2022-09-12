@@ -7,18 +7,30 @@
 - 세종대학교 컴퓨터공학과 18학번 류국봉 (DataBase)
 - 세종대학교 컴퓨터공학과 20학번 박규태 (Frontend)
 
-## 개발언어
+## 기술스택
 ### Design
-Figma
-### Frontend
-React Native
-### Backend
-Node.js
-### DataBase
-MySQL
- 
- -------
-#### 참고자료
-- [서울 버스 노선정보 공공 API][1]
+<img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white">
 
-[1]: http://api.bus.go.kr/contents/sub02/getBusPosByRtid.html 
+### Frontend
+<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white"> <img src="https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=Redux&logoColor=white">
+
+### Backend
+<img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white"> <img src="https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=Express&logoColor=white">
+
+### DataBase
+<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">
+
+## 참가 공모전
+- [2022 One-Prize 공모전 GOOD MOBILITY 솔루션 (장애 + 모빌리티 테마 부문 참가)][1]
+
+## 참고자료
+- [서울 버스 노선정보 공공 API][2]
+- [서울교통공사 역이용 안내도 API][3]
+- [서울특별시 지하철 출입구 리프트 위치정보 API][4]
+- [서울특별시 지하철 엘리베이터 위치정보 API][5]
+
+[1]: https://www.o-prize.com/index.php
+[2]: http://api.bus.go.kr/contents/sub02/getBusPosByRtid.html 
+[3]: https://www.data.go.kr/data/15004974/fileData.do
+[4]: https://www.data.go.kr/data/15098159/openapi.do
+[5]: https://www.data.go.kr/data/15098158/openapi.do
