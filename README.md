@@ -3,16 +3,19 @@
 
 ## 팀원
 - 세종대학교 전자정보통신공학과 18학번 박상욱 (Backend)
-- 세종대학교 컴퓨터공학과 16학번 주이식 (Frontend)
+- 세종대학교 컴퓨터공학과 16학번 주이식 (Designer)
 - 세종대학교 컴퓨터공학과 18학번 류국봉 (DataBase)
 - 세종대학교 컴퓨터공학과 20학번 박규태 (Frontend)
 
 ## 개발언어
-#### Frontend
+### Design
+Figma
+### Frontend
 React Native
-#### Backend
-Node.js, MongoDB
- 
+### Backend
+Node.js
+### DataBase
+MySQL
  
  -------
 #### 참고자료
