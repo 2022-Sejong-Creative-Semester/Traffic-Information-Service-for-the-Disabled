@@ -5,10 +5,12 @@ const path = require('path');
 const cors = require('cors');
 
 const testRouter = require('./routes/test');
+const trafficRouter = require('./routes/trafficdata');
 
 //app.use(express.static(path.join(__dirname, '../my-app/build')))
 
 app.use('', testRouter);
+app.use('', trafficRouter);
 
 /*
 app.get('/',function(req,res){
