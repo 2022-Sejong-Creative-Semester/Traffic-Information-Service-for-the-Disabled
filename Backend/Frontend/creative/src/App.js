@@ -1,9 +1,9 @@
-import Maping from "./component/map/Maping.js"
+import Mapping from "./component/map/Mapping.js"
 
 function App() {
   return (
     <div className="App">
-      <Maping />
+      <Mapping />
     </div>
   );
 }
