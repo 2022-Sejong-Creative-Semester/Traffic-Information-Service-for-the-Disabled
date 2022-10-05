@@ -76,11 +76,62 @@ function getTraffic(callback){
 }
 */
 
+function getStation(/*stNm,*/callback){
+	const url = 'http://ws.bus.go.kr/api/rest/stationinfo/getStationByName';
+	let queryParams = '?' + encodeURIComponent('ServiceKey') + '=' + 'e9On5lcUn1B34BdjVckQEjxzkUWt66cSHkSSlRTp5KKW4zyEdU3z15GSHyw56KS4Uz6mcvtZjOP9I4Kq%2BMu5kQ%3D%3D';
+	queryParams += '&' + encodeURIComponent('stSrch') + '=' + encodeURIComponent('가곡초교');
+	console.log(url+queryParams);
+	request({
+		url: url + queryParams,
+		method: 'GET'
+	}, function (error, response, body) {
+		//console.log('url', url+queryParams);
+		//console.log('Status', response.statusCode);
+		//console.log('Headers', JSON.stringify(response.headers));
+		console.log('Reponse received', body);
+	});
+}
+
 router.get('/traffic' , async(req,res) =>{
 	getTraffic();
 	return res.json({
 		text: "why"
 	})
+})
+
+router.get('/station', async(req,res)=>{
+	getStation();
+	return res.json([{
+		stld: '111000219',
+		stNm: '서부경찰서1',
+		tmX: '126.922448712',
+		tmY: '37.6024268827',
+		arsId: '12309',
+	},{
+		stld: '111000220',
+		stNm: '서부경찰서2',
+		tmX: '126.922445000',
+		tmY: '37.6024260000',
+		arsId: '12310',
+	},{
+		stld: '111000221',
+		stNm: '서부경찰서3',
+		tmX: '126.922444000',
+		tmY: '37.6024265000',
+		arsId: '12311',
+	},{
+		stld: '111000222',
+		stNm: '서부경찰서4',
+		tmX: '126.922440712',
+		tmY: '37.6024268827',
+		arsId: '12312',
+	},{
+		stld: '111000223',
+		stNm: '서부경찰서5',
+		tmX: '126.922446712',
+		tmY: '37.6024269827',
+		arsId: '12313',
+	}])
 })
 
 module.exports = router;
