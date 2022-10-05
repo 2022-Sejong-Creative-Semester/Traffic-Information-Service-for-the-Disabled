@@ -1,8 +1,9 @@
-/*import { configureStore } from "@reduxjs/toolkit"
+import { configureStore } from "@reduxjs/toolkit"
+import BusReducer from "./Bus-slice";
 
 
 const store = configureStore({
-    reducer: null
+    reducer: { bus: BusReducer }
 });
 
-export default store*/
+export default store
