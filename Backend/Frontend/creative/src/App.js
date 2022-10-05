@@ -1,10 +1,18 @@
-import Mapping from "./component/map/Mapping.js"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import MainPage from "./page/MainPage"
+import BusPage from "./page/BusPage"
+import SubwayPage from "./page/SubwayPage"
+
 
 function App() {
   return (
-    <div className="App">
-      <Mapping />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/bus" element={<BusPage />} />
+        <Route path="/subway" element={<SubwayPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
