@@ -2,12 +2,12 @@ const router = require('express').Router();
 const request = require('request');
 
 
-//request »ç¿ë
-//GET Çü½ÄÀÌ¹Ç·Î method »ç¿ë X
+//request ì‚¬ìš©
+//GET í˜•ì‹ì´ë¯€ë¡œ method ì‚¬ìš© X
 function getTraffic(callback){
 	
 	/*
-	//¼­¿ï ¹ö½º Á¤º¸
+	//ì„œìš¸ ë²„ìŠ¤ ì •ë³´
 	const options = {
 		uri: 'http://ws.bus.go.kr/api/rest/buspos/getBusPosByRtid',
 		//method: 'GET'
@@ -15,7 +15,6 @@ function getTraffic(callback){
 		//serviceKey: 'v54lopIOulwQggh%2BDf7dCXIQ2hCXuaVzQUQ76ZyUx6kPPCMAduNDhOScQKLqA1gAru2%2FSS%2FMTPhtWmYodBSCnA%3D%3D',
 		busRouteId: '100100118'
 	};
-
 	request(options,function(err,response,body){
 		console.log(body);	
 	//callback(body);
@@ -35,7 +34,6 @@ function getTraffic(callback){
 	queryParams += '&' + encodeURIComponent('busRouteId') + '=' + encodeURIComponent('100100118'); 
 	queryParams += '&' + encodeURIComponent('startOrd') + '=' + encodeURIComponent('1'); 
 	queryParams += '&' + encodeURIComponent('endOrd') + '=' + encodeURIComponent('10'); 
-
 	request({
 		url: url + queryParams,
 		method: 'GET'
@@ -60,9 +58,7 @@ function getTraffic(callback){
 	queryParams += '&' + encodeURIComponent('busRouteId') + '=' + encodeURIComponent('100100118'); 
 	queryParams += '&' + encodeURIComponent('startOrd') + '=' + encodeURIComponent('1'); 
 	queryParams += '&' + encodeURIComponent('endOrd') + '=' + encodeURIComponent('10');
-
 	console.log(url + queryParams);
-
 	request({
 		url: url + queryParams,
 		method: 'GET'
@@ -72,15 +68,65 @@ function getTraffic(callback){
 		//console.log('Headers', JSON.stringify(response.headers));
 		console.log('Reponse received', body);
 	});
-
 }
 */
+
+function getStation(/*stNm,*/callback){
+	const url = 'http://ws.bus.go.kr/api/rest/stationinfo/getStationByName';
+	let queryParams = '?' + encodeURIComponent('ServiceKey') + '=' + 'e9On5lcUn1B34BdjVckQEjxzkUWt66cSHkSSlRTp5KKW4zyEdU3z15GSHyw56KS4Uz6mcvtZjOP9I4Kq%2BMu5kQ%3D%3D';
+	queryParams += '&' + encodeURIComponent('stSrch') + '=' + encodeURIComponent('ê°€ê³¡ì´ˆêµ');
+	console.log(url+queryParams);
+	request({
+		url: url + queryParams,
+		method: 'GET'
+	}, function (error, response, body) {
+		//console.log('url', url+queryParams);
+		//console.log('Status', response.statusCode);
+		//console.log('Headers', JSON.stringify(response.headers));
+		console.log('Reponse received', body);
+	});
+}
 
 router.get('/traffic' , async(req,res) =>{
 	getTraffic();
 	return res.json({
 		text: "why"
 	})
+})
+
+router.get('/station', async(req,res)=>{
+	getStation();
+	return res.json([{
+		stld: '111000219',
+		stNm: 'ì„œë¶€ê²½ì°°ì„œ1',
+		tmX: '126.922448712',
+		tmY: '37.6024268827',
+		arsId: '12309',
+	},{
+		stld: '111000220',
+		stNm: 'ì„œë¶€ê²½ì°°ì„œ2',
+		tmX: '126.922445000',
+		tmY: '37.6024260000',
+		arsId: '12310',
+	},{
+		stld: '111000221',
+		stNm: 'ì„œë¶€ê²½ì°°ì„œ3',
+		tmX: '126.922444000',
+		tmY: '37.6024265000',
+		arsId: '12311',
+	},{
+		stld: '111000222',
+		stNm: 'ì„œë¶€ê²½ì°°ì„œ4',
+		tmX: '126.922440712',
+		tmY: '37.6024268827',
+		arsId: '12312',
+	},{
+		stld: '111000223',
+		stNm: 'ì„œë¶€ê²½ì°°ì„œ5',
+		tmX: '126.922446712',
+		tmY: '37.6024269827',
+		arsId: '12313',
+	}])
 })
 
 module.exports = router;
