@@ -1,13 +1,13 @@
-const router = require('express').Router();
+ï»¿const router = require('express').Router();
 const request = require('request');
+const convert = require('xml-js');
 
-
-//request »ç¿ë
-//GET Çü½ÄÀÌ¹Ç·Î method »ç¿ë X
+//request ì‚¬ìš©
+//GET í˜•ì‹ì´ë¯€ë¡œ method ì‚¬ìš© X
 function getTraffic(callback){
 	
 	/*
-	//¼­¿ï ¹ö½º Á¤º¸
+	//ì„œìš¸ ë²„ìŠ¤ ì •ë³´
 	const options = {
 		uri: 'http://ws.bus.go.kr/api/rest/buspos/getBusPosByRtid',
 		//method: 'GET'
@@ -76,62 +76,44 @@ function getTraffic(callback){
 }
 */
 
-function getStation(/*stNm,*/callback){
+function getStation(stNm,callback){	
 	const url = 'http://ws.bus.go.kr/api/rest/stationinfo/getStationByName';
-	let queryParams = '?' + encodeURIComponent('ServiceKey') + '=' + 'e9On5lcUn1B34BdjVckQEjxzkUWt66cSHkSSlRTp5KKW4zyEdU3z15GSHyw56KS4Uz6mcvtZjOP9I4Kq%2BMu5kQ%3D%3D';
-	queryParams += '&' + encodeURIComponent('stSrch') + '=' + encodeURIComponent('°¡°îÃÊ±³');
-	console.log(url+queryParams);
-	request({
+	let queryParams = '?' + encodeURIComponent('serviceKey') + '=' + 'e9On5lcUn1B34BdjVckQEjxzkUWt66cSHkSSlRTp5KKW4zyEdU3z15GSHyw56KS4Uz6mcvtZjOP9I4Kq%2BMu5kQ%3D%3D';
+	queryParams += '&' + encodeURIComponent('stSrch') + '=' + encodeURIComponent(stNm);
+	//console.log(url+queryParams);
+	//let StationList = [];
+	
+	return request({
 		url: url + queryParams,
 		method: 'GET'
 	}, function (error, response, body) {
-		//console.log('url', url+queryParams);
-		//console.log('Status', response.statusCode);
-		//console.log('Headers', JSON.stringify(response.headers));
-		console.log('Reponse received', body);
+		//console.log('Reponse received', body);
+		const stationinfo = convert.xml2json(body);
+		
+		//console.log('Json', stationinfo);
+		console.log(stationinfo);
+		callback(stationinfo);
 	});
+
 }
 
 router.get('/traffic' , async(req,res) =>{
-	getTraffic();
+	await getTraffic();
+
 	return res.json({
 		text: "why"
 	})
 })
 
-router.get('/station', async(req,res)=>{
-	getStation();
-	return res.json([{
-		stld: '111000219',
-		stNm: '¼­ºÎ°æÂû¼­1',
-		tmX: '126.922448712',
-		tmY: '37.6024268827',
-		arsId: '12309',
-	},{
-		stld: '111000220',
-		stNm: '¼­ºÎ°æÂû¼­2',
-		tmX: '126.922445000',
-		tmY: '37.6024260000',
-		arsId: '12310',
-	},{
-		stld: '111000221',
-		stNm: '¼­ºÎ°æÂû¼­3',
-		tmX: '126.922444000',
-		tmY: '37.6024265000',
-		arsId: '12311',
-	},{
-		stld: '111000222',
-		stNm: '¼­ºÎ°æÂû¼­4',
-		tmX: '126.922440712',
-		tmY: '37.6024268827',
-		arsId: '12312',
-	},{
-		stld: '111000223',
-		stNm: '¼­ºÎ°æÂû¼­5',
-		tmX: '126.922446712',
-		tmY: '37.6024269827',
-		arsId: '12313',
-	}])
+router.get('/station/:stNm', async(req,res)=>{
+	
+	const stNm = req.params.stNm;
+
+	await getStation(stNm, station => {
+	//console.log(station);
+		return res.json(station);
+	})
+	
 })
 
 module.exports = router;
