@@ -1,6 +1,10 @@
 # Created by https://www.toptal.com/developers/gitignore/api/node,reactnative,visualstudio
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,reactnative,visualstudio
 
+# ServiceKey
+/Backend/Key
+
+
 ### Node ###
 # Logs
 logs
