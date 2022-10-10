@@ -1,18 +1,20 @@
 import { useEffect } from "react";
+import { useSelector } from 'react-redux';
 import classes from "./Mapping.module.css"
-import test from "./test.json"
 
 
 const Mapping = () => {
+    const stationInfo = useSelector(state => state.bus.station)
+    console.log(stationInfo)
     useEffect(() => {
-        const maptest = JSON.parse(JSON.stringify(test))
         const container = document.getElementById("map");
         const options = {
             center: new window.kakao.maps.LatLng(37.5505, 127.0747),
             level: 3,
         };
+        console.log(stationInfo)
         const map = new window.kakao.maps.Map(container, options);
-        maptest.forEach(element => {
+        /*stationInfo.forEach(element => {
             const markerPosition = new window.kakao.maps.LatLng(element.tmY, element.tmX)
             const marker = new window.kakao.maps.Marker({
                 position: markerPosition,
@@ -22,9 +24,8 @@ const Mapping = () => {
                 console.log(element.stld)
             })
             marker.setMap(map)
-        });
-    }, [])
-
+        });*/
+    }, [stationInfo])
     return (
         <div className={classes.map} id="map">
         </div>

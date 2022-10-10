@@ -3,10 +3,13 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const BusSlice = createSlice({
     name: "bus",
-    initialState: { buslist: {} },
+    initialState: {
+        buslist: {},
+        station: {}
+    },
     reducers: {
-        addBuslist(state) {
-
+        addStationInfo(state, action) {
+            state.station = action.payload
         }
     }
 });
