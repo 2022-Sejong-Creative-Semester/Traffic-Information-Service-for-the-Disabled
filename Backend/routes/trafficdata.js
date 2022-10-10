@@ -1,7 +1,7 @@
 ﻿const router = require('express').Router();
 const request = require('request');
 const convert = require('xml-js');
-
+const serviceKey = require('../Key/serviceKey.json');
 
 //request 사용
 //GET 형식이므로 method 사용 X
@@ -23,7 +23,7 @@ function getTraffic(callback) {
 	*/
 
 
-	const url = "http://ws.bus.go.kr/api/rest/buspos/getBusPosByRouteSt?serviceKey=e9On5lcUn1B34BdjVckQEjxzkUWt66cSHkSSlRTp5KKW4zyEdU3z15GSHyw56KS4Uz6mcvtZjOP9I4Kq%2BMu5kQ%3D%3D&busRouteId=100100118&startOrd=1&endOrd=13"
+	const url = "http://ws.bus.go.kr/api/rest/buspos/getBusPosByRouteSt?serviceKey=" + serviceKey.serviceKey + "&busRouteId=100100118&startOrd=1&endOrd=13"
 
 	request({ url: url }, (err, response, body) => {
 		console.log(body);
@@ -74,8 +74,7 @@ function getTraffic(callback){
 
 function getStation(stNm, callback) {
 	const url = 'http://ws.bus.go.kr/api/rest/stationinfo/getStationByName';
-
-	let queryParams = '?' + encodeURIComponent('serviceKey') + '=' + 'e9On5lcUn1B34BdjVckQEjxzkUWt66cSHkSSlRTp5KKW4zyEdU3z15GSHyw56KS4Uz6mcvtZjOP9I4Kq%2BMu5kQ%3D%3D';
+	let queryParams = '?' + encodeURIComponent('serviceKey') + '=' + serviceKey.serviceKey;
 	queryParams += '&' + encodeURIComponent('stSrch') + '=' + encodeURIComponent(stNm);
 	//console.log(url+queryParams);
 	//let StationList = [];
@@ -85,10 +84,10 @@ function getStation(stNm, callback) {
 		method: 'GET'
 	}, function (error, response, body) {
 		//console.log('Reponse received', body);
-		const stationinfo = convert.xml2json(body);
-
+		const pasreJson = convert.xml2json(body);
+		const stationinfo = JSON.parse(pasreJson).elements[0].elements[2];
 		//console.log('Json', stationinfo);
-		console.log(stationinfo);
+		//console.log(stationinfo.elements[0].elements[2]);
 		callback(stationinfo);
 	});
 
@@ -102,16 +101,25 @@ router.get('/traffic', async (req, res) => {
 	})
 })
 
+router.get('/station', async (req, res) => {
 
-router.get('/station/:stNm', async (req, res) => {
-
-	const stNm = req.params.stNm;
-
-	await getStation(stNm, station => {
+	//const stNm = req.params.stNm;
+	console.log("station");
+	await getStation("세종대", station => {
 		//console.log(station);
 		return res.json(station);
 	})
 
+})
+
+router.get('/station/:stNm', async (req, res) => {
+
+	const stNm = req.params.stNm;
+	//console.log("station");
+	await getStation(stNm, station => {
+		//console.log(station);
+		return res.json(station);
+	})
 
 })
 
