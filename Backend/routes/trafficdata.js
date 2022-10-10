@@ -105,10 +105,21 @@ router.get('/traffic' , async(req,res) =>{
 	})
 })
 
+router.get('/station', async(req,res)=>{
+	
+	//const stNm = req.params.stNm;
+	console.log("station");
+	await getStation("세종대", station => {
+	//console.log(station);
+		return res.json(station);
+	})
+	
+})
+
 router.get('/station/:stNm', async(req,res)=>{
 	
 	const stNm = req.params.stNm;
-
+	console.log("station");
 	await getStation(stNm, station => {
 	//console.log(station);
 		return res.json(station);
