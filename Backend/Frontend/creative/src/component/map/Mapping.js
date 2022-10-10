@@ -5,10 +5,9 @@ import axios from "axios"
 
 
 const Mapping = () => {
-    const maptest = JSON.parse(JSON.stringify(test))
     useEffect(() => {
-
-        axios.get(`/station`, {
+        const maptest = JSON.parse(JSON.stringify(test))
+        axios.get(`/station/${data}`, {
 
         }).then(res => {
             const { data } = res;

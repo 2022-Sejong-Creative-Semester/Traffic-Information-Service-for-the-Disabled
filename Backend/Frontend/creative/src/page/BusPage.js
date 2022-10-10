@@ -1,9 +1,13 @@
 import Mapping from "../component/map/Mapping"
+import BusForm from "../component/busForm/BusForm"
 
 
 const BusPage = () => {
     return (
-        <Mapping />
+        <div>
+            <BusForm />
+            <Mapping />
+        </div>
     )
 }
 
