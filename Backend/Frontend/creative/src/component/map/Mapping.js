@@ -12,17 +12,17 @@ const Mapping = () => {
             level: 3,
         };
         const map = new window.kakao.maps.Map(container, options);
-        console.log(stationInfo)
         if (Object.keys(stationInfo).length !== 0) {
             const { elements } = stationInfo
             elements.forEach(element => {
-                const markerPosition = new window.kakao.maps.LatLng(element[6].elements[0].text, element[5].elements[0].text)
+                const { elements } = element;
+                const markerPosition = new window.kakao.maps.LatLng(elements[6].elements[0].text, elements[5].elements[0].text)
                 const marker = new window.kakao.maps.Marker({
                     position: markerPosition,
                     clickable: true
                 })
                 window.kakao.maps.event.addListener(marker, 'click', () => {
-                    console.log(element[4].elements[0].text)
+                    console.log(elements[3].elements[0].text)
                 })
                 marker.setMap(map)
             });
