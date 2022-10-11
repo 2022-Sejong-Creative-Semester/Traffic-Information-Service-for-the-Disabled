@@ -11,6 +11,7 @@ const Mapping = () => {
             center: new window.kakao.maps.LatLng(37.5505, 127.0747),
             level: 3,
         };
+        console.log(stationInfo)
         const map = new window.kakao.maps.Map(container, options);
         if (Object.keys(stationInfo).length !== 0) {
             const { elements } = stationInfo
