@@ -6,6 +6,7 @@ import { BusActions } from "../../store/Bus-slice";
 import { useDispatch } from "react-redux";
 
 
+
 const StyledForm = styled.form`
     display:flex;
     width: 735px;
