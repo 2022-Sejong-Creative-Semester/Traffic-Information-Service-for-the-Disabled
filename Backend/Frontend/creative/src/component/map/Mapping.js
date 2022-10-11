@@ -12,11 +12,12 @@ const Mapping = () => {
             level: 3,
         };
         const map = new window.kakao.maps.Map(container, options);
+        //map.setZoomable(false);
         if (Object.keys(stationInfo).length !== 0) {
             const { elements } = stationInfo
             elements.forEach(element => {
                 const { elements } = element;
-                const markerPosition = new window.kakao.maps.LatLng(elements[6].elements[0].text, elements[5].elements[0].text)
+                const markerPosition = new window.kakao.maps.LatLng(parseFloat(elements[6].elements[0].text) - 0.00000000005, parseFloat(elements[5].elements[0].text) - 0.00000000005)
                 const marker = new window.kakao.maps.Marker({
                     position: markerPosition,
                     clickable: true
