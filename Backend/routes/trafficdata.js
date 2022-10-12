@@ -16,13 +16,13 @@ function getTraffic(callback) {
 }
 
 function getStation(stNm, callback) {
-	const url = 'http://ws.bus.go.kr/api/rest/stationinfo/getStationByName';
+	const url = 'http://ws.bus.go.kr/api/rest/stationinfo/getLowStationByName';
 	let queryParams = '?' + encodeURIComponent('serviceKey') + '=' + serviceKey.serviceKey;
 	queryParams += '&' + encodeURIComponent('stSrch') + '=' + encodeURIComponent(stNm);
 	//console.log(url+queryParams);
 	//let StationList = [];
 
-	request({
+	return request({
 		url: url + queryParams,
 		method: 'GET'
 	}, function (error, response, body) {
@@ -41,7 +41,7 @@ function getStationInfo(arsId,callback){
 	let queryParams = '?' + encodeURIComponent('serviceKey') + '=' + serviceKey.serviceKey;
 	queryParams += '&' + encodeURIComponent('arsId') + '=' + arsId;
 
-	request({
+	return request({
 		url:url + queryParams,
 		method: 'GET'
 	}, function(error,response,body){
@@ -62,28 +62,33 @@ router.get('/traffic', async (req, res) => {
 	})
 })
 
+/*
+router.get('/station', async (req, res) => {
 
-router.get('/stationList', async (req, res) => {
-
-	//const stNm = req.params.stNm;
-	console.log("station");
+	
+	const stNm = req.params.stNm;
+	console.log(stNm);
 	await getStation("세종대", station => {
 		//console.log(station);
 		return res.json(station);
 	})
+	
 })
+*/
 
-router.get('/stationList/:stNm', async (req, res) => {
+router.get('/station/:stNm', async (req, res) => {
 
 	const stNm = req.params.stNm;
 	//console.log("station");
 	await getStation(stNm, station => {
 		//console.log(station);
 		return res.json(station);
-	});
+	})
+
 })
 
 
+/*
 router.get('/stationInfo', async (req, res) => {
 
 	//const stNm = req.params.stNm;
@@ -93,13 +98,13 @@ router.get('/stationInfo', async (req, res) => {
 		return res.json(station);
 	})
 })
-
+*/
 
 router.get('/stationInfo/:arsId', async (req, res) => {
 
 	const arsId = req.params.arsId;
 	//console.log("station");
-	await getStationInfo(arsId, stationinfo => {
+	await getStationInfo(/*arsId*/ '05251', stationinfo => {
 		//console.log(station);
 		return res.json(stationinfo);
 	});
