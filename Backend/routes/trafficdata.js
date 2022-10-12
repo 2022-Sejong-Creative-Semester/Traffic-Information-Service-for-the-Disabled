@@ -7,70 +7,13 @@ const serviceKey = require('../Key/serviceKey.json');
 //GET 형식이므로 method 사용 X
 function getTraffic(callback) {
 
-	/*
-	//서울 버스 정보
-	const options = {
-		uri: 'http://ws.bus.go.kr/api/rest/buspos/getBusPosByRtid',
-		//method: 'GET'
-		serviceKey: 'e9On5lcUn1B34BdjVckQEjxzkUWt66cSHkSSlRTp5KKW4zyEdU3z15GSHyw56KS4Uz6mcvtZjOP9I4Kq%2BMu5kQ%3D%3D',
-		//serviceKey: 'v54lopIOulwQggh%2BDf7dCXIQ2hCXuaVzQUQ76ZyUx6kPPCMAduNDhOScQKLqA1gAru2%2FSS%2FMTPhtWmYodBSCnA%3D%3D',
-		busRouteId: '100100118'
-	};
-	request(options,function(err,response,body){
-		console.log(body);	
-	//callback(body);
-	});
-	*/
-
-
 	const url = "http://ws.bus.go.kr/api/rest/buspos/getBusPosByRouteSt?serviceKey=" + serviceKey.serviceKey + "&busRouteId=100100118&startOrd=1&endOrd=13"
 
 	request({ url: url }, (err, response, body) => {
 		console.log(body);
+		callback(body);
 	})
-
-	/*
-	let url = 'http://ws.bus.go.kr/api/rest/buspos/getBusPosByRouteSt';
-	let queryParams = '?' + encodeURIComponent('serviceKey') + '=e9On5lcUn1B34BdjVckQEjxzkUWt66cSHkSSlRTp5KKW4zyEdU3z15GSHyw56KS4Uz6mcvtZjOP9I4Kq%2BMu5kQ%3D%3D'; 
-	queryParams += '&' + encodeURIComponent('busRouteId') + '=' + encodeURIComponent('100100118'); 
-	queryParams += '&' + encodeURIComponent('startOrd') + '=' + encodeURIComponent('1'); 
-	queryParams += '&' + encodeURIComponent('endOrd') + '=' + encodeURIComponent('10'); 
-	request({
-		url: url + queryParams,
-		method: 'GET'
-	}, function (error, response, body) {
-		//console.log('Status', response.statusCode);
-		//console.log('Headers', JSON.stringify(response.headers));
-		console.log('Reponse received', body);
-	});
-	*/
 }
-
-
-/*
-function getTraffic(callback){
-	
-	const url = 'http://ws.bus.go.kr/api/rest/buspos/getBusPosByRouteSt';
-	
-	//Encoded Key
-	let queryParams = '?' + encodeURIComponent('serviceKey') + '=e9On5lcUn1B34BdjVckQEjxzkUWt66cSHkSSlRTp5KKW4zyEdU3z15GSHyw56KS4Uz6mcvtZjOP9I4Kq%2BMu5kQ%3D%3D'; //Service Key 
-	//Decoded Key
-	//let queryParams = '?' + encodeURIComponent('serviceKey') + '=e9On5lcUn1B34BdjVckQEjxzkUWt66cSHkSSlRTp5KKW4zyEdU3z15GSHyw56KS4Uz6mcvtZjOP9I4Kq+Mu5kQ=='; // Service Key 
-	queryParams += '&' + encodeURIComponent('busRouteId') + '=' + encodeURIComponent('100100118'); 
-	queryParams += '&' + encodeURIComponent('startOrd') + '=' + encodeURIComponent('1'); 
-	queryParams += '&' + encodeURIComponent('endOrd') + '=' + encodeURIComponent('10');
-	console.log(url + queryParams);
-	request({
-		url: url + queryParams,
-		method: 'GET'
-	}, function (error, response, body) {
-		//console.log('url', url+queryParams);
-		//console.log('Status', response.statusCode);
-		//console.log('Headers', JSON.stringify(response.headers));
-		console.log('Reponse received', body);
-	});
-}
-*/
 
 function getStation(stNm, callback) {
 	const url = 'http://ws.bus.go.kr/api/rest/stationinfo/getStationByName';
@@ -79,18 +22,36 @@ function getStation(stNm, callback) {
 	//console.log(url+queryParams);
 	//let StationList = [];
 
-	return request({
+	request({
 		url: url + queryParams,
 		method: 'GET'
 	}, function (error, response, body) {
 		//console.log('Reponse received', body);
-		const pasreJson = convert.xml2json(body);
-		const stationinfo = JSON.parse(pasreJson).elements[0].elements[2];
+		const parseJson = convert.xml2json(body);
+		const stationinfo = JSON.parse(parseJson).elements[0].elements[2];
 		//console.log('Json', stationinfo);
 		//console.log(stationinfo.elements[0].elements[2]);
 		callback(stationinfo);
 	});
 
+}
+
+function getStationInfo(arsId,callback){
+	const url = 'http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid';
+	let queryParams = '?' + encodeURIComponent('serviceKey') + '=' + serviceKey.serviceKey;
+	queryParams += '&' + encodeURIComponent('arsId') + '=' + arsId;
+
+	request({
+		url:url + queryParams,
+		method: 'GET'
+	}, function(error,response,body){
+		console.log(url + queryParams);
+		console.log(body);
+		const parseJson = convert.xml2json(body);
+		const stationinfo = JSON.parse(parseJson);
+		//console.log(stationinfo);
+		callback(stationinfo);
+	});
 }
 
 router.get('/traffic', async (req, res) => {
@@ -101,7 +62,8 @@ router.get('/traffic', async (req, res) => {
 	})
 })
 
-router.get('/station', async (req, res) => {
+
+router.get('/stationList', async (req, res) => {
 
 	//const stNm = req.params.stNm;
 	console.log("station");
@@ -109,18 +71,38 @@ router.get('/station', async (req, res) => {
 		//console.log(station);
 		return res.json(station);
 	})
-
 })
 
-router.get('/station/:stNm', async (req, res) => {
+router.get('/stationList/:stNm', async (req, res) => {
 
 	const stNm = req.params.stNm;
 	//console.log("station");
 	await getStation(stNm, station => {
 		//console.log(station);
 		return res.json(station);
-	})
+	});
+})
 
+
+router.get('/stationInfo', async (req, res) => {
+
+	//const stNm = req.params.stNm;
+	console.log("stationInfo");
+	await getStationInfo('05251', station => {
+		//console.log(station);
+		return res.json(station);
+	})
+})
+
+
+router.get('/stationInfo/:arsId', async (req, res) => {
+
+	const arsId = req.params.arsId;
+	//console.log("station");
+	await getStationInfo(arsId, stationinfo => {
+		//console.log(station);
+		return res.json(stationinfo);
+	});
 })
 
 module.exports = router;
