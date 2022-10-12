@@ -7,20 +7,20 @@ import { geolocationOptions } from "../../contents/geolocationOptions";
 
 const Mapping = () => {
     const stationInfo = useSelector(state => state.bus.station)
-    const { position, error } = usePosition(geolocationOptions);
-
+    const { position, error } = usePosition(geolocationOptions)
+    const getPosition = async () => {
+        const { latitude, longitude } = await position;
+        return { latitude, longitude }
+    }
     useEffect(() => {
-        setInterval(() => {
-            const container = document.getElementById("map");
-            const options = {
-                center: new window.kakao.maps.LatLng(37.5505, 127.0747),
-                level: 3,
-            };
-
-            const map = new window.kakao.maps.Map(container, options);
-            if (Object.keys(stationInfo).length !== 0)
-                mapcoordinate(stationInfo, map)
-        }, 100)
+        const container = document.getElementById("map");
+        const options = {
+            center: new window.kakao.maps.LatLng(37.5505, 127.0747),
+            level: 3,
+        };
+        const map = new window.kakao.maps.Map(container, options);
+        if (Object.keys(stationInfo).length !== 0)
+            mapcoordinate(stationInfo, map)
     })
 
     const mapcoordinate = (stationInfo, map) => {
