@@ -1,4 +1,10 @@
-.page {
+.buspage {
     display: flex;
+    justify-content: space-evenly;
+}
+
+.buslist {
+    display: flex;
+    flex-direction: column;
     justify-content: space-evenly;
 }
