@@ -45,8 +45,9 @@ function getStationInfo(arsId,callback){
 
 
 	return request({
-		url:url + queryParams,
+		url: url + queryParams,
 		method: 'GET'
+
 	}, function(error,response,body){
 		//console.log(url + queryParams);
 		//console.log(body);
@@ -81,6 +82,7 @@ function getStationInfo(arsId,callback){
 		callback(busInfo);
 	});
 }
+
 
 router.get('/traffic', async (req, res) => {
 	await getTraffic();
