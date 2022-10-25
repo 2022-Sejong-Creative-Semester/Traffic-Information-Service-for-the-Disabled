@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import classes from "./Mapping.module.css"
 import usePosition from "../../../hook/usePosition";
 import { geolocationOptions } from "../../../contents/geolocationOptions";
@@ -7,12 +7,12 @@ import axios from "axios";
 
 
 const Mapping = () => {
+    const dispatch = useDispatch()
     const stationInfo = useSelector(state => state.bus.station)
     const { position, error } = usePosition(geolocationOptions)
 
     useEffect(() => {
         if (position) {
-            console.log(stationInfo)
             const lon = position.longitude;
             const lat = position.latitude;
             const container = document.getElementById("map");
@@ -40,16 +40,19 @@ const Mapping = () => {
             marker.setMap(map)
         });
     }
+
     const submitStationId = (id) => {
+        console.log(id)
         axios.get(`/stationInfo/${id}`, {
 
-        }.then(res => {
+        }).then(res => {
             const { data } = res;
             console.log(data)
         }).catch(error => {
-
-        }))
+            alert(error)
+        })
     }
+
     return (
         <div className={classes.map} id="map">
         </div>

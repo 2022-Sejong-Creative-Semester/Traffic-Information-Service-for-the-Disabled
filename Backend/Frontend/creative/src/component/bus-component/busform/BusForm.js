@@ -17,6 +17,7 @@ const StyledForm = styled.form`
 const BusForm = () => {
     const dispatch = useDispatch();
     const SubmitBusStation = (value) => {
+
         axios.get(`/station/${value}`, {
 
         }).then(res => {
