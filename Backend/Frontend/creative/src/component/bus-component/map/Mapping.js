@@ -1,12 +1,13 @@
 import { useEffect } from "react";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import classes from "./Mapping.module.css"
-import usePosition from "../../hook/usePosition";
-import { geolocationOptions } from "../../contents/geolocationOptions";
-
+import usePosition from "../../../hook/usePosition";
+import { geolocationOptions } from "../../../contents/geolocationOptions";
+import axios from "axios";
 
 
 const Mapping = () => {
+    const dispatch = useDispatch()
     const stationInfo = useSelector(state => state.bus.station)
     const { position, error } = usePosition(geolocationOptions)
 
@@ -23,7 +24,7 @@ const Mapping = () => {
             if (Object.keys(stationInfo).length !== 0)
                 mapcoordinate(stationInfo, map)
         }
-    }, [position])
+    })
     const mapcoordinate = (stationInfo, map) => {
         const { elements } = stationInfo
         elements.forEach(element => {
@@ -34,11 +35,24 @@ const Mapping = () => {
                 clickable: true
             })
             window.kakao.maps.event.addListener(marker, 'click', () => {
-                console.log(elements[3].elements[0].text)
+                submitStationId(elements[3].elements[0].text)
             })
             marker.setMap(map)
         });
     }
+
+    const submitStationId = (id) => {
+        console.log(id)
+        axios.get(`/stationInfo/${id}`, {
+
+        }).then(res => {
+            const { data } = res;
+            console.log(data)
+        }).catch(error => {
+            alert(error)
+        })
+    }
+
     return (
         <div className={classes.map} id="map">
         </div>

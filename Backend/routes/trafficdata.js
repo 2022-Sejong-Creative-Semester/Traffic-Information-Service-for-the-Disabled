@@ -36,15 +36,15 @@ function getStation(stNm, callback) {
 
 }
 
-function getStationInfo(arsId,callback){
+function getStationInfo(arsId, callback) {
 	const url = 'http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid';
 	let queryParams = '?' + encodeURIComponent('serviceKey') + '=' + serviceKey.serviceKey;
 	queryParams += '&' + encodeURIComponent('arsId') + '=' + arsId;
 
 	return request({
-		url:url + queryParams,
+		url: url + queryParams,
 		method: 'GET'
-	}, function(error,response,body){
+	}, function (error, response, body) {
 		console.log(url + queryParams);
 		console.log(body);
 		const parseJson = convert.xml2json(body);
@@ -53,6 +53,7 @@ function getStationInfo(arsId,callback){
 		callback(stationinfo);
 	});
 }
+
 
 router.get('/traffic', async (req, res) => {
 	await getTraffic();

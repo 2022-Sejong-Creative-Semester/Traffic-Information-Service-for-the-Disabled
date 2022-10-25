@@ -10,7 +10,7 @@ border:0;
 
 const BusInput = () => {
     return (
-        <StyledInput />
+        <StyledInput placeholder="정류장을 입력해주세요." />
     )
 }
 

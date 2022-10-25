@@ -5,11 +5,13 @@ const BusSlice = createSlice({
     name: "bus",
     initialState: {
         buslist: {},
-        station: {}
+        station: {},
+        stationCheck: false
     },
     reducers: {
         addStationInfo(state, action) {
             state.station = action.payload
+            state.stationCheck = true
         }
     }
 });
