@@ -2,6 +2,7 @@
 const request = require('request');
 const convert = require('xml-js');
 const serviceKey = require('../Key/serviceKey.json');
+//const gpsdata = require('../routes/GPS.json');
 
 //request 사용
 //GET 형식이므로 method 사용 X
@@ -9,7 +10,7 @@ function getTraffic(callback) {
 
 	const url = "http://ws.bus.go.kr/api/rest/buspos/getBusPosByRouteSt?serviceKey=" + serviceKey.serviceKey + "&busRouteId=100100118&startOrd=1&endOrd=13"
 
-	request({ url: url }, (err, response, body) => {
+	return request({ url: url }, (err, response, body) => {
 		console.log(body);
 		callback(body);
 	})
@@ -37,20 +38,47 @@ function getStation(stNm, callback) {
 }
 
 function getStationInfo(arsId,callback){
-	const url = 'http://ws.bus.go.kr/api/rest/stationinfo/getStationByUid';
+	const url = 'http://ws.bus.go.kr/api/rest/stationinfo/getLowStationByUid';
 	let queryParams = '?' + encodeURIComponent('serviceKey') + '=' + serviceKey.serviceKey;
 	queryParams += '&' + encodeURIComponent('arsId') + '=' + arsId;
+
+
 
 	return request({
 		url:url + queryParams,
 		method: 'GET'
 	}, function(error,response,body){
-		console.log(url + queryParams);
-		console.log(body);
+		//console.log(url + queryParams);
+		//console.log(body);
 		const parseJson = convert.xml2json(body);
-		const stationinfo = JSON.parse(parseJson);
+		const stationinfo = JSON.parse(parseJson).elements[0].elements[2];
+		
+		const buslength = stationinfo.elements.length;
+
+		let busInfo = [];
+
+		for(let i = 0; i < buslength; i++){
+			const busrouteid = stationinfo.elements[i].elements[5].elements[0].text;
+			const busrouteAbrv = stationinfo.elements[i].elements[4].elements[0].text;
+			const bustype = stationinfo.elements[i].elements[6].elements[0].text;
+			const adirection = stationinfo.elements[i].elements[0].elements[0].text;
+			const congestion = stationinfo.elements[i].elements[9].elements[0].text;
+			const nxtStn = stationinfo.elements[i].elements[22].elements[0].text;
+			const arrmsg1 = stationinfo.elements[i].elements[1].elements[0].text;
+			
+			busInfo.push({
+				busrouteid: busrouteid,
+				busrouteAbrv: busrouteAbrv,
+				bustype: bustype,
+				adirection: adirection,
+				congestion: congestion,
+				nxtStn: nxtStn,
+				arrmsg1: arrmsg1,
+			})
+		}
+
 		//console.log(stationinfo);
-		callback(stationinfo);
+		callback(busInfo);
 	});
 }
 
@@ -104,10 +132,14 @@ router.get('/stationInfo/:arsId', async (req, res) => {
 
 	const arsId = req.params.arsId;
 	//console.log("station");
-	await getStationInfo(/*arsId*/ '05251', stationinfo => {
+	await getStationInfo(arsId, stationinfo => {
 		//console.log(station);
 		return res.json(stationinfo);
 	});
+})
+
+router.get('/GPS',async (req,res)=>{
+	return res.json(gpsdata);
 })
 
 module.exports = router;
