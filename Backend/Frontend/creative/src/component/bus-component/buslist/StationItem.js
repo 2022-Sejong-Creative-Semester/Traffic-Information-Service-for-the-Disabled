@@ -36,7 +36,7 @@ const StationItem = (props) => {
             const { data } = res;
             console.log(data)
         }).catch(error => {
-            console.log(error)
+            alert(error)
         })
     }
     return (
