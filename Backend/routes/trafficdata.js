@@ -30,9 +30,28 @@ function getStation(stNm, callback) {
 		//console.log('Reponse received', body);
 		const parseJson = convert.xml2json(body);
 		const stationinfo = JSON.parse(parseJson).elements[0].elements[2];
+		const stationlength = stationinfo.elements.length;
+		//console.log(stationinfo.elements[0]);
+		let stationRes = [];
+
+		for(let i=0;i<stationlength;i++){
+			const arsId = stationinfo.elements[i].elements[0].elements[0].text;
+			const stId = stationinfo.elements[i].elements[3].elements[0].text;
+			const stNm = stationinfo.elements[i].elements[4].elements[0].text;
+			const tmX = stationinfo.elements[i].elements[5].elements[0].text;
+			const tmY = stationinfo.elements[i].elements[6].elements[0].text;
+			stationRes.push({
+				arsId: arsId,
+				stId: stId,
+				stNm: stNm,
+				tmX: tmX,
+				tmY: tmY,
+			})
+		}
+
 		//console.log('Json', stationinfo);
 		//console.log(stationinfo.elements[0].elements[2]);
-		callback(stationinfo);
+		callback(stationRes);
 	});
 
 }
@@ -47,16 +66,9 @@ function getStationInfo(arsId,callback){
 	return request({
 		url: url + queryParams,
 		method: 'GET'
-<<<<<<< HEAD
-	}, function(error,response,body){
-		console.log(url + queryParams);
-		console.log(body);
-=======
-
 	}, function(error,response,body){
 		//console.log(url + queryParams);
 		//console.log(body);
->>>>>>> e4ec9cef6aa004549c55c1c12ed24dff7c58c0a3
 		const parseJson = convert.xml2json(body);
 		const stationinfo = JSON.parse(parseJson).elements[0].elements[2];
 		
