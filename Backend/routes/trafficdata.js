@@ -47,9 +47,16 @@ function getStationInfo(arsId,callback){
 	return request({
 		url: url + queryParams,
 		method: 'GET'
+<<<<<<< HEAD
 	}, function(error,response,body){
 		console.log(url + queryParams);
 		console.log(body);
+=======
+
+	}, function(error,response,body){
+		//console.log(url + queryParams);
+		//console.log(body);
+>>>>>>> e4ec9cef6aa004549c55c1c12ed24dff7c58c0a3
 		const parseJson = convert.xml2json(body);
 		const stationinfo = JSON.parse(parseJson).elements[0].elements[2];
 		
