@@ -1,0 +1,23 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    padding: 2.5rem;
+}
+
+.bottom {
+    display: flex;
+    justify-content: space-between;
+}
+
+@media screen and (max-width:1676px) {
+    .main {
+        display: flex;
+        flex-direction: column;
+        padding: 2.5rem;
+    }
+
+    .bottom {
+        display: flex;
+        flex-direction: column;
+    }
+}

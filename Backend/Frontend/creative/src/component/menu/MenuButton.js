@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 
 const StyledButton = styled.button`
-width: 1083px;
+width: 100%;
 height: 240px;
 border-radius: 30px;
-font-size: 100px;
+font-size: 500%;
 line-height: 125px;
 `
 
