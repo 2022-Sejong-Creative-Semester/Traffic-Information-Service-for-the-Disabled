@@ -13,6 +13,7 @@ height: 590px;
 background: #FFFFFF;
 border: 4px solid #CDD029;
 padding:0;
+overflow:auto;
 `
 
 const BusList = () => {

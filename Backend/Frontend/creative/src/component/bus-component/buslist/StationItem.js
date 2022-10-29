@@ -11,13 +11,13 @@ border-bottom: 1px solid #D2D2D2;
     font-family: 'Pretendard';
     font-style: normal;
     font-weight: 600;
-    font-size: 50px;
+    font-size: 40px;
     line-height: 60px;
 }
 .id{
     font-family: 'Pretendard';
-font-style: normal;
-font-weight: 600;
+    font-style: normal;
+    font-weight: 600;
 font-size: 24px;
 line-height: 29px;
 display: flex;
