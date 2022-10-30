@@ -39,12 +39,12 @@ const Mapping = () => {
     }
 
     const submitStationId = (id) => {
-        console.log(id)
+
         axios.get(`/stationInfo/${id}`, {
 
         }).then(res => {
             const { data } = res;
-            console.log(data)
+
         }).catch(error => {
             alert(error)
         })

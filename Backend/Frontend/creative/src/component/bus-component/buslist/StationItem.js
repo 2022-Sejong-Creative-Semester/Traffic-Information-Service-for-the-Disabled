@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import axios from "axios"
+import { useDispatch } from "react-redux";
 
 const StyledStationItem = styled.li`
 display:flex;
@@ -11,13 +12,13 @@ border-bottom: 1px solid #D2D2D2;
     font-family: 'Pretendard';
     font-style: normal;
     font-weight: 600;
-    font-size: 50px;
+    font-size: 40px;
     line-height: 60px;
 }
 .id{
     font-family: 'Pretendard';
-font-style: normal;
-font-weight: 600;
+    font-style: normal;
+    font-weight: 600;
 font-size: 24px;
 line-height: 29px;
 display: flex;
@@ -29,12 +30,14 @@ color: #9C9C9C;
 
 const StationItem = (props) => {
     const { stationId, stationName } = props.items
+    const dispatch = useDispatch();
+    console.log(stationId)
     const SubmitStation = () => {
         axios.get(`/stationInfo/${stationId}`, {
 
         }).then(res => {
             const { data } = res;
-            console.log(data)
+
         }).catch(error => {
             alert(error)
         })
