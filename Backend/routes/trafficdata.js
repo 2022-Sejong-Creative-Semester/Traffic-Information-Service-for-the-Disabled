@@ -67,11 +67,14 @@ function getStationInfo(arsId,callback){
 		url: url + queryParams,
 		method: 'GET'
 	}, function(error,response,body){
-		//console.log(url + queryParams);
-		//console.log(body);
+		
 		const parseJson = convert.xml2json(body);
 		const stationinfo = JSON.parse(parseJson).elements[0].elements[2];
 		
+		if(stationinfo.elements == null){
+			callback(0);
+		}
+
 		const buslength = stationinfo.elements.length;
 
 		let busInfo = [];
@@ -97,7 +100,9 @@ function getStationInfo(arsId,callback){
 		}
 
 		//console.log(stationinfo);
+		
 		callback(busInfo);
+		
 	});
 }
 
@@ -154,7 +159,13 @@ router.get('/stationInfo/:arsId', async (req, res) => {
 	//console.log("station");
 	await getStationInfo(arsId, stationinfo => {
 		//console.log(station);
-		return res.json(stationinfo);
+		if(stationinfo == 0){
+			return res.status(404).json({
+				error: 'No Bus In Station'
+			})
+		}
+		else 
+			return res.json(stationinfo);
 	});
 })
 
