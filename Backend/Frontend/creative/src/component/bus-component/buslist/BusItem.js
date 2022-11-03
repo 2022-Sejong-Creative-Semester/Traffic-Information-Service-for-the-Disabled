@@ -28,11 +28,11 @@ color: #9C9C9C;
 `
 
 const BusItem = (props) => {
-
+    const { busRouteId, busType, adirection, arrmsg1 } = props.items;
     return (
         <StyledBusItem>
-            <p className="Name">{stationName}</p>
-            <p className="id">{stationId}</p>
+            <p className="Name">{busRouteId}</p>
+            <p className="id">{busType}</p>
         </StyledBusItem>
     )
 }

@@ -8,7 +8,9 @@ const usePosition = (options = {}) => {
 
     const positionSuccess = (position) => {
         const { latitude, longitude } = position.coords
-        setPosition({ latitude, longitude })
+        const tmX = longitude;
+        const tmY = latitude;
+        setPosition({ tmX, tmY })
     }
 
     const positionError = (errorMsg) => {

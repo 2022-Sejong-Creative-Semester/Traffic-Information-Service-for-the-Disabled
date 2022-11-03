@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 const StyledButton = styled.button`
-width: 100%;
+width: 800px;
 height: 240px;
 border-radius: 30px;
 font-size: 500%;

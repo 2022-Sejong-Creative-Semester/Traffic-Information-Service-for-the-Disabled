@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const StyleMenuExplan = styled.div`
-width: 40%;
+width: 100%;
 height: 231px;
 font-family: 'Pretendard';
 font-style: normal;
