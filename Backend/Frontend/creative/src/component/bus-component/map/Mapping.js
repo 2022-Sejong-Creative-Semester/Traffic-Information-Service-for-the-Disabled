@@ -12,42 +12,50 @@ const Mapping = () => {
     const { position, error } = usePosition(geolocationOptions)
 
     useEffect(() => {
-        if (position) {
-            const lon = position.longitude;
-            const lat = position.latitude;
-            const container = document.getElementById("map");
-            const options = {
-                center: new window.kakao.maps.LatLng(lat, lon),
-                level: 3,
-            };
-            const map = new window.kakao.maps.Map(container, options);
-            if (Object.keys(stationInfo).length !== 0)
-                mapcoordinate(stationInfo, map)
+        if (stationInfo[0]) {
+            createMap(stationInfo[0])
+        }
+        else if (position) {
+            createMap(position)
         }
     })
+
+    const createMap = (location) => {
+        console.log(location)
+        const lon = location.tmX;
+        const lat = location.tmY;
+        const container = document.getElementById("map");
+        const options = {
+            center: new window.kakao.maps.LatLng(lat, lon),
+            level: 3,
+        };
+        const map = new window.kakao.maps.Map(container, options);
+        if (Array.isArray(stationInfo))
+            mapcoordinate(stationInfo, map)
+
+    }
+
     const mapcoordinate = (stationInfo, map) => {
-        const { elements } = stationInfo
-        elements.forEach(element => {
-            const { elements } = element;
-            const markerPosition = new window.kakao.maps.LatLng(parseFloat(elements[6].elements[0].text - 0.0000005).toFixed(6), parseFloat(elements[5].elements[0].text - 0.0000005).toFixed(6))
+        stationInfo.forEach(element => {
+            const markerPosition = new window.kakao.maps.LatLng(parseFloat(element.tmY - 0.0000005).toFixed(6), parseFloat(element.tmX - 0.0000005).toFixed(6))
             const marker = new window.kakao.maps.Marker({
                 position: markerPosition,
                 clickable: true
             })
             window.kakao.maps.event.addListener(marker, 'click', () => {
-                submitStationId(elements[3].elements[0].text)
+                submitStationId(element.arsId)
             })
             marker.setMap(map)
         });
     }
 
     const submitStationId = (id) => {
-        console.log(id)
+
         axios.get(`/stationInfo/${id}`, {
 
         }).then(res => {
             const { data } = res;
-            console.log(data)
+
         }).catch(error => {
             alert(error)
         })
