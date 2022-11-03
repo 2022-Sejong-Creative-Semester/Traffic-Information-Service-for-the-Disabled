@@ -36,8 +36,10 @@ const BusList = () => {
                 <BusItem
                     key={element.stId}
                     items={{
-                        stationId: element.arsId,
-                        stationName: element.stNm
+                        busRouteId: element.busrouteid,
+                        busType: element.bustype,
+                        adirection: element.adirection,
+                        arrmsg1: element.arrmsg1
                     }}
                 />
             ))}
