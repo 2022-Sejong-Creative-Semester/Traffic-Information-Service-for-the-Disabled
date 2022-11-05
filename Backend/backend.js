@@ -6,11 +6,13 @@ const path = require('path');
 
 const testRouter = require('./routes/test');
 const trafficRouter = require('./routes/trafficdata');
+const subwayRouter = require('./routes/subwaydata');
 
 //app.use(express.static(path.join(__dirname, './Frontend/creative/build')))
 
 app.use('', testRouter);
 app.use('', trafficRouter);
+app.use('', subwayRouter);
 
 /*
 app.get('/', function (req, res) {
