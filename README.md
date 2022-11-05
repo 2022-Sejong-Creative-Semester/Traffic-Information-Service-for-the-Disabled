@@ -28,9 +28,15 @@
 - [서울교통공사 역이용 안내도 API][3]
 - [서울특별시 지하철 출입구 리프트 위치정보 API][4]
 - [서울특별시 지하철 엘리베이터 위치정보 API][5]
+- [서울특별시 지하철명 이름 검색 API][6]
+- [교통약자 역사 내 엘리베이터 이동동선][7]
+- [역사별 휠체어리프트 이동동선][8]
 
 [1]: https://www.o-prize.com/index.php
 [2]: http://api.bus.go.kr/contents/sub02/getBusPosByRtid.html 
 [3]: https://www.data.go.kr/data/15004974/fileData.do
 [4]: https://www.data.go.kr/data/15098159/openapi.do
 [5]: https://www.data.go.kr/data/15098158/openapi.do
+[6]: http://data.seoul.go.kr/dataList/OA-121/S/1/datasetView.do
+[7]: https://data.kric.go.kr/rips/M_01_02/detail.do?id=391&service=trafficWeekInfo&operation=stinElevatorMovement&keywords=%ec%9d%b4%eb%8f%99%eb%8f%99%ec%84%a0&lcd=&mcd=
+[8]: https://data.kric.go.kr/rips/M_01_02/detail.do?id=209&service=vulnerableUserInfo&operation=stationWheelchairLiftMovement&keywords=%ec%9d%b4%eb%8f%99%eb%8f%99%ec%84%a0&lcd=&mcd=
