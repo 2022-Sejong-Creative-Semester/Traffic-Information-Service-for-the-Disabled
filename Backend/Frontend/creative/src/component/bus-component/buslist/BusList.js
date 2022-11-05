@@ -26,10 +26,7 @@ const BusList = () => {
             {stationCheck && stationInfo.map(element => (
                 <StationItem
                     key={element.stId}
-                    items={{
-                        stationId: element.arsId,
-                        stationName: element.stNm
-                    }}
+                    items={element}
                 />
             ))}
             {busCheck && busInfo.map(element => (

@@ -9,10 +9,14 @@ import axios from "axios";
 const Mapping = () => {
     const dispatch = useDispatch()
     const stationInfo = useSelector(state => state.bus.station)
+    const stationLocation = useSelector(state => state.stationLocation)
     const { position, error } = usePosition(geolocationOptions)
-
+    console.log(stationLocation)
     useEffect(() => {
-        if (stationInfo[0]) {
+        if (stationLocation) {
+            createMap(stationLocation)
+        }
+        else if (stationInfo[0]) {
             createMap(stationInfo[0])
         }
         else if (position) {
@@ -21,7 +25,6 @@ const Mapping = () => {
     })
 
     const createMap = (location) => {
-        console.log(location)
         const lon = location.tmX;
         const lat = location.tmY;
         const container = document.getElementById("map");
@@ -50,7 +53,6 @@ const Mapping = () => {
     }
 
     const submitStationId = (id) => {
-
         axios.get(`/stationInfo/${id}`, {
 
         }).then(res => {

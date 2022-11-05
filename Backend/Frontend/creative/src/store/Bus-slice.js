@@ -6,6 +6,7 @@ const BusSlice = createSlice({
     initialState: {
         buslist: [],
         station: [],
+        stationLocation: {},
         stationCheck: false,
         busCheck: false
     },
@@ -14,6 +15,9 @@ const BusSlice = createSlice({
             state.station = action.payload
             state.stationCheck = true
             state.busCheck = false
+        },
+        changeStation(state, action) {
+            state.stationLocation = action.payload
         },
         addBusInfo(state, action) {
             state.buslist = action.payload

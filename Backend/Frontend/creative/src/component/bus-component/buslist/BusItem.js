@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import BusTimer from "./BusTimer";
 
 const StyledBusItem = styled.li`
 display:flex;
@@ -33,6 +33,7 @@ const BusItem = (props) => {
         <StyledBusItem>
             <p className="Name">{busRouteId}</p>
             <p className="id">{busType}</p>
+            <BusTimer timer={arrmsg1} />
         </StyledBusItem>
     )
 }
