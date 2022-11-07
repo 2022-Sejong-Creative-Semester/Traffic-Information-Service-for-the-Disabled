@@ -6,14 +6,19 @@ const BusSlice = createSlice({
     initialState: {
         buslist: [],
         station: [],
+        stationLocation: {},
         stationCheck: false,
         busCheck: false
     },
     reducers: {
         addStationInfo(state, action) {
             state.station = action.payload
+            state.stationLocation = {}
             state.stationCheck = true
             state.busCheck = false
+        },
+        changeStation(state, action) {
+            state.stationLocation = action.payload
         },
         addBusInfo(state, action) {
             state.buslist = action.payload

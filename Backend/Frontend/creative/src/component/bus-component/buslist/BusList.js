@@ -26,21 +26,13 @@ const BusList = () => {
             {stationCheck && stationInfo.map(element => (
                 <StationItem
                     key={element.stId}
-                    items={{
-                        stationId: element.arsId,
-                        stationName: element.stNm
-                    }}
+                    items={element}
                 />
             ))}
             {busCheck && busInfo.map(element => (
                 <BusItem
                     key={element.stId}
-                    items={{
-                        busRouteId: element.busrouteid,
-                        busType: element.bustype,
-                        adirection: element.adirection,
-                        arrmsg1: element.arrmsg1
-                    }}
+                    items={busInfo}
                 />
             ))}
         </StyledList>
