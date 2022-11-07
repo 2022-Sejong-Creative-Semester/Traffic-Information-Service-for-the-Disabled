@@ -19,8 +19,9 @@ overflow:auto;
 const BusList = () => {
     const stationInfo = useSelector(state => state.bus.station)
     const stationCheck = useSelector(state => state.bus.stationCheck)
-    const busInfo = useSelector(state => state.bus.busList)
+    const busInfo = useSelector(state => state.bus.buslist)
     const busCheck = useSelector(state => state.bus.busCheck)
+    console.log(busCheck, busInfo)
     return (
         <StyledList>
             {stationCheck && stationInfo.map(element => (
@@ -31,8 +32,8 @@ const BusList = () => {
             ))}
             {busCheck && busInfo.map(element => (
                 <BusItem
-                    key={element.stId}
-                    items={busInfo}
+                    key={element.busrouteId}
+                    items={element}
                 />
             ))}
         </StyledList>

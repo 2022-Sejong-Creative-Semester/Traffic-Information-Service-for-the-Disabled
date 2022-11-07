@@ -38,7 +38,6 @@ const StationItem = (props) => {
 
         }).then(res => {
             const { data } = res;
-            console.log(data)
             dispatch(BusActions.addBusInfo(data))
         }).catch(error => {
             alert(error)
