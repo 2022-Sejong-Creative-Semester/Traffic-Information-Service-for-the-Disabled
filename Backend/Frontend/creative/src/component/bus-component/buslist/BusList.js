@@ -32,12 +32,7 @@ const BusList = () => {
             {busCheck && busInfo.map(element => (
                 <BusItem
                     key={element.stId}
-                    items={{
-                        busRouteId: element.busrouteid,
-                        busType: element.bustype,
-                        adirection: element.adirection,
-                        arrmsg1: element.arrmsg1
-                    }}
+                    items={busInfo}
                 />
             ))}
         </StyledList>

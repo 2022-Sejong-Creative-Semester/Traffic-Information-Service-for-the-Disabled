@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import axios from "axios"
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { BusActions } from "../../../store/Bus-slice";
 
 const StyledStationItem = styled.li`
@@ -32,18 +32,17 @@ color: #9C9C9C;
 const StationItem = (props) => {
     const { stId, stNm, tmX, tmY, arsId } = props.items
     const dispatch = useDispatch();
-    const staionLocation = useSelector(state => state.stationLocation)
     const SubmitStation = () => {
         dispatch(BusActions.changeStation(props.items))
-        console.log(staionLocation)
-        /*axios.get(`/stationInfo/${stationId}`, {
+        axios.get(`/stationInfo/${arsId}`, {
 
         }).then(res => {
             const { data } = res;
-
+            console.log(data)
+            dispatch(BusActions.addBusInfo(data))
         }).catch(error => {
             alert(error)
-        })*/
+        })
     }
     return (
         <StyledStationItem onClick={SubmitStation}>

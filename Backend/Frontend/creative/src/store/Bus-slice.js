@@ -13,6 +13,7 @@ const BusSlice = createSlice({
     reducers: {
         addStationInfo(state, action) {
             state.station = action.payload
+            state.stationLocation = {}
             state.stationCheck = true
             state.busCheck = false
         },
