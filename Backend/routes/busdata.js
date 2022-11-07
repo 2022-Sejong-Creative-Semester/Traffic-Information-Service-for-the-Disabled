@@ -31,28 +31,36 @@ function getStation(stNm, callback) {
 			//console.log('Reponse received', body);
 			const parseJson = convert.xml2json(body);
 			const stationinfo = JSON.parse(parseJson).elements[0].elements[2];
-			const stationlength = stationinfo.elements.length;
-			//console.log(stationinfo.elements[0]);
-			let stationRes = [];
 
-			for(let i=0;i<stationlength;i++){
-				const arsId = stationinfo.elements[i].elements[0].elements[0].text;
-				const stId = stationinfo.elements[i].elements[3].elements[0].text;
-				const stNm = stationinfo.elements[i].elements[4].elements[0].text;
-				const tmX = stationinfo.elements[i].elements[5].elements[0].text;
-				const tmY = stationinfo.elements[i].elements[6].elements[0].text;
-				stationRes.push({
-					arsId: arsId,
-					stId: stId,
-					stNm: stNm,
-					tmX: tmX,
-					tmY: tmY,
-				})
+			if(stationinfo.elements == null){
+				callback(0);
 			}
 
-			//console.log('Json', stationinfo);
-			//console.log(stationinfo.elements[0].elements[2]);
-			callback(stationRes);
+			else{
+				const stationlength = stationinfo.elements.length;
+				//console.log(stationinfo.elements[0]);
+				let stationRes = [];
+
+				for(let i=0;i<stationlength;i++){
+					const arsId = stationinfo.elements[i].elements[0].elements[0].text;
+					const stId = stationinfo.elements[i].elements[3].elements[0].text;
+					const stNm = stationinfo.elements[i].elements[4].elements[0].text;
+					const tmX = stationinfo.elements[i].elements[5].elements[0].text;
+					const tmY = stationinfo.elements[i].elements[6].elements[0].text;
+					stationRes.push({
+						arsId: arsId,
+						stId: stId,
+						stNm: stNm,
+						tmX: tmX,
+						tmY: tmY,
+					})
+				}
+
+				//console.log('Json', stationinfo);
+				//console.log(stationinfo.elements[0].elements[2]);
+				callback(stationRes);	
+			}
+			
 		});
 	}
 	catch(e){
@@ -81,38 +89,45 @@ function getStationInfo(arsId,callback){
 			const parseJson = convert.xml2json(body);
 			const stationinfo = JSON.parse(parseJson).elements[0].elements[2];
 		
+			console.log(stationinfo);
+
 			if(stationinfo.elements == null){
 				callback(0);
 			}
 
-			const buslength = stationinfo.elements.length;
+			else{
+				const buslength = stationinfo.elements.length;
 
-			let busInfo = [];
+				let busInfo = [];
 
-			for(let i = 0; i < buslength; i++){
-				const busrouteid = stationinfo.elements[i].elements[5].elements[0].text;
-				const busrouteAbrv = stationinfo.elements[i].elements[4].elements[0].text;
-				const bustype = stationinfo.elements[i].elements[6].elements[0].text;
-				const adirection = stationinfo.elements[i].elements[0].elements[0].text;
-				const congestion = stationinfo.elements[i].elements[9].elements[0].text;
-				const nxtStn = stationinfo.elements[i].elements[22].elements[0].text;
-				const arrmsg1 = stationinfo.elements[i].elements[1].elements[0].text;
+				for(let i = 0; i < buslength; i++){
+					const busrouteid = stationinfo.elements[i].elements[5].elements[0].text;
+					const busrouteAbrv = stationinfo.elements[i].elements[4].elements[0].text;
+					const bustype = stationinfo.elements[i].elements[6].elements[0].text;
+					const adirection = stationinfo.elements[i].elements[0].elements[0].text;
+					const congestion = stationinfo.elements[i].elements[9].elements[0].text;
+					const nxtStn = stationinfo.elements[i].elements[22].elements[0].text;
+					const arrmsg1 = stationinfo.elements[i].elements[1].elements[0].text;
 			
-				busInfo.push({
-					busrouteid: busrouteid,
-					busrouteAbrv: busrouteAbrv,
-					bustype: bustype,
-					adirection: adirection,
-					congestion: congestion,
-					nxtStn: nxtStn,
-					arrmsg1: arrmsg1,
-				})
-			}
+					busInfo.push({
+						busrouteid: busrouteid,
+						busrouteAbrv: busrouteAbrv,
+						bustype: bustype,
+						adirection: adirection,
+						congestion: congestion,
+						nxtStn: nxtStn,
+						arrmsg1: arrmsg1,
+					})
+				}
 
-			//console.log(stationinfo);
+				//console.log(stationinfo);
 		
-			callback(busInfo);
-		
+				callback(busInfo);
+			}
+			//callback(stationinfo);
+			
+			
+			
 		});
 	}
 	catch(e){
@@ -148,13 +163,20 @@ router.get('/station', async (req, res) => {
 })
 */
 
-router.get('/station/:stNm', async (req, res) => {
-
+router.get('/stNm/:stNm', async (req, res) => {
+	
+	console.log('stationName');
+	
 	try{
 		const stNm = req.params.stNm;
 		//console.log("station");
 		await getStation(stNm, station => {
 			//console.log(station);
+			if(station==0){
+				return res.status(404).json({
+					error: 'No stops with that name'
+				})
+			}
 			return res.json(station);
 		})
 	}
@@ -166,7 +188,6 @@ router.get('/station/:stNm', async (req, res) => {
 		});
 	}
 	
-
 })
 
 
@@ -182,7 +203,9 @@ router.get('/stationInfo', async (req, res) => {
 })
 */
 
-router.get('/stationInfo/:arsId', async (req, res) => {
+router.get('/arsId/:arsId', async (req, res) => {
+
+	console.log('arsId');
 
 	const arsId = req.params.arsId;
 	//console.log("station");
@@ -208,6 +231,7 @@ router.get('/stationInfo/:arsId', async (req, res) => {
 	
 })
 
+/*
 router.get('/GPS',async (req,res)=>{
 	try{
 		return res.json(gpsdata);
@@ -220,5 +244,6 @@ router.get('/GPS',async (req,res)=>{
 		});
 	}
 })
+*/
 
 module.exports = router;
