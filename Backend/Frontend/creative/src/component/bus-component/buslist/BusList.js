@@ -2,6 +2,7 @@ import styled from "styled-components";
 import BusItem from "./BusItem";
 import StationItem from "./StationItem"
 import { useSelector } from "react-redux";
+import RefreshButton from "./RefreshButton";
 
 const StyledList = styled.ul`
 display:flex;
@@ -21,21 +22,23 @@ const BusList = () => {
     const stationCheck = useSelector(state => state.bus.stationCheck)
     const busInfo = useSelector(state => state.bus.buslist)
     const busCheck = useSelector(state => state.bus.busCheck)
-    console.log(busCheck, busInfo)
     return (
         <StyledList>
             {stationCheck && stationInfo.map(element => (
                 <StationItem
+                    className="listItem"
                     key={element.stId}
                     items={element}
                 />
             ))}
             {busCheck && busInfo.map(element => (
                 <BusItem
+                    className="listItem"
                     key={element.busrouteId}
                     items={element}
                 />
             ))}
+            {busCheck && <RefreshButton />}
         </StyledList>
     )
 }
