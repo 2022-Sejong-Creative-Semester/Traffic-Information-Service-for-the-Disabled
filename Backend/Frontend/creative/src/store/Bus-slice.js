@@ -6,6 +6,7 @@ const BusSlice = createSlice({
     initialState: {
         buslist: [],
         station: [],
+        busId: "",
         stationLocation: {},
         stationCheck: false,
         busCheck: false
@@ -19,6 +20,9 @@ const BusSlice = createSlice({
         },
         changeStation(state, action) {
             state.stationLocation = action.payload
+        },
+        refreshBus(state, action) {
+            state.busId = action.payload
         },
         addBusInfo(state, action) {
             state.buslist = action.payload
