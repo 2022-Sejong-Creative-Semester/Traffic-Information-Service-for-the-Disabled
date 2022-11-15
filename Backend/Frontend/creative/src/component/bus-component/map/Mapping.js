@@ -59,10 +59,11 @@ const Mapping = () => {
     }
 
     const submitStationId = (id) => {
-        axios.get(`/stationInfo/${id}`, {
+        axios.get(`/bus/arsId/${id}`, {
 
         }).then(res => {
             const { data } = res;
+            dispatch(BusActions.refreshBus(id))
             dispatch(BusActions.addBusInfo(data))
         }).catch(error => {
             alert(error)

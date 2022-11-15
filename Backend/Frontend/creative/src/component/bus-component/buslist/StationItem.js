@@ -30,14 +30,15 @@ color: #9C9C9C;
 `
 
 const StationItem = (props) => {
-    const { stId, stNm, tmX, tmY, arsId } = props.items
+    const { stNm, arsId } = props.items
     const dispatch = useDispatch();
     const SubmitStation = () => {
         dispatch(BusActions.changeStation(props.items))
-        axios.get(`/stationInfo/${arsId}`, {
+        axios.get(`/bus/arsId/${arsId}`, {
 
         }).then(res => {
             const { data } = res;
+            dispatch(BusActions.refreshBus(arsId))
             dispatch(BusActions.addBusInfo(data))
         }).catch(error => {
             alert(error)
