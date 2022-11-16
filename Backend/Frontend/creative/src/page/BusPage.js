@@ -1,4 +1,4 @@
-import Mapping from "../component/bus-component//map/Mapping.js"
+import Mapping from "../component/map/Mapping.js"
 import BusForm from "../component/bus-component/busform/BusForm.js"
 import BusList from "../component/bus-component/buslist/BusList.js"
 import classes from "./BusPage.module.css"

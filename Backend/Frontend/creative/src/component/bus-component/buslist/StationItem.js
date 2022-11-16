@@ -2,6 +2,7 @@ import styled from "styled-components";
 import axios from "axios"
 import { useDispatch } from "react-redux";
 import { BusActions } from "../../../store/Bus-slice";
+import { MapActions } from "../../../store/Map-slice";
 
 const StyledStationItem = styled.li`
 display:flex;
@@ -30,16 +31,16 @@ color: #9C9C9C;
 `
 
 const StationItem = (props) => {
-    const { stNm, arsId } = props.items
+    const { stNm, arsId, tmX, tmY } = props.items
     const dispatch = useDispatch();
     const SubmitStation = () => {
-        dispatch(BusActions.changeStation(props.items))
         axios.get(`/bus/arsId/${arsId}`, {
 
         }).then(res => {
             const { data } = res;
             dispatch(BusActions.refreshBus(arsId))
             dispatch(BusActions.addBusInfo(data))
+            dispatch(MapActions.positioning({ tmX, tmY }))
         }).catch(error => {
             alert(error)
         })

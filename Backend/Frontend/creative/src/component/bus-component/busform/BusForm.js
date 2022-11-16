@@ -3,6 +3,7 @@ import BusInput from "./BusInput";
 import styled from "styled-components";
 import axios from "axios"
 import { BusActions } from "../../../store/Bus-slice";
+import { MapActions } from "../../../store/Map-slice";
 import { useDispatch } from "react-redux";
 
 
@@ -23,6 +24,7 @@ const BusForm = () => {
         }).then(res => {
             const { data } = res;
             dispatch(BusActions.addStationInfo(data))
+            dispatch(MapActions.positioning(data[0]))
         }).catch(error => {
             alert("데이터를 받아오지 못했습니다.")
         });
