@@ -3,6 +3,7 @@ import BusItem from "./BusItem";
 import StationItem from "./StationItem"
 import { useSelector } from "react-redux";
 import RefreshButton from "./RefreshButton";
+import test from "./test.json"
 
 const StyledList = styled.ul`
 display:flex;

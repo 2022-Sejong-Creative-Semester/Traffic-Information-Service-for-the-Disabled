@@ -5,11 +5,16 @@ import classes from "./BusPage.module.css"
 
 const BusPage = () => {
     return (<div className={classes.buspage}>
-        <div className={classes.buslist}>
-            <BusForm />
-            <BusList />
+        <div>
+            <header>저상버스</header>
+            <div className={classes.main}>
+                <div className={classes.buslist}>
+                    <BusForm />
+                    <BusList />
+                </div>
+                <Mapping />
+            </div>
         </div>
-        <Mapping />
     </div>
     )
 }

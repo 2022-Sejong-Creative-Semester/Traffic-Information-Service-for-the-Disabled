@@ -1,0 +1,10 @@
+.page {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
