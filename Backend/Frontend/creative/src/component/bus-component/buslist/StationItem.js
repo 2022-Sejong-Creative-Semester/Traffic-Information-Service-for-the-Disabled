@@ -37,7 +37,6 @@ const StationItem = (props) => {
             const { data } = res;
             dispatch(BusActions.refreshBus(arsId))
             dispatch(BusActions.addBusInfo(data))
-            dispatch(MapActions.positioning({ tmX, tmY }))
         }).catch(error => {
             alert(error)
         })
@@ -85,6 +84,5 @@ background-color:${props => (props.color ? "white" : "#CDD029")};
     color:${props => (props.color ? "#9C9C9C" : "black")};
 }
 `
-
 
 export default StationItem;

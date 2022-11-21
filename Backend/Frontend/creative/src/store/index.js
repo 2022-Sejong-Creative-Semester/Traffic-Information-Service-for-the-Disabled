@@ -6,7 +6,6 @@ import SubwayReducer from "./Subway-slice"
 
 const store = configureStore({
     reducer: { bus: BusReducer, map: MapReducer, subway: SubwayReducer }
-
 });
 
 export default store
