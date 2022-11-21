@@ -85,5 +85,4 @@ background-color:${props => (props.color ? "white" : "#CDD029")};
 }
 `
 
-
 export default StationItem;
