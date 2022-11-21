@@ -37,6 +37,7 @@ const StationItem = (props) => {
             const { data } = res;
             dispatch(BusActions.refreshBus(arsId))
             dispatch(BusActions.addBusInfo(data))
+            dispatch(MapActions.positioning({ tmX, tmY }))
         }).catch(error => {
             alert(error)
         })
