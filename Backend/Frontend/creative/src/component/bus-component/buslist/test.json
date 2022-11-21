@@ -1,62 +1,42 @@
 [
     {
-        "busrouteAbrv": "Name",
-        "adirection": "direction",
-        "arrmsg1": "asdsad",
-        "busrouteId": "1"
+        "stNm": "asdsa",
+        "arsId": "1"
     },
     {
-        "busrouteAbrv": "Name",
-        "adirection": "direction",
-        "arrmsg1": "asdsad",
-        "busrouteId": "2"
+        "stNm": "asdsa",
+        "arsId": "2"
     },
     {
-        "busrouteAbrv": "Name",
-        "adirection": "direction",
-        "arrmsg1": "asdsad",
-        "busrouteId": "3"
+        "stNm": "asdsa",
+        "arsId": "3"
     },
     {
-        "busrouteAbrv": "Name",
-        "adirection": "direction",
-        "arrmsg1": "asdsad",
-        "busrouteId": "4"
+        "stNm": "asdsa",
+        "arsId": "4"
     },
     {
-        "busrouteAbrv": "Name",
-        "adirection": "direction",
-        "arrmsg1": "asdsad",
-        "busrouteId": "5"
+        "stNm": "asdsa",
+        "arsId": "5"
     },
     {
-        "busrouteAbrv": "Name",
-        "adirection": "direction",
-        "arrmsg1": "asdsad",
-        "busrouteId": "6"
+        "stNm": "asdsa",
+        "arsId": "6"
     },
     {
-        "busrouteAbrv": "Name",
-        "adirection": "direction",
-        "arrmsg1": "asdsad",
-        "busrouteId": "7"
+        "stNm": "asdsa",
+        "arsId": "7"
     },
     {
-        "busrouteAbrv": "Name",
-        "adirection": "direction",
-        "arrmsg1": "asdsad",
-        "busrouteId": "8"
+        "stNm": "asdsa",
+        "arsId": "8"
     },
     {
-        "busrouteAbrv": "Name",
-        "adirection": "direction",
-        "arrmsg1": "asdsad",
-        "busrouteId": "9"
+        "stNm": "asdsa",
+        "arsId": "9"
     },
     {
-        "busrouteAbrv": "Name",
-        "adirection": "direction",
-        "arrmsg1": "asdsad",
-        "busrouteId": "10"
+        "stNm": "asdsa",
+        "arsId": "10"
     }
 ]

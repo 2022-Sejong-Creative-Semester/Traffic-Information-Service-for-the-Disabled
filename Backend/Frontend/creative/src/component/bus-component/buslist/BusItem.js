@@ -7,6 +7,9 @@ align-items:center;
 width:700px;
 list-style:none;
 border-bottom: 1px solid #D2D2D2;
+:hover{
+    cursor: pointer;
+}
 div{
     display:flex;
     align-items:center;
