@@ -5,14 +5,23 @@ import classes from "./SubwayPage.module.css"
 
 const SubwayPage = () => {
 
-    return (<div className={classes.page}>
-        <div className={classes.list}>
-            <SubwayForm />
-            <SubwayList />
+    return (
+        <div className={classes.subwaypage}>
+            <div>
+                <header>지하철 편의시설</header>
+                <div className={classes.main}>
+                    <div className={classes.subwaylist}>
+                        <SubwayForm />
+                        <SubwayList />
+                    </div>
+                    <Mapping />
+                </div>
+            </div>
         </div>
-        <Mapping />
-    </div>
     )
 }
+
+
+
 
 export default SubwayPage 

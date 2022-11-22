@@ -2,8 +2,6 @@ import SubwayButton from "./SubwayButton";
 import SubwayInput from "./SubwayInput";
 import styled from "styled-components";
 import axios from "axios"
-import { BusActions } from "../../../store/Bus-slice";
-import { MapActions } from "../../../store/Map-slice";
 import { useDispatch } from "react-redux";
 
 
@@ -17,9 +15,9 @@ const StyledForm = styled.form`
 
 const SubwayForm = () => {
     const dispatch = useDispatch();
-    const SubmitBusStation = (value) => {
+    const SubmitSubwayStation = (value) => {
 
-        axios.get(`/subway/liftMove/stinCd/${value}`, {
+        axios.get(`/subway/stNm/${value}`, {
 
         }).then(res => {
             const { data } = res;
@@ -29,16 +27,16 @@ const SubwayForm = () => {
         });
 
     }
-    const BusStationData = (event) => {
+    const SubwayStationData = (event) => {
         event.preventDefault();
         const { target: [input] } = event
         const { value } = input
-        input.value = "";
-        SubmitBusStation(value)
+        SubmitSubwayStation(value)
     }
+
     return (
-        <StyledForm onSubmit={BusStationData}>
-            <SubwayInput placeholder="버스정류장 이름을 입력해주세요." />
+        <StyledForm onSubmit={SubwayStationData}>
+            <SubwayInput />
             <SubwayButton />
         </StyledForm>
     )

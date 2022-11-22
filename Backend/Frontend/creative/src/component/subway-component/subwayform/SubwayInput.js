@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import axios from "axios"
 
 const StyledInput = styled.input`
 width: 621px;
@@ -9,8 +10,21 @@ border:0;
 `
 
 const SubwayInput = () => {
+    const submitSubway = (value) => {
+        axios.get(`/subway/stNm/${value}`)
+            .then(res => {
+                const { data } = res;
+                console.log(data)
+            })
+    }
+    const subwaychange = (event) => {
+        const { target: { value } } = event
+        submitSubway(value)
+    }
+
+
     return (
-        <StyledInput placeholder="정류장을 입력해주세요." />
+        <StyledInput onChange={subwaychange} placeholder="역 이름을 입력해주세요." />
     )
 }
 

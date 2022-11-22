@@ -39,7 +39,7 @@ const BusForm = () => {
     }
     return (
         <StyledForm onSubmit={BusStationData}>
-            <BusInput placeholder="버스정류장 이름을 입력해주세요." />
+            <BusInput />
             <BusButton />
         </StyledForm>
     )

@@ -1,10 +1,23 @@
-.page {
+header {
+    width: 100%;
+    font-size: 80px;
+    line-height: 94px;
+    padding-top: 1vw;
+    padding-bottom: 1.5vw;
+}
+
+.main {
+    display: flex;
+}
+
+.subwaypage {
     display: flex;
     justify-content: space-evenly;
 }
 
-.list {
+.subwaylist {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    margin-right: 2vw;
 }
