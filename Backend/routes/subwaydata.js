@@ -3,9 +3,10 @@ const router = require('express').Router();
 const request = require('request');
 const convert = require('xml-js');
 
-function getSubwayStationName(stNm, callback) {
-	try {
 
+//필요한게 지하철 전화번호, 위경도, 지도
+function getSubwayStationName(stNm, callback){
+	try{
 		console.log(stNm);
 
 		const url = 'http://openapi.seoul.go.kr:8088/';
@@ -25,8 +26,38 @@ function getSubwayStationName(stNm, callback) {
 			url: url + queryParams,
 			method: 'GET'
 		}, function (error, response, body) {
-			console.log(body);
-			callback(body);
+
+
+			
+			const SubStationJSON = JSON.parse(body).SearchInfoBySubwayNameService;
+			//출력되는 데이터가 없는 경우
+			if (SubStationJSON == null) {
+				callback(0);
+			}
+			console.log(SubStationJSON);
+
+			const list_total_count = SubStationJSON.list_total_count;
+			const stNm = SubStationJSON.row[0].STATION_NM;
+			let stCd = [];
+			let lineNum = [];
+			let frCd = [];
+			for (let i = 0; i < list_total_count; i++) {
+				stCd.push(SubStationJSON.row[i].STATION_CD);
+				lineNum.push(SubStationJSON.row[i].LINE_NUM);
+				frCd.push(SubStationJSON.row[i].FR_CODE);
+			}
+
+			//역사별 정보 찾아서 저장
+			//https://data.kric.go.kr/rips/M_01_02/detail.do?id=183&service=convenientInfo&operation=stationInfo&keywords=%ec%97%ad&page=2&lcd=&mcd=
+			callback({
+				list_total_count: list_total_count,
+				stNm: stNm,
+				stCd: stCd,
+				lineNum: lineNum,
+				frCd: frCd
+			});
+
+
 		});
 	}
 	catch (e) {
@@ -73,10 +104,20 @@ router.get('/stNm/:stNm', async (req, res) => {
 	try {
 
 		stNm = req.params.stNm;
-		await getSubwayStationName(stNm, stationName => {
-			return res.json({
-				stNm: stationName,
-			})
+
+		await getSubwayStationName(stNm, stationInfo => {
+			if (stationInfo == 0) {
+				return res.status(404).json({
+					error: "No Station"
+				})
+			}
+			else {
+				console.log(stationInfo);
+				return res.json(
+					stationInfo,
+				)
+			}
+
 		});
 	}
 	catch (e) {
