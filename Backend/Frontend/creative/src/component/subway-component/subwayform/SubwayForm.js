@@ -19,6 +19,7 @@ const SubwayForm = () => {
 
         axios.get(`/subway/stNm/${value}`, {
 
+
         }).then(res => {
             const { data } = res;
             console.log(data)
@@ -27,6 +28,7 @@ const SubwayForm = () => {
         });
 
     }
+
     const SubwayStationData = (event) => {
         event.preventDefault();
         const { target: [input] } = event

@@ -5,6 +5,7 @@ import classes from "./SubwayPage.module.css"
 
 const SubwayPage = () => {
 
+
     return (
         <div className={classes.subwaypage}>
             <div>
@@ -20,7 +21,6 @@ const SubwayPage = () => {
         </div>
     )
 }
-
 
 
 

@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import axios from "axios"
 
+
 const StyledInput = styled.input`
 width: 621px;
 height: 60px;
@@ -10,6 +11,7 @@ border:0;
 `
 
 const SubwayInput = () => {
+
     const submitSubway = (value) => {
         axios.get(`/subway/stNm/${value}`)
             .then(res => {
