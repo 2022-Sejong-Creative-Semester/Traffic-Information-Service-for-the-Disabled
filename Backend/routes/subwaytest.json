@@ -2,7 +2,7 @@
   "header": {
     "resultCnt": 12,
     "resultCode": "00",
-    "resultMsg": "Á¤»ó Ã³¸®µÇ¾ú½À´Ï´Ù."
+    "resultMsg": "ì •ìƒ ì²˜ë¦¬ë˜ì—ˆìŠµë‹ˆë‹¤."
   },
   "body": [
     {
@@ -11,10 +11,10 @@
       "stinCd": "322",
       "mvPathMgNo": 1,
       "mvPathDvCd": "1",
-      "mvPathDvNm": "ÃâÀÔ±¸-½Â°­Àå",
+      "mvPathDvNm": "ì¶œì…êµ¬-ìŠ¹ê°•ì¥",
       "mvTpOrdr": 1,
       "mvDst": null,
-      "mvContDtl": "1) (1F) 6¹ø ÃâÀÔ±¸ ¿· ¿¤¸®º£ÀÌÅÍ Å¾½Â"
+      "mvContDtl": "1) (1F) 6ë²ˆ ì¶œì…êµ¬ ì˜† ì—˜ë¦¬ë² ì´í„° íƒ‘ìŠ¹"
     },
     {
       "railOprIsttCd": "S1",
@@ -22,65 +22,10 @@
       "stinCd": "322",
       "mvPathMgNo": 1,
       "mvPathDvCd": "1",
-      "mvPathDvNm": "ÃâÀÔ±¸-½Â°­Àå",
-      "mvTpOrdr": 2,
-      "mvDst": null,
-      "mvContDtl": "2) (B2) ´ëÇÕ½Ç·Î ÀÌµ¿"
-    },
-    {
-      "railOprIsttCd": "S1",
-      "lnCd": "3",
-      "stinCd": "322",
-      "mvPathMgNo": 1,
-      "mvPathDvCd": "1",
-      "mvPathDvNm": "ÃâÀÔ±¸-½Â°­Àå",
-      "mvTpOrdr": 3,
-      "mvDst": null,
-      "mvContDtl": "3) Ç¥ ³»´Â °÷ Åë°ú"
-    },
-    {
-      "railOprIsttCd": "S1",
-      "lnCd": "3",
-      "stinCd": "322",
-      "mvPathMgNo": 1,
-      "mvPathDvCd": "1",
-      "mvPathDvNm": "ÃâÀÔ±¸-½Â°­Àå",
-      "mvTpOrdr": 4,
-      "mvDst": null,
-      "mvContDtl": "4) ½Â°­Àå ¹æÇâ ¿¤¸®º£ÀÌÅÍ Å¾½Â"
-    },
-    {
-      "railOprIsttCd": "S1",
-      "lnCd": "3",
-      "stinCd": "322",
-      "mvPathMgNo": 1,
-      "mvPathDvCd": "1",
-      "mvPathDvNm": "ÃâÀÔ±¸-½Â°­Àå",
-      "mvTpOrdr": 5,
-      "mvDst": null,
-      "mvContDtl": "5) (B3) Ãæ¹«·Î ¹æ¸é ½Â°­ÀåÀ¸·Î ÀÌµ¿"
-    },
-    {
-      "railOprIsttCd": "S1",
-      "lnCd": "3",
-      "stinCd": "322",
-      "mvPathMgNo": 1,
-      "mvPathDvCd": "1",
-      "mvPathDvNm": "ÃâÀÔ±¸-½Â°­Àå",
-      "mvTpOrdr": 6,
-      "mvDst": null,
-      "mvContDtl": "6) ½ÂÂ÷ (ÈÙÃ¼¾îÄ­)"
-    },
-    {
-      "railOprIsttCd": "S1",
-      "lnCd": "3",
-      "stinCd": "322",
-      "mvPathMgNo": 2,
-      "mvPathDvCd": "1",
-      "mvPathDvNm": "ÃâÀÔ±¸-½Â°­Àå",
+      "mvPathDvNm": "ì¶œì…êµ¬-ìŠ¹ê°•ì¥",
       "mvTpOrdr": 1,
       "mvDst": null,
-      "mvContDtl": "1) (1F) 6¹ø ÃâÀÔ±¸ ¿· ¿¤¸®º£ÀÌÅÍ Å¾½Â"
+      "mvContDtl": "1) (1F) 6ë²ˆ ì¶œì…êµ¬ ì˜† ì—˜ë¦¬ë² ì´í„° íƒ‘ìŠ¹"
     },
     {
       "railOprIsttCd": "S1",
@@ -88,10 +33,10 @@
       "stinCd": "322",
       "mvPathMgNo": 2,
       "mvPathDvCd": "1",
-      "mvPathDvNm": "ÃâÀÔ±¸-½Â°­Àå",
+      "mvPathDvNm": "ì¶œì…êµ¬-ìŠ¹ê°•ì¥",
       "mvTpOrdr": 2,
       "mvDst": null,
-      "mvContDtl": "2) (B2) ´ëÇÕ½Ç·Î ÀÌµ¿"
+      "mvContDtl": "2) (B2) ëŒ€í•©ì‹¤ë¡œ ì´ë™"
     },
     {
       "railOprIsttCd": "S1",
@@ -99,43 +44,98 @@
       "stinCd": "322",
       "mvPathMgNo": 2,
       "mvPathDvCd": "1",
-      "mvPathDvNm": "ÃâÀÔ±¸-½Â°­Àå",
+      "mvPathDvNm": "ì¶œì…êµ¬-ìŠ¹ê°•ì¥",
+      "mvTpOrdr": 2,
+      "mvDst": null,
+      "mvContDtl": "2) (B2) ëŒ€í•©ì‹¤ë¡œ ì´ë™"
+    },
+    {
+      "railOprIsttCd": "S1",
+      "lnCd": "3",
+      "stinCd": "322",
+      "mvPathMgNo": 3,
+      "mvPathDvCd": "1",
+      "mvPathDvNm": "ì¶œì…êµ¬-ìŠ¹ê°•ì¥",
       "mvTpOrdr": 3,
       "mvDst": null,
-      "mvContDtl": "3) Ç¥ ³»´Â °÷ Åë°ú"
+      "mvContDtl": "3) í‘œ ë‚´ëŠ” ê³³ í†µê³¼"
     },
     {
       "railOprIsttCd": "S1",
       "lnCd": "3",
       "stinCd": "322",
-      "mvPathMgNo": 2,
+      "mvPathMgNo": 3,
       "mvPathDvCd": "1",
-      "mvPathDvNm": "ÃâÀÔ±¸-½Â°­Àå",
+      "mvPathDvNm": "ì¶œì…êµ¬-ìŠ¹ê°•ì¥",
+      "mvTpOrdr": 3,
+      "mvDst": null,
+      "mvContDtl": "3) í‘œ ë‚´ëŠ” ê³³ í†µê³¼"
+    },
+    {
+      "railOprIsttCd": "S1",
+      "lnCd": "3",
+      "stinCd": "322",
+      "mvPathMgNo": 4,
+      "mvPathDvCd": "1",
+      "mvPathDvNm": "ì¶œì…êµ¬-ìŠ¹ê°•ì¥",
       "mvTpOrdr": 4,
       "mvDst": null,
-      "mvContDtl": "4) ½Â°­Àå ¹æÇâ ¿¤¸®º£ÀÌÅÍ Å¾½Â"
+      "mvContDtl": "4) ìŠ¹ê°•ì¥ ë°©í–¥ ì—˜ë¦¬ë² ì´í„° íƒ‘ìŠ¹"
     },
     {
       "railOprIsttCd": "S1",
       "lnCd": "3",
       "stinCd": "322",
-      "mvPathMgNo": 2,
+      "mvPathMgNo": 4,
       "mvPathDvCd": "1",
-      "mvPathDvNm": "ÃâÀÔ±¸-½Â°­Àå",
+      "mvPathDvNm": "ì¶œì…êµ¬-ìŠ¹ê°•ì¥",
+      "mvTpOrdr": 4,
+      "mvDst": null,
+      "mvContDtl": "4) ìŠ¹ê°•ì¥ ë°©í–¥ ì—˜ë¦¬ë² ì´í„° íƒ‘ìŠ¹"
+    },
+    {
+      "railOprIsttCd": "S1",
+      "lnCd": "3",
+      "stinCd": "322",
+      "mvPathMgNo": 5,
+      "mvPathDvCd": "1",
+      "mvPathDvNm": "ì¶œì…êµ¬-ìŠ¹ê°•ì¥",
       "mvTpOrdr": 5,
       "mvDst": null,
-      "mvContDtl": "5) (B3) ¾à¼ö ¹æ¸é ½Â°­ÀåÀ¸·Î ÀÌµ¿"
+      "mvContDtl": "5) (B3) ì•½ìˆ˜ ë°©ë©´ ìŠ¹ê°•ì¥ìœ¼ë¡œ ì´ë™"
     },
     {
       "railOprIsttCd": "S1",
       "lnCd": "3",
       "stinCd": "322",
-      "mvPathMgNo": 2,
+      "mvPathMgNo": 5,
       "mvPathDvCd": "1",
-      "mvPathDvNm": "ÃâÀÔ±¸-½Â°­Àå",
+      "mvPathDvNm": "ì¶œì…êµ¬-ìŠ¹ê°•ì¥",
+      "mvTpOrdr": 5,
+      "mvDst": null,
+      "mvContDtl": "5) (B3) ì¶©ë¬´ë¡œ ë°©ë©´ ìŠ¹ê°•ì¥ìœ¼ë¡œ ì´ë™"
+    },
+    {
+      "railOprIsttCd": "S1",
+      "lnCd": "3",
+      "stinCd": "322",
+      "mvPathMgNo": 6,
+      "mvPathDvCd": "1",
+      "mvPathDvNm": "ì¶œì…êµ¬-ìŠ¹ê°•ì¥",
       "mvTpOrdr": 6,
       "mvDst": null,
-      "mvContDtl": "6) ½ÂÂ÷ (ÈÙÃ¼¾îÄ­)"
+      "mvContDtl": "6) ìŠ¹ì°¨ (íœ ì²´ì–´ì¹¸)"
+    },
+    {
+      "railOprIsttCd": "S1",
+      "lnCd": "3",
+      "stinCd": "322",
+      "mvPathMgNo": 6,
+      "mvPathDvCd": "1",
+      "mvPathDvNm": "ì¶œì…êµ¬-ìŠ¹ê°•ì¥",
+      "mvTpOrdr": 6,
+      "mvDst": null,
+      "mvContDtl": "6) ìŠ¹ì°¨ (íœ ì²´ì–´ì¹¸)"
     }
   ]
 }
