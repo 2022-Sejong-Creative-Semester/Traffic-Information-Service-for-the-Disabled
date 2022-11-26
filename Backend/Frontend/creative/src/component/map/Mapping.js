@@ -1,43 +1,25 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import classes from "./Mapping.module.css"
-import usePosition from "../../../hook/usePosition";
-import { geolocationOptions } from "../../../contents/geolocationOptions";
 import axios from "axios";
-import { BusActions } from "../../../store/Bus-slice";
-
+import { BusActions } from "../../store/Bus-slice";
+import { MapActions } from "../../store/Map-slice";
 
 const Mapping = () => {
     const dispatch = useDispatch()
     const stationInfo = useSelector(state => state.bus.station)
-    const stationLocation = useSelector(state => state.bus.stationLocation)
-    const { position, error } = usePosition(geolocationOptions)
-
+    const position = useSelector(state => state.map.position)
     useEffect(() => {
-        if (Object.keys(stationLocation).length !== 0) {
-            createMap(stationLocation)
-        }
-        else if (stationInfo[0]) {
-            createMap(stationInfo[0])
-        }
-        else if (position) {
-            createMap(position)
-        }
-    })
-
-    const createMap = (location) => {
-        const lon = location.tmX;
-        const lat = location.tmY;
         const container = document.getElementById("map");
+        console.log(position.tmX, position.tmY)
         const options = {
-            center: new window.kakao.maps.LatLng(lat, lon),
+            center: new window.kakao.maps.LatLng(position.tmY, position.tmX),
             level: 3,
         };
         const map = new window.kakao.maps.Map(container, options);
         if (Array.isArray(stationInfo))
             mapcoordinate(stationInfo, map)
-
-    }
+    })
 
     const mapcoordinate = (stationInfo, map) => {
         stationInfo.forEach(element => {
@@ -65,6 +47,7 @@ const Mapping = () => {
             const { data } = res;
             dispatch(BusActions.refreshBus(id))
             dispatch(BusActions.addBusInfo(data))
+            dispatch(MapActions.positioning(data))
         }).catch(error => {
             alert(error)
         })

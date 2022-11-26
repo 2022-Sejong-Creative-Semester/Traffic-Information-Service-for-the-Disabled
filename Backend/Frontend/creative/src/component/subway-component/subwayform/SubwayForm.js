@@ -1,5 +1,5 @@
-import BusButton from "./BusButton";
-import BusInput from "./BusInput";
+import SubwayButton from "./SubwayButton";
+import SubwayInput from "./SubwayInput";
 import styled from "styled-components";
 import axios from "axios"
 import { BusActions } from "../../../store/Bus-slice";
@@ -11,20 +11,19 @@ const StyledForm = styled.form`
     display:flex;
     width: 735px;
     height: 98px;
-    border: 4px solid #CDD029
+    border: 4px solid #9255F5
 `
 
 
-const BusForm = () => {
+const SubwayForm = () => {
     const dispatch = useDispatch();
     const SubmitBusStation = (value) => {
 
-        axios.get(`/bus/stNm/${value}`, {
+        axios.get(`/subway/liftMove/stinCd/${value}`, {
 
         }).then(res => {
             const { data } = res;
-            dispatch(BusActions.addStationInfo(data))
-            dispatch(MapActions.positioning(data[0]))
+            console.log(data)
         }).catch(error => {
             alert("데이터를 받아오지 못했습니다.")
         });
@@ -39,10 +38,10 @@ const BusForm = () => {
     }
     return (
         <StyledForm onSubmit={BusStationData}>
-            <BusInput placeholder="버스정류장 이름을 입력해주세요." />
-            <BusButton />
+            <SubwayInput placeholder="버스정류장 이름을 입력해주세요." />
+            <SubwayButton />
         </StyledForm>
     )
 }
 
-export default BusForm
+export default SubwayForm
