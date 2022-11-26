@@ -11,7 +11,6 @@ const Mapping = () => {
     const position = useSelector(state => state.map.position)
     useEffect(() => {
         const container = document.getElementById("map");
-        console.log(position.tmX, position.tmY)
         const options = {
             center: new window.kakao.maps.LatLng(position.tmY, position.tmX),
             level: 3,
@@ -45,11 +44,11 @@ const Mapping = () => {
 
         }).then(res => {
             const { data } = res;
+            console.log(data)
             dispatch(BusActions.refreshBus(id))
             dispatch(BusActions.addBusInfo(data))
-            dispatch(MapActions.positioning(data))
         }).catch(error => {
-            alert(error)
+            alert("저상 버스가 없습니다.")
         })
     }
 

@@ -5,7 +5,7 @@ import { BusActions } from "../../../store/Bus-slice";
 
 const StyledRefreshButton = styled.button`
 width:65px;
-height:100%;
+height:65px;
 border: 0;
 border-radius:50px;
 position:sticky;

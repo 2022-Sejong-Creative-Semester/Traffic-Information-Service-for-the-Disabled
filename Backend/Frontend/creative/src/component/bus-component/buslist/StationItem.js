@@ -38,7 +38,7 @@ const StationItem = (props) => {
             dispatch(BusActions.refreshBus(arsId))
             dispatch(BusActions.addBusInfo(data))
         }).catch(error => {
-            alert(error)
+            alert("저상 버스가 없습니다.")
         })
     }
 

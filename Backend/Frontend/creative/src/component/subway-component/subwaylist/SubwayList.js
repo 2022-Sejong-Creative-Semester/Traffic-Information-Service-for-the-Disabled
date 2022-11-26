@@ -1,6 +1,8 @@
 import styled from "styled-components";
-
+import SubwayItems from "./SubwayItems.js"
 import { useSelector } from "react-redux";
+
+
 
 const StyledList = styled.ul`
 display:flex;
@@ -16,10 +18,16 @@ overflow:auto;
 `
 
 const SubwayList = () => {
-
+    const subwayCheck = useSelector(state => state.subway.subwayCheck)
+    const subway = useSelector(state => state.subway.subway)
+    console.log(subway)
+    console.log(subwayCheck)
     return (
         <StyledList>
-
+            {subwayCheck && <SubwayItems
+                key={subway.stNm}
+                items={subway}
+            />}
         </StyledList>
     )
 }

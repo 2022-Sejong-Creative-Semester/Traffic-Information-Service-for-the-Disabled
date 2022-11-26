@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit"
-import BusReducer from "./Bus-slice";
-import MapReducer from "./Map-slice"
-import SubwayReducer from "./Subway-slice"
+import BusReducer from "./Bus-slice.js";
+import MapReducer from "./Map-slice.js"
+import SubwayReducer from "./Subway-slice.js"
 
 
 const store = configureStore({

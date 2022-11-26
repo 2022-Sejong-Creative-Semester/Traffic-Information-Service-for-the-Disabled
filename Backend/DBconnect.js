@@ -4,9 +4,7 @@ const port = 3000;
 const path = require('path');
 const mysql = require('mysql');
 
-const conn {
-    
-}
+
 
 app.get('/', (req, res) => {
     res.json({

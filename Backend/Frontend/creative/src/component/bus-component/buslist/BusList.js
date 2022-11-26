@@ -3,7 +3,6 @@ import BusItem from "./BusItem";
 import StationItem from "./StationItem"
 import { useSelector } from "react-redux";
 import RefreshButton from "./RefreshButton";
-import test from "./test.json"
 
 const StyledList = styled.ul`
 display:flex;
@@ -27,14 +26,12 @@ const BusList = () => {
         <StyledList>
             {stationCheck && stationInfo.map(element => (
                 <StationItem
-                    className="listItem"
                     key={element.stId}
                     items={element}
                 />
             ))}
             {busCheck && busInfo.map(element => (
                 <BusItem
-                    className="listItem"
                     key={element.busrouteId}
                     items={element}
                 />
