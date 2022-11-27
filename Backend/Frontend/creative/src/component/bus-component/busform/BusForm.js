@@ -2,8 +2,8 @@ import BusButton from "./BusButton";
 import BusInput from "./BusInput";
 import styled from "styled-components";
 import axios from "axios"
-import { BusActions } from "../../../store/Bus-slice";
 import { MapActions } from "../../../store/Map-slice";
+import { BusActions } from "../../../store/Bus-slice";
 import { useDispatch } from "react-redux";
 
 
@@ -23,6 +23,7 @@ const BusForm = () => {
 
         }).then(res => {
             const { data } = res;
+            dispatch(MapActions.makerchacking(data))
             dispatch(BusActions.addStationInfo(data))
             dispatch(MapActions.positioning(data[0]))
         }).catch(error => {

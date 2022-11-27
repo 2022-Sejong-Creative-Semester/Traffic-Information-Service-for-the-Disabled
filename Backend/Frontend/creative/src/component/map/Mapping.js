@@ -7,7 +7,7 @@ import { MapActions } from "../../store/Map-slice";
 
 const Mapping = () => {
     const dispatch = useDispatch()
-    const stationInfo = useSelector(state => state.bus.station)
+    const marker = useSelector(state => state.map.marker)
     const position = useSelector(state => state.map.position)
     useEffect(() => {
         const container = document.getElementById("map");
@@ -16,12 +16,12 @@ const Mapping = () => {
             level: 3,
         };
         const map = new window.kakao.maps.Map(container, options);
-        if (Array.isArray(stationInfo))
-            mapcoordinate(stationInfo, map)
+        if (Array.isArray(marker))
+            mapcoordinate(marker, map)
     })
 
-    const mapcoordinate = (stationInfo, map) => {
-        stationInfo.forEach(element => {
+    const mapcoordinate = (marker, map) => {
+        marker.forEach(element => {
             const imageSrc = './image/busImage.png' // 마커이미지의 주소입니다    
             const imageSize = new window.kakao.maps.Size(64, 69)
             const imageOption = { offset: new window.kakao.maps.Point(27, 69) };

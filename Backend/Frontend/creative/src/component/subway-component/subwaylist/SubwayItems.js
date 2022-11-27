@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
-
-const StyldeSubwayList = styled.li`
+const StyldeSubwayItems = styled.li`
 display:flex;
 justify-content:space-around;
 align-items:center;
@@ -38,10 +38,12 @@ const SubwayItems = ({ items }) => {
             })
     }
     return (
-        <StyldeSubwayList onClick={clickSubway}>
-            <p className="name">{items.stNm}</p>
-            <p className="line">{items.lineNum}</p>
-        </StyldeSubwayList>
+        <Link to="subway/detail">
+            <StyldeSubwayItems onClick={clickSubway}>
+                <p className="name">{items.stNm}</p>
+                <p className="line">{items.lineNum}</p>
+            </StyldeSubwayItems>
+        </Link>
     )
 }
 
