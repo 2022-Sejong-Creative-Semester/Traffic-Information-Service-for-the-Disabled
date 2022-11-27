@@ -9,6 +9,7 @@ const SQL_info = require('./Key/SQL_info.json')
 const busRouter = require('./routes/busdata');
 const subwayRouter = require('./routes/subwaydata');
 
+/*
 const conn = {
     host: SQL_info.host,
     port: SQL_info.port,
@@ -17,8 +18,9 @@ const conn = {
     database: SQL_info.database
 };
 
-let connection = mysql.createConnection(conn); // DB Ŀ�ؼ� ��
-connection.connect();   // DB ���
+let connection = mysql.createConnection(conn); 
+connection.connect();  
+*/
 
 /*
 let sql = "DELETE FROM member where name = 'test';";
@@ -32,7 +34,7 @@ connection.query(sql, function (err, results, fields) {
 */
 
 let corsOptions = {
-    origin: ['http://172.30.1.35:5000', 'http://game.jerrykang.com', 'http://admin.jerrykang.com', 'http://localhost:5000'],
+    origin: ['http://localhost:3000','http://172.30.1.35:5000', 'http://game.jerrykang.com', 'http://admin.jerrykang.com', 'http://localhost:5000'],
     credentials: true
 }
 
