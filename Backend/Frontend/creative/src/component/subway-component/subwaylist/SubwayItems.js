@@ -1,6 +1,9 @@
 import styled from "styled-components";
-import axios from "axios";
+import { api } from "../../Auth/Api.js";
 import { Link } from "react-router-dom";
+import { SubwayActions } from "../../../store/Subway-slice.js";
+import { useDispatch } from "react-redux";
+
 
 const StyldeSubwayItems = styled.li`
 display:flex;
@@ -9,6 +12,7 @@ align-items:center;
 width:700px;
 list-style:none;
 border-bottom: 1px solid #D2D2D2;
+color:black;
 :hover{
     cursor: pointer;
 }
@@ -26,19 +30,19 @@ border-bottom: 1px solid #D2D2D2;
     font-size: 24px;
     line-height: 29px;
 }
-
 `
 
 const SubwayItems = ({ items }) => {
+    const dispatch = useDispatch();
     const clickSubway = () => {
-        axios.get("/subway/stationInfo/:stinCd/:stNm")
+        api.get("/subway/stationInfo/:stinCd/:stNm")
             .then(res => {
                 const { data } = res;
-                console.log(data.body[0]);
+                dispatch(SubwayActions.saveSubway(data.body[0]));
             })
     }
     return (
-        <Link to="subway/detail">
+        <Link to="/subway/detail">
             <StyldeSubwayItems onClick={clickSubway}>
                 <p className="name">{items.stNm}</p>
                 <p className="line">{items.lineNum}</p>

@@ -2,6 +2,7 @@ import BusButton from "./BusButton";
 import BusInput from "./BusInput";
 import styled from "styled-components";
 import axios from "axios"
+import { api } from "../../Auth/Api";
 import { MapActions } from "../../../store/Map-slice";
 import { BusActions } from "../../../store/Bus-slice";
 import { useDispatch } from "react-redux";
@@ -19,7 +20,7 @@ const BusForm = () => {
     const dispatch = useDispatch();
     const SubmitBusStation = (value) => {
 
-        axios.get(`/bus/stNm/${value}`, {
+        api.get(`/bus/stNm/${value}`, {
 
         }).then(res => {
             const { data } = res;

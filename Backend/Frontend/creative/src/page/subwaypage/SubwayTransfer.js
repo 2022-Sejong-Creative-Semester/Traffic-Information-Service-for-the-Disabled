@@ -1,5 +1,5 @@
 import Mapping from "../../component/map/Mapping.js"
-import classes from "./SubwayDetailPage.module.css"
+import classes from "./SubwayTransfer.module.css"
 import SubwayBar from "../../component/subway-component/subwaymenubar/SubwayBar.js"
 
 const SubwayTransferPage = () => {

@@ -1,7 +1,6 @@
 import SubwayButton from "./SubwayButton.js";
 import SubwayInput from "./SubwayInput.js";
 import styled from "styled-components";
-import axios from "axios"
 import { useDispatch } from "react-redux";
 import { SubwayActions } from "../../../store/Subway-slice.js";
 import { api } from "../../Auth/Api.js";
@@ -18,7 +17,7 @@ const StyledForm = styled.form`
 const SubwayForm = () => {
     const dispatch = useDispatch();
     const SubmitSubwayStation = (value) => {
-        axios.get(`subway/stNm/${value}`)
+        api.get(`subway/stNm/${value}`)
             .then(res => {
                 const { data } = res;
                 dispatch(SubwayActions.addSubwayInfo(data))

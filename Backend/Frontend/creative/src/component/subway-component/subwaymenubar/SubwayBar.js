@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { api } from "../../Auth/Api.js";
 
 const StyleMenuBar = styled.ul`
 width:100%;
@@ -29,12 +30,20 @@ a{
 `
 
 const SubwayBar = () => {
+    const submitBahth = () => {
+        api.get("/subway/liftMove/stinCd/:stinCd")
+            .then(res => {
+                const { data } = res;
+                console.log(data.body[0])
+            }
+            )
+    }
     return (
         <StyleMenuBar>
             <Link to="/subway"><li>홈</li></Link>
             <Link to="/subway/elevator"><li>엘리베이터 위치</li></Link>
             <Link to="/subway/transfer"><li>환승 이동 경로</li></Link>
-            <Link to="/subway/bathchair"><li>휠체어 관련 위치</li></Link>
+            <Link to="/subway/bathchair" onClick={submitBahth}><li>휠체어 관련 위치</li></Link>
         </StyleMenuBar>
     )
 }

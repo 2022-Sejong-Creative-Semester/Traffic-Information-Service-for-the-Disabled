@@ -15,6 +15,9 @@ background: #FFFFFF;
 border: 4px solid #9255F5;
 padding:0;
 overflow:auto;
+a{ 
+    text-decoration:none; 
+}
 `
 
 const SubwayList = () => {

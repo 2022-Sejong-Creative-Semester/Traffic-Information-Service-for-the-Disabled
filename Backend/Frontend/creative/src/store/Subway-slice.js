@@ -5,15 +5,15 @@ const SubwaySlice = createSlice({
     initialState: {
         subway: [],
         subwayCheck: false,
-        subwayCheck2: true
+        subwayInfo: {}
     },
     reducers: {
         addSubwayInfo(state, action) {
             state.subway = action.payload
             state.subwayCheck = true
         },
-        clickSubway(state, action) {
-            state.subwayCheck2 = false;
+        saveSubway(state, action) {
+            state.subwayInfo = action.payload
         }
     }
 })

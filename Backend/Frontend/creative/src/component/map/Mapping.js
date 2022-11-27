@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import classes from "./Mapping.module.css"
 import axios from "axios";
 import { BusActions } from "../../store/Bus-slice";
-import { MapActions } from "../../store/Map-slice";
 
 const Mapping = () => {
     const dispatch = useDispatch()

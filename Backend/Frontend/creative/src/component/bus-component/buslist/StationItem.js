@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import axios from "axios"
+import { api } from "../../Auth/Api";
 import { useDispatch, useSelector } from "react-redux";
 import { BusActions } from "../../../store/Bus-slice";
 import { MapActions } from "../../../store/Map-slice";
@@ -19,7 +20,6 @@ const StationItem = (props) => {
 
 
     const ClickClass = () => {
-        console.log(station, arsId);
         if (station === arsId) {
             SubmitStation();
         }
@@ -31,7 +31,7 @@ const StationItem = (props) => {
     }
 
     const SubmitStation = () => {
-        axios.get(`/bus/arsId/${arsId}`, {
+        api.get(`/bus/arsId/${arsId}`, {
 
         }).then(res => {
             const { data } = res;

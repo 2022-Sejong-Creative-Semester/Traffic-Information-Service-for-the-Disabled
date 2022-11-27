@@ -1,17 +1,14 @@
-import Mapping from "../../component/map/Mapping.js"
-import classes from "./SubwayDetailPage.module.css"
+import classes from "./SubwayBathchair.module.css"
 import SubwayBar from "../../component/subway-component/subwaymenubar/SubwayBar.js"
+import SubwayInfo from "../../component/subway-component/subwayinfo/SubwayInfo"
+
 
 const SubwayBathChairPage = () => {
     return (
-        <div className={classes.subwaypage}>
+        <div className={classes.main}>
+            <SubwayBar />
             <div>
-                <div className={classes.main}>
-                    <div className={classes.subwaymeubar}>
-                        <SubwayBar />
-                        <Mapping />
-                    </div>
-                </div>
+                <SubwayInfo />
             </div>
         </div>
     )
