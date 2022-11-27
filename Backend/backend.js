@@ -2,13 +2,46 @@ const express = require('express');
 const app = express();
 const port = 3005;
 const path = require('path');
-const testRouter = require('./routes/test');
+const cors = require('cors');
+const mysql = require('mysql');
+const SQL_info = require('./Key/SQL_info.json')
+
 const busRouter = require('./routes/busdata');
 const subwayRouter = require('./routes/subwaydata');
 
-app.use(express.static(path.join(__dirname, './Frontend/creative/build')))
+/*
+const conn = {
+    host: SQL_info.host,
+    port: SQL_info.port,
+    user: SQL_info.user,
+    password: SQL_info.password,
+    database: SQL_info.database
+};
 
-app.use('', testRouter);
+let connection = mysql.createConnection(conn); 
+connection.connect();  
+*/
+
+/*
+let sql = "DELETE FROM member where name = 'test';";
+
+connection.query(sql, function (err, results, fields) {
+    if (err) {
+        console.log(err);
+    }
+    console.log(results);
+});
+*/
+
+let corsOptions = {
+    origin: ['http://localhost:3000', 'http://172.30.1.35:5000', 'http://game.jerrykang.com', 'http://admin.jerrykang.com', 'http://localhost:5000'],
+    credentials: true
+}
+
+app.use(cors(corsOptions));
+
+//app.use(express.static(path.join(__dirname, './Frontend/creative/build')))
+
 app.use('/bus', busRouter);
 app.use('/subway', subwayRouter);
 
