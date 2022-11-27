@@ -3,6 +3,7 @@ const app = express();
 const port = 3000;
 const path = require('path');
 const mysql = require('mysql');
+const SQL_info = require('./Key/SQL_info.json')
 
 const conn = {
     host: '127.0.0.1',
@@ -14,6 +15,16 @@ const conn = {
 
 let connection = mysql.createConnection(conn); // DB 目池记 积己
 connection.connect();   // DB 立加
+
+let sql = "DELETE FROM member where name = 'test';";
+
+connection.query(sql, function (err, results, fields) {
+    if (err) {
+        console.log(err);
+    }
+    console.log(results);
+});
+
 
 app.get('/', (req, res) => {
     res.json({
