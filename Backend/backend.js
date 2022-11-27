@@ -17,8 +17,8 @@ const conn = {
     database: SQL_info.database
 };
 
-let connection = mysql.createConnection(conn); // DB Ä¿³Ø¼Ç »ý¼º
-connection.connect();   // DB Á¢¼Ó
+let connection = mysql.createConnection(conn); // DB Ä¿ï¿½Ø¼ï¿½ ï¿½ï¿½
+connection.connect();   // DB ï¿½ï¿½ï¿½
 
 /*
 let sql = "DELETE FROM member where name = 'test';";
