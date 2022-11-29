@@ -3,62 +3,161 @@ const router = require('express').Router();
 const request = require('request');
 const convert = require('xml-js');
 
+const SQL_info = require('../Key/SQL_info.json')
+const mysql = require('mysql');
 
-//필요한게 지하철 전화번호, 위경도, 지도
+
+const conn = {
+	host: SQL_info.host,
+	port: SQL_info.port,
+	user: SQL_info.user,
+	password: SQL_info.password,
+	database: SQL_info.database
+};
+
+let connection = mysql.createConnection(conn);  // DB Connect
+
+//SubwayStation Name List from DB
 function getSubwayStationName(stNm, callback){
-	try{
-		console.log(stNm);
+	try {
 
-		const url = 'http://openapi.seoul.go.kr:8088/';
-		let queryParams = serviceKey.subwayStNmKey;
-		queryParams += '/' + encodeURIComponent('json');
-		queryParams += '/' + encodeURIComponent('SearchInfoBySubwayNameService');
-		queryParams += '/' + encodeURIComponent('1');
-		queryParams += '/' + encodeURIComponent('5');
-		queryParams += '/' + encodeURIComponent(stNm) + '/';
+		let sql = "Select *  FROM test WHERE StNm like ?; ";
 
-		console.log(url + queryParams);
-
-		const tempurl = 'http://openapi.seoul.go.kr:8088/' + serviceKey.subwayStNmKey + '/json/SearchInfoBySubwayNameService/1/5/%EC%A2%85%EB%A1%9C3%EA%B0%80/';
-		console.log(url + queryParams);
-		console.log(tempurl);
-		return request({
-			url: url + queryParams,
-			method: 'GET'
-		}, function (error, response, body) {
-
-
-			
-			const SubStationJSON = JSON.parse(body).SearchInfoBySubwayNameService;
-			//출력되는 데이터가 없는 경우
-			if (SubStationJSON == null) {
-				callback(0);
+		let NameList = [];
+		connection.query(sql, ["%"+stNm+"%"], function (err, results, fields) {
+			if (err) {
+				console.log(err);
 			}
-			console.log(SubStationJSON);
-
-			const list_total_count = SubStationJSON.list_total_count;
-			const stNm = SubStationJSON.row[0].STATION_NM;
-			let stCd = [];
-			let lineNum = [];
-			let frCd = [];
-			for (let i = 0; i < list_total_count; i++) {
-				stCd.push(SubStationJSON.row[i].STATION_CD);
-				lineNum.push(SubStationJSON.row[i].LINE_NUM);
-				frCd.push(SubStationJSON.row[i].FR_CODE);
+			for (let i = 0; i < results.length; i++) {
+				if (results[i].LnNm[results[i].LnNm.length - 2] == "호") {
+					results[i].LnNm = results[i].LnCd;
+				}
+				NameList.push({
+					railCd: results[i].RailCd,
+					lnCd: results[i].LnCd,
+					lnNm: results[i].LnNm,
+					stCd: results[i].StCd,
+					stNm: results[i].StNm
+				})
 			}
 
-			//역사별 정보 찾아서 저장
-			//https://data.kric.go.kr/rips/M_01_02/detail.do?id=183&service=convenientInfo&operation=stationInfo&keywords=%ec%97%ad&page=2&lcd=&mcd=
-			callback({
-				list_total_count: list_total_count,
-				stNm: stNm,
-				stCd: stCd,
-				lineNum: lineNum,
-				frCd: frCd
+			callback(NameList);
+		});
+		
+	}
+	catch (e) {
+		console.error(e);
+		callback(e);
+	}
+}
+
+function getSubwayStationInfo(stCd, callback) {
+	try {
+
+		let sql = "Select *  FROM test WHERE StCd = ?;";
+
+		connection.query(sql, [stCd], function (err, results, fields) {
+			if (err) {
+				console.log(err);
+			}
+
+			console.log(results);
+
+			const url = 'https://openapi.kric.go.kr/openapi/convenientInfo/stationInfo';
+			let queryParams = '?' + encodeURI('serviceKey');
+			queryParams += '=' + serviceKey.subwayRailKey;
+			queryParams += '&' + encodeURI('format') + '=' + encodeURI('json');
+			queryParams += '&' + encodeURI('railOprIsttCd');
+			queryParams += '=' + encodeURI(results[0].RailCd);
+			queryParams += '&' + encodeURI('lnCd');
+			queryParams += '=' + encodeURI(results[0].LnCd);
+			queryParams += '&' + encodeURI('stinCd');
+			queryParams += '=' + encodeURI(results[0].StCd);
+			queryParams += '&' + encodeURI('stinNm');
+			queryParams += '=' + encodeURI(results[0].StNm);
+
+			//console.log(url + queryParams);
+
+			return request({
+				url: url + queryParams,
+				method: 'GET'
+			}, function (error, response, body) {
+
+				//console.log(body);
+
+				const stationinfo = JSON.parse(body).body[0];
+				
+				callback({
+					railCd: stationinfo.railOprIsttCd,
+					lnCd: stationinfo.lnCd,
+					stCd: stationinfo.stinCd,
+					stNm: stationinfo.stinNm,
+					roadNm: stationinfo.roadNmAdr,
+					tmX: stationinfo.stinLocLon,
+					tmY: stationinfo.stinLocLat
+				});
 			});
 
+		});
+
+	}
+	catch (e) {
+		console.error(e);
+		callback(e);
+	}
+}
+
+function getSubwayStationInfo(stCd, callback) {
+	try {
+
+		let sql = "Select * FROM test WHERE StCd = ?;";
+
+		connection.query(sql, [stCd], function (err, results, fields) {
+			if (err) {
+				console.log(err);
+			}
+
+			console.log(results);
+
+			const url = 'https://openapi.kric.go.kr/openapi/convenientInfo/stationInfo';
+			let queryParams = '?' + encodeURI('serviceKey');
+			queryParams += '=' + serviceKey.subwayRailKey;
+			queryParams += '&' + encodeURI('format') + '=' + encodeURI('json');
+			queryParams += '&' + encodeURI('railOprIsttCd');
+			queryParams += '=' + encodeURI(results[0].RailCd);
+			queryParams += '&' + encodeURI('lnCd');
+			queryParams += '=' + encodeURI(results[0].LnCd);
+			queryParams += '&' + encodeURI('stinCd');
+			queryParams += '=' + encodeURI(results[0].StCd);
+			queryParams += '&' + encodeURI('stinNm');
+			queryParams += '=' + encodeURI(results[0].StNm);
+
+			//console.log(url + queryParams);
+
+			return request({
+				url: url + queryParams,
+				method: 'GET'
+			}, function (error, response, body) {
+
+				//console.log(body);
+
+				const stationinfo = JSON.parse(body).body[0];
+
+				callback({
+					railCd: stationinfo.railOprIsttCd,
+					lnCd: stationinfo.lnCd,
+					stCd: stationinfo.stinCd,
+					stNm: stationinfo.stinNm,
+					roadNm: stationinfo.roadNmAdr,
+					tmX: stationinfo.stinLocLon,
+					tmY: stationinfo.stinLocLat,
+					//tNum: 
+					//wNum:
+				});
+			});
 
 		});
+
 	}
 	catch (e) {
 		console.error(e);
@@ -100,21 +199,20 @@ function getLiftRoute(stCd, callback) {
 }
 
 router.get('/stNm/:stNm', async (req, res) => {
-	console.log("stNm");
 	try {
 
 		stNm = req.params.stNm;
 
-		await getSubwayStationName(stNm, stationInfo => {
-			if (stationInfo == 0) {
+		await getSubwayStationName(stNm, stationList => {
+			if (stationList == 0) {
 				return res.status(404).json({
 					error: "No Station"
 				})
 			}
 			else {
-				console.log(stationInfo);
+				console.log(stationList);
 				return res.json(
-					stationInfo,
+					stationList,
 				)
 			}
 
@@ -129,36 +227,15 @@ router.get('/stNm/:stNm', async (req, res) => {
 	}
 })
 
-router.get('/stationInfo/:stinCd/:stNm', async (req, res) => {
+router.get('/stationInfo/:stinCd', async (req, res) => {
 	try {
-		return res.json({
+		stCd = req.params.stinCd;
 
-			"header": {
-				"resultCnt": 1,
-				"resultCode": "00",
-				"resultMsg": "정상 처리되었습니다."
-			},
-			"body": [
-				{
-					"railOprIsttCd": "KR",
-					"lnCd": "1",
-					"stinCd": "135",
-					"stinNm": "용산",
-					"stinNmEng": "Yongsan",
-					"stinNmRom": "Yongsan",
-					"stinNmJpn": "ヨンサン",
-					"stinNmSimpcina": "龙山",
-					"stinNmTradcina": "龍山",
-					"lonmAdr": "서울 용산구 한강로3가 40-999",
-					"roadNmAdr": "서울 용산구 한강대로23길 55",
-					"stinLocLon": 126.964775,
-					"stinLocLat": 37.52989,
-					"mapCordX": null,
-					"mapCordY": null,
-					"strkZone": null
-				}
-			]
-
+		await getSubwayStationInfo(stCd, stationinfo => {
+			//console.log(stationinfo.tmY);
+			return res.json({
+				stationinfo
+			})
 		})
 	}
 	catch (e) {
@@ -353,54 +430,7 @@ router.get('/liftMove/stinCd/:stinCd', async (req, res) => {
 
 router.get('/ElevatorPos/stinCd/:stinCd/', async (req, res) => {
 	try {
-		return res.json({
-			"header": {
-				"resultCnt": 3,
-				"resultCode": "00",
-				"resultMsg": "정상 처리되었습니다."
-			},
-			"body": [
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"exitNo": null,
-					"dtlLoc": "(B3-B2)섬식(상) 3-3",
-					"grndDvNmFr": "지하",
-					"runStinFlorFr": 3,
-					"grndDvNmTo": "지하",
-					"runStinFlorTo": 2,
-					"rglnPsno": 15,
-					"rglnWgt": 1000
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"exitNo": null,
-					"dtlLoc": "(B3-B2)",
-					"grndDvNmFr": "지하",
-					"runStinFlorFr": 1,
-					"grndDvNmTo": "지하",
-					"runStinFlorTo": 2,
-					"rglnPsno": 16,
-					"rglnWgt": 1000
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"exitNo": "6",
-					"dtlLoc": "(B2-F1)6번 출입구측",
-					"grndDvNmFr": "지하",
-					"runStinFlorFr": 2,
-					"grndDvNmTo": "지상",
-					"runStinFlorTo": 1,
-					"rglnPsno": 15,
-					"rglnWgt": 1000
-				}
-			]
-		})
+		
 	}
 	catch (e) {
 		console.error(e);
