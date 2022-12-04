@@ -14,6 +14,11 @@ const SubwaySlice = createSlice({
         },
         saveSubway(state, action) {
             state.subwayInfo = action.payload
+        },
+        initialState(state) {
+            state.subway = [];
+            state.subwayCheck = false;
+            state.subwayInfo = {};
         }
     }
 })

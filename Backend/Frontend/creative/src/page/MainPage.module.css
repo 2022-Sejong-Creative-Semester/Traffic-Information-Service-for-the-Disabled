@@ -1,7 +1,19 @@
+html,
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
 .main {
     display: flex;
     flex-direction: column;
-    padding: 2.5rem;
+    align-items: center;
+}
+
+.bottom {
+    width: 100%;
+    height: 85vh;
+    background: rgba(40, 40, 40, 0.8);
 }
 
 .main {
@@ -60,11 +72,6 @@
     }
 }
 
-
-.bottom {
-    display: flex;
-    justify-content: space-between;
-}
 
 
 

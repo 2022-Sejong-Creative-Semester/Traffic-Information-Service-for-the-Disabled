@@ -1,8 +1,6 @@
 import styled from "styled-components";
-import { api } from "../../Auth/Api.js";
 import { Link } from "react-router-dom";
-import { SubwayActions } from "../../../store/Subway-slice.js";
-import { useDispatch } from "react-redux";
+
 
 
 const StyldeSubwayItems = styled.li`
@@ -33,19 +31,13 @@ color:black;
 `
 
 const SubwayItems = ({ items }) => {
-    const dispatch = useDispatch();
-    const clickSubway = () => {
-        api.get("/subway/stationInfo/:stinCd/:stNm")
-            .then(res => {
-                const { data } = res;
-                dispatch(SubwayActions.saveSubway(data.body[0]));
-            })
-    }
+
+
     return (
-        <Link to="/subway/detail">
-            <StyldeSubwayItems onClick={clickSubway}>
+        <Link to={`/subway/detail/${items.stCd}/${items.stNm}`}>
+            <StyldeSubwayItems>
                 <p className="name">{items.stNm}</p>
-                <p className="line">{items.lineNum}</p>
+                <p className="line">{items.lnNm}</p>
             </StyldeSubwayItems>
         </Link>
     )

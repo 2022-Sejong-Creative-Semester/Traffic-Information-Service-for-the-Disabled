@@ -2,18 +2,19 @@ import styled from "styled-components";
 import BusItem from "./BusItem";
 import StationItem from "./StationItem"
 import { useSelector } from "react-redux";
-import RefreshButton from "./RefreshButton";
+import BusNumber from "../busnumber/BusNumber";
 
 const StyledList = styled.ul`
 display:flex;
 flex-direction:column;
 align-items: center;
 box-sizing: border-box;
-width: 744px;
-height: 590px;
+width: 735px;
+height: 640px;
 background: #FFFFFF;
-border: 4px solid #CDD029;
+border: 4px solid #CDD029 ;
 padding:0;
+margin:0;
 overflow:auto;
 `
 
@@ -24,6 +25,7 @@ const BusList = () => {
     const busCheck = useSelector(state => state.bus.busCheck)
     return (
         <StyledList>
+            {(busCheck || stationCheck) && <BusNumber text={stationCheck ? "검색결과" : "버스"} count={stationCheck ? stationInfo.length : busInfo.length} />}
             {stationCheck && stationInfo.map(element => (
                 <StationItem
                     key={element.stId}
@@ -32,11 +34,10 @@ const BusList = () => {
             ))}
             {busCheck && busInfo.map(element => (
                 <BusItem
-                    key={element.busrouteId}
+                    key={element.busrouteAbrv}
                     items={element}
                 />
             ))}
-            {busCheck && <RefreshButton />}
         </StyledList>
     )
 }

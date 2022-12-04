@@ -27,10 +27,11 @@ const SubwayList = () => {
     console.log(subwayCheck)
     return (
         <StyledList>
-            {subwayCheck && <SubwayItems
-                key={subway.stNm}
-                items={subway}
-            />}
+            {subwayCheck && subway.map(elemnet =>
+                <SubwayItems
+                    key={elemnet.stCd}
+                    items={elemnet}
+                />)}
         </StyledList>
     )
 }

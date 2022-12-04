@@ -2,7 +2,7 @@ import BusButton from "./BusButton";
 import BusInput from "./BusInput";
 import styled from "styled-components";
 import axios from "axios"
-import { api } from "../../Auth/Api";
+import { api } from "../../auth/Api";
 import { MapActions } from "../../../store/Map-slice";
 import { BusActions } from "../../../store/Bus-slice";
 import { useDispatch } from "react-redux";
@@ -10,9 +10,9 @@ import { useDispatch } from "react-redux";
 
 const StyledForm = styled.form`
     display:flex;
-    width: 735px;
+    width: 727px;
     height: 98px;
-    border: 4px solid #CDD029
+    border: 4px solid #CDD029;
 `
 
 

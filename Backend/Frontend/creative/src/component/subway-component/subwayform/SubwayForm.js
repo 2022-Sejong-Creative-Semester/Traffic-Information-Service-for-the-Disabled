@@ -3,7 +3,7 @@ import SubwayInput from "./SubwayInput.js";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { SubwayActions } from "../../../store/Subway-slice.js";
-import { api } from "../../Auth/Api.js";
+import { api } from "../../auth/Api.js";
 
 
 const StyledForm = styled.form`

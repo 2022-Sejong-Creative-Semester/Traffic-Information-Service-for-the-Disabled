@@ -1,29 +1,35 @@
 import styled from "styled-components";
 
 const StyleMenuExplan = styled.div`
-width: 100%;
-height: 231px;
-font-family: 'Pretendard';
-font-style: normal;
-font-weight: 700;
-font-size: 50px;
-line-height: 60px;
-letter-spacing: 0.05em;
-font-color: #000000;
-span{
-   font-size: 35px;
-   font-color:#7C7C7C;
+display:flex;
+flex-direction:column;
+align-items:center;
+color:#E2E2E2;
+.first{
+    font-family: 'GmarketSansMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 70px;
 }
-
+.second{
+    display:flex;
+    text-align:center;
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-size: 40px;
+}
 `
 
 const MenuExplan = () => {
 
     return (
         <StyleMenuExplan>
-            교통약자<span>분들을 위해</span><br />
-            편리하고 정확한<br />
-            대중교통 정보<span>를</span> 제공<span>합니다.</span>
+            <h1 className="first">편리하고 쉽게, 타자.</h1>
+            <p className="second">교통약자도 대중교통을 쉽게 탈 수 있을때까지.<br />교통약자에게 필요한 서비스를 제공합니다.</p>
         </StyleMenuExplan>
     )
 }

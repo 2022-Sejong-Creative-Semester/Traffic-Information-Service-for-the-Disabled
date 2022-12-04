@@ -10,6 +10,14 @@ border-bottom: 1px solid #D2D2D2;
 :hover{
     cursor: pointer;
 }
+a{  
+    width:700px;
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    color:black;
+    text-decoration:none;
+}
 div{
     display:flex;
     align-items:center;
@@ -39,14 +47,17 @@ div{
 `
 
 const BusItem = (props) => {
-    const { busrouteAbrv, adirection, arrmsg1 } = props.items;
+    const { busrouteid, busrouteAbrv, adirection, arrmsg1 } = props.items;
+    console.log(busrouteid)
     return (
         <StyledBusItem>
-            <div>
-                <p className="Name">{busrouteAbrv}</p>
-                <p className="direction">{adirection}방면</p>
-            </div>
-            <p className="id">{arrmsg1}</p>
+            <a href={`https://map.naver.com/v5/search/${busrouteAbrv}/bus-route/${busrouteid}`} target="_blank">
+                <div>
+                    <p className="Name">{busrouteAbrv}</p>
+                    <p className="direction">{adirection}방면</p>
+                </div>
+                <p className="id">{arrmsg1}</p>
+            </a>
         </StyledBusItem>
     )
 }

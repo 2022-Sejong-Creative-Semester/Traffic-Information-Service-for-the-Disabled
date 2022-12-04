@@ -18,7 +18,11 @@ const MapSlice = createSlice({
             state.marker = action.payload
         },
         initialization(state) {
-            state.marker = []
+            state.position = {
+                tmY: 37.55068403524657,
+                tmX: 127.07411251036736
+            };
+            state.marker = [];
         }
     }
 })

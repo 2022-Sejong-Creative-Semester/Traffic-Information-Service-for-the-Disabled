@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { api } from "../../Auth/Api.js";
+import { api } from "../../auth/Api.js";
 
 const StyleMenuBar = styled.ul`
 width:100%;

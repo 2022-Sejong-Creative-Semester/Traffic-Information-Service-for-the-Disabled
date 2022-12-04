@@ -3,8 +3,6 @@ const app = express();
 const port = 3005;
 const path = require('path');
 const cors = require('cors');
-const mysql = require('mysql');
-const SQL_info = require('./Key/SQL_info.json')
 
 const busRouter = require('./routes/busdata');
 const subwayRouter = require('./routes/subwaydata');
@@ -39,8 +37,7 @@ let corsOptions = {
 }
 
 app.use(cors(corsOptions));
-
-//app.use(express.static(path.join(__dirname, './Frontend/creative/build')))
+app.use(express.static(path.join(__dirname, './Frontend/creative/build')))
 
 app.use('/bus', busRouter);
 app.use('/subway', subwayRouter);

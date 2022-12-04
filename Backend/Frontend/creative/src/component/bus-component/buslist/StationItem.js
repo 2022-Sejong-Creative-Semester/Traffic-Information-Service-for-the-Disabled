@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import axios from "axios"
-import { api } from "../../Auth/Api";
+import { api } from "../../auth/Api";
 import { useDispatch, useSelector } from "react-redux";
 import { BusActions } from "../../../store/Bus-slice";
 import { MapActions } from "../../../store/Map-slice";

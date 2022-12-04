@@ -14,10 +14,10 @@ function App() {
         <Route path="/" element={<MainPage />} />
         <Route path="/bus" element={<BusPage />} />
         <Route path="/subway" element={<SubwayPage />} />
-        <Route path="/subway/detail" element={<SubwayDetailPage />} />
-        <Route path="/subway/elevator" element={<SubwayElevatorPage />} />
-        <Route path="/subway/transfer" element={<SubwayTransferPage />} />
-        <Route path="/subway/bathchair" element={<SubwayBathChairPage />} />
+        <Route path="/subway/detail/:stCd/:stNm" element={<SubwayDetailPage />} />
+        <Route path="/subway/elevator/:stCd" element={<SubwayElevatorPage />} />
+        <Route path="/subway/transfer/:stCd" element={<SubwayTransferPage />} />
+        <Route path="/subway/bathchair/:stCd" element={<SubwayBathChairPage />} />
       </Routes>
     </BrowserRouter>
   );
