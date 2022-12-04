@@ -21,8 +21,8 @@ let connection = mysql.createConnection(conn);  // DB Connect
 function getSubwayStationName(stNm, callback){
 	try {
 
-		let sql = "Select *  FROM test WHERE StNm like ?; ";
-
+		//let sql = "Select *  FROM test WHERE StNm like ?; ";		//VM용
+		let sql = "Select *  FROM stationinfotest WHERE StNm like ?; ";
 		let NameList = [];
 		connection.query(sql, ["%"+stNm+"%"], function (err, results, fields) {
 			if (err) {
@@ -51,6 +51,7 @@ function getSubwayStationName(stNm, callback){
 	}
 }
 
+/*
 function getSubwayStationInfo(stCd, callback) {
 	try {
 
@@ -106,19 +107,24 @@ function getSubwayStationInfo(stCd, callback) {
 		callback(e);
 	}
 }
+*/
 
-function getSubwayStationInfo(stCd, callback) {
+function getSubwayStationInfo(stCd, stNm, callback) {
 	try {
 
-		let sql = "Select * FROM test WHERE StCd = ?;";
+		//let sql = "Select * FROM test WHERE StCd = ?;";	//VM용
+		let sql = "Select *  FROM stationinfotest WHERE StCd = ? and StNm = ?;";
 
-		connection.query(sql, [stCd], function (err, results, fields) {
+		connection.query(sql, [stCd, stNm], function (err, results, fields) {
 			if (err) {
 				console.log(err);
 			}
 
-			console.log(results);
-
+			//console.log(results);
+			
+			//console.log(results[0].RailCd);
+			
+			
 			const url = 'https://openapi.kric.go.kr/openapi/convenientInfo/stationInfo';
 			let queryParams = '?' + encodeURI('serviceKey');
 			queryParams += '=' + serviceKey.subwayRailKey;
@@ -131,15 +137,17 @@ function getSubwayStationInfo(stCd, callback) {
 			queryParams += '=' + encodeURI(results[0].StCd);
 			queryParams += '&' + encodeURI('stinNm');
 			queryParams += '=' + encodeURI(results[0].StNm);
+			
 
 			//console.log(url + queryParams);
 
+			
 			return request({
 				url: url + queryParams,
 				method: 'GET'
 			}, function (error, response, body) {
 
-				//console.log(body);
+				console.log(body);
 
 				const stationinfo = JSON.parse(body).body[0];
 
@@ -151,10 +159,11 @@ function getSubwayStationInfo(stCd, callback) {
 					roadNm: stationinfo.roadNmAdr,
 					tmX: stationinfo.stinLocLon,
 					tmY: stationinfo.stinLocLat,
-					//tNum: 
-					//wNum:
 				});
+					//tNum:
+					//wNum:
 			});
+			
 
 		});
 
@@ -165,14 +174,58 @@ function getSubwayStationInfo(stCd, callback) {
 	}
 }
 
-function getLiftRoute(stCd, callback) {
+function getLiftPos(stCd, stNm, callback) {
+	try {
+
+		let sql = "Select *  FROM stationinfotest WHERE StCd = ? and StNm = ?;";
+
+		connection.query(sql, [stCd, stNm], function (err, results, fields) {
+			if (err) {
+				console.log(err);
+			}
+
+			console.log(results);
+			//callback(results);
+
+			
+			const url = 'https://openapi.kric.go.kr/openapi/vulnerableUserInfo/stationWheelchairLiftLocation';
+			let queryParams = '?' + encodeURI('serviceKey') + '=' + serviceKey.subwayRailKey;
+			queryParams += '&' + encodeURI('format') + '=' + encodeURI('json');
+			queryParams += '&' + encodeURI('railOprIsttCd') + '=' + encodeURI(results[0].RailCd);
+			queryParams += '&' + encodeURI('lnCd') + '=' + encodeURI(results[0].LnCd);
+			queryParams += '&' + encodeURI('stinCd') + '=' + encodeURI(stCd);
+
+			console.log(url + queryParams);
+
+			return request({
+				url: url + queryParams,
+				method: 'GET'
+			}, function (error, response, body) {
+
+				console.log(body);
+				callback(body);
+			
+				
+				//tNum:
+				//wNum:
+			});
+			
+		});
+	}
+	catch {
+		console.error(e);
+		callback(e);
+	}
+}
+
+function getLiftMove(stCd, callback) {
 	try {
 
 		console.log(stNm);
 
 		const url = 'https://openapi.kric.go.kr/openapi/vulnerableUserInfo/stationWheelchairLiftMovement';
 		let queryParams = '?' + encodeURIComponent('serviceKey');
-		queryParams += '=' + serviceKey.iiftRouteKey;
+		queryParams += '=' + serviceKey.subwayRailKey;
 		queryParams += '&' + encodeURIComponent('format') + '=' + encodeURIComponent('json');
 		queryParams += '&' + encodeURIComponent('railOprIsttCd');
 		queryParams += '/' + encodeURIComponent('1');
@@ -227,11 +280,11 @@ router.get('/stNm/:stNm', async (req, res) => {
 	}
 })
 
-router.get('/stationInfo/:stinCd', async (req, res) => {
+router.get('/stationInfo/:stinCd/:stNm', async (req, res) => {
 	try {
 		stCd = req.params.stinCd;
-
-		await getSubwayStationInfo(stCd, stationinfo => {
+		stNm = req.params.stNm;
+		await getSubwayStationInfo(stCd, stNm, stationinfo => {
 			//console.log(stationinfo.tmY);
 			return res.json({
 				stationinfo
@@ -247,189 +300,21 @@ router.get('/stationInfo/:stinCd', async (req, res) => {
 	}
 })
 
-router.get('/liftPos/stinCd/:stinCd/', async (req, res) => {
+router.get('/liftPos/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 	try {
-		return res.json({
-			"header": {
-				"resultCnt": 0,
-				"resultCode": "03",
-				"resultMsg": "데이터가 없습니다."
-			}
-		})
-	}
-	catch (e) {
-		console.error(e);
-		return res.status(500).json({
-			error: e,
-			errorString: e.toString(),
-		})
-	}
-})
-
-router.get('/liftMove/stinCd/:stinCd', async (req, res) => {
-	console.log("liftMove");
-	try {
-		/*
+		stCd = req.params.stinCd;
 		stNm = req.params.stNm;
-		await getLiftRoute(stNm,stationName => {
-			return res.json({
-				stNm: stationName,
-			})
-		});
-		*/
-		return res.json({
-			"header": {
-				"resultCnt": 12,
-				"resultCode": "00",
-				"resultMsg": "정상 처리되었습니다."
-			},
-			"body": [
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 1,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 1,
-					"mvDst": null,
-					"mvContDtl": "1) (1F) 6번 출입구 옆 엘리베이터 탑승"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 1,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 2,
-					"mvDst": null,
-					"mvContDtl": "2) (B2) 대합실로 이동"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 1,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 3,
-					"mvDst": null,
-					"mvContDtl": "3) 표 내는 곳 통과"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 1,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 4,
-					"mvDst": null,
-					"mvContDtl": "4) 승강장 방향 엘리베이터 탑승"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 1,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 5,
-					"mvDst": null,
-					"mvContDtl": "5) (B3) 충무로 방면 승강장으로 이동"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 1,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 6,
-					"mvDst": null,
-					"mvContDtl": "6) 승차 (휠체어칸)"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 2,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 1,
-					"mvDst": null,
-					"mvContDtl": "1) (1F) 6번 출입구 옆 엘리베이터 탑승"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 2,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 2,
-					"mvDst": null,
-					"mvContDtl": "2) (B2) 대합실로 이동"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 2,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 3,
-					"mvDst": null,
-					"mvContDtl": "3) 표 내는 곳 통과"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 2,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 4,
-					"mvDst": null,
-					"mvContDtl": "4) 승강장 방향 엘리베이터 탑승"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 2,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 5,
-					"mvDst": null,
-					"mvContDtl": "5) (B3) 약수 방면 승강장으로 이동"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 2,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 6,
-					"mvDst": null,
-					"mvContDtl": "6) 승차 (휠체어칸)"
-				}
-			]
-		})
-	}
-	catch (e) {
-		console.error(e);
-		return res.status(500).json({
-			error: e,
-			errorString: e.toString(),
-		})
-	}
-})
+		railCd = req.params.railCd;
+		lnCd = req.params.lnCd;
 
-router.get('/ElevatorPos/stinCd/:stinCd/', async (req, res) => {
-	try {
+		await getLiftPos(stCd, stNm, railCd, lnCd, callback => {
+			console.log(callback);
+
+			return res.json({
+				callback
+			});
+		})
+
 		
 	}
 	catch (e) {
@@ -441,150 +326,125 @@ router.get('/ElevatorPos/stinCd/:stinCd/', async (req, res) => {
 	}
 })
 
-router.get('/ElevatorMove/stinCd/:stinCd/', async (req, res) => {
+router.get('/liftMove/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
+	console.log("liftMove");
+	try {
+		stCd = req.params.stinCd;
+		stNm = req.params.stNm;
+		railCd = req.params.railCd;
+		lnCd = req.params.lnCd;
+
+		await getLiftMove(stCd, stNm, railCd, lnCd, callback => {
+			console.log(callback);
+			return res.json({
+				callback
+			})
+		});
+	}
+	catch (e) {
+		console.error(e);
+		return res.status(500).json({
+			error: e,
+			errorString: e.toString(),
+		})
+	}
+})
+
+router.get('/ElevatorPos/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
+	try {
+		stCd = req.params.stinCd;
+		stNm = req.params.stNm;
+		railCd = req.params.railCd;
+		lnCd = req.params.lnCd;
+
+		await getElevatorPos(stCd, stNm, railCd, lnCd, callback => {
+			console.log(callback);
+			return res.json({
+				callback
+			})
+		});
+	}
+	catch (e) {
+		console.error(e);
+		return res.status(500).json({
+			error: e,
+			errorString: e.toString(),
+		})
+	}
+})
+
+router.get('/ElevatorMove/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
+	try {
+		stCd = req.params.stinCd;
+		stNm = req.params.stNm;
+		railCd = req.params.railCd;
+		lnCd = req.params.lnCd;
+
+		await getElevatorMove(stCd, stNm, railCd, lnCd, callback => {
+			console.log(callback);
+			return res.json({
+				callback
+			})
+		});
+	}
+	catch (e) {
+		console.error(e);
+		return res.status(500).json({
+			error: e,
+			errorString: e.toString(),
+		})
+	}
+})
+
+
+router.get('/transferMove/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
+	try {
+		stCd = req.params.stinCd;
+		stNm = req.params.stNm;
+		railCd = req.params.railCd;
+		lnCd = req.params.lnCd;
+
+		await getTranferMove(stCd, stNm, railCd, lnCd, callback => {
+			console.log(callback);
+			return res.json({
+				callback
+			})
+		});
+	}
+	catch (e) {
+		console.error(e);
+		return res.status(500).json({
+			error: e,
+			errorString: e.toString(),
+		})
+	}
+});
+
+
+router.get('/image/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
+	try {
+		stCd = req.params.stinCd;
+		stNm = req.params.stNm;
+		railCd = req.params.railCd;
+		lnCd = req.params.lnCd;
+
+		return res.json({
+
+		})
+	}
+	catch (e) {
+		console.error(e);
+		return res.status(500).json({
+			error: e,
+			errorString: e.toString(),
+		})
+	}
+});
+
+router.get('/nevigatoin', async (req, res) => {
 	try {
 		return res.json({
 
-			"header": {
-				"resultCnt": 12,
-				"resultCode": "00",
-				"resultMsg": "정상 처리되었습니다."
-			},
-			"body": [
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 1,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 1,
-					"mvDst": null,
-					"mvContDtl": "1) (1F) 6번 출입구 옆 엘리베이터 탑승"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 1,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 1,
-					"mvDst": null,
-					"mvContDtl": "1) (1F) 6번 출입구 옆 엘리베이터 탑승"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 2,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 2,
-					"mvDst": null,
-					"mvContDtl": "2) (B2) 대합실로 이동"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 2,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 2,
-					"mvDst": null,
-					"mvContDtl": "2) (B2) 대합실로 이동"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 3,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 3,
-					"mvDst": null,
-					"mvContDtl": "3) 표 내는 곳 통과"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 3,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 3,
-					"mvDst": null,
-					"mvContDtl": "3) 표 내는 곳 통과"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 4,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 4,
-					"mvDst": null,
-					"mvContDtl": "4) 승강장 방향 엘리베이터 탑승"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 4,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 4,
-					"mvDst": null,
-					"mvContDtl": "4) 승강장 방향 엘리베이터 탑승"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 5,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 5,
-					"mvDst": null,
-					"mvContDtl": "5) (B3) 약수 방면 승강장으로 이동"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 5,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 5,
-					"mvDst": null,
-					"mvContDtl": "5) (B3) 충무로 방면 승강장으로 이동"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 6,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 6,
-					"mvDst": null,
-					"mvContDtl": "6) 승차 (휠체어칸)"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 6,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 6,
-					"mvDst": null,
-					"mvContDtl": "6) 승차 (휠체어칸)"
-				}
-			]
-
 		})
 	}
 	catch (e) {
@@ -594,181 +454,6 @@ router.get('/ElevatorMove/stinCd/:stinCd/', async (req, res) => {
 			errorString: e.toString(),
 		})
 	}
-})
-
-router.get('/transferMove/stinCd/:stinCd', async (req, res) => {
-	try {
-		return res.json({
-
-			"header": {
-				"resultcnt": 12,
-				"resultcode": 0,
-				"resultmsg": "정상 처리되었습니다."
-			},
-			"body": {
-				"item": [
-					{
-						"mvpathmgno": 2,
-						"chtnmvtpordr": 1,
-						"mvcontdtl": "1) (B3) 3호선 을지로3가 방면 승강장 하차",
-						"stmovepath": "3호선 을지로3가 방면",
-						"edmovepath": "4호선 명동 방면",
-						"imgpath": "http://hc.kric.go.kr/hc/ext/images/visual/handicapped/mvPath/S1/S1_3_0563_2_3.png",
-						"elvttpcd": {},
-						"elvtsttcd": {}
-					},
-					{
-						"mvpathmgno": 2,
-						"chtnmvtpordr": 2,
-						"mvcontdtl": "2) 대합실 방향 휠체어리프트 탑승",
-						"stmovepath": "3호선 을지로3가 방면",
-						"edmovepath": "4호선 명동 방면",
-						"imgpath": "http://hc.kric.go.kr/hc/ext/images/visual/handicapped/mvPath/S1/S1_3_0563_2_3.png",
-						"elvttpcd": {},
-						"elvtsttcd": {}
-					},
-					{
-						"mvpathmgno": 2,
-						"chtnmvtpordr": 3,
-						"mvcontdtl": "3) (B2) 대합실로 이동",
-						"stmovepath": "3호선 을지로3가 방면",
-						"edmovepath": "4호선 명동 방면",
-						"imgpath": "http://hc.kric.go.kr/hc/ext/images/visual/handicapped/mvPath/S1/S1_3_0563_2_3.png",
-						"elvttpcd": {},
-						"elvtsttcd": {}
-					},
-					{
-						"mvpathmgno": 2,
-						"chtnmvtpordr": 4,
-						"mvcontdtl": "4) 4호선 명동 방면 엘리베이터 탑승",
-						"stmovepath": "3호선 을지로3가 방면",
-						"edmovepath": "4호선 명동 방면",
-						"imgpath": "http://hc.kric.go.kr/hc/ext/images/visual/handicapped/mvPath/S1/S1_3_0563_2_3.png",
-						"elvttpcd": {},
-						"elvtsttcd": {}
-					},
-					{
-						"mvpathmgno": 2,
-						"chtnmvtpordr": 5,
-						"mvcontdtl": "5) (B3) 4호선 명동 방면 승강장으로 이동",
-						"stmovepath": "3호선 을지로3가 방면",
-						"edmovepath": "4호선 명동 방면",
-						"imgpath": "http://hc.kric.go.kr/hc/ext/images/visual/handicapped/mvPath/S1/S1_3_0563_2_3.png",
-						"elvttpcd": {},
-						"elvtsttcd": {}
-					},
-					{
-						"mvpathmgno": 2,
-						"chtnmvtpordr": 6,
-						"mvcontdtl": "6) 승차 (휠체어칸)",
-						"stmovepath": "3호선 을지로3가 방면",
-						"edmovepath": "4호선 명동 방면",
-						"imgpath": "http://hc.kric.go.kr/hc/ext/images/visual/handicapped/mvPath/S1/S1_3_0563_2_3.png",
-						"elvttpcd": {},
-						"elvtsttcd": {}
-					},
-					{
-						"mvpathmgno": 4,
-						"chtnmvtpordr": 1,
-						"mvcontdtl": "1) (B3) 3호선 동대입구 방면 승강장 하차",
-						"stmovepath": "3호선 동대입구 방면",
-						"edmovepath": "4호선 명동 방면",
-						"imgpath": "http://hc.kric.go.kr/hc/ext/images/visual/handicapped/mvPath/S1/S1_3_0563_4_3.png",
-						"elvttpcd": {},
-						"elvtsttcd": {}
-					},
-					{
-						"mvpathmgno": 4,
-						"chtnmvtpordr": 2,
-						"mvcontdtl": "2) 대합실 방향 휠체어리프트 탑승",
-						"stmovepath": "3호선 동대입구 방면",
-						"edmovepath": "4호선 명동 방면",
-						"imgpath": "http://hc.kric.go.kr/hc/ext/images/visual/handicapped/mvPath/S1/S1_3_0563_4_3.png",
-						"elvttpcd": {},
-						"elvtsttcd": {}
-					},
-					{
-						"mvpathmgno": 4,
-						"chtnmvtpordr": 3,
-						"mvcontdtl": "3) (B2) 대합실로 이동",
-						"stmovepath": "3호선 동대입구 방면",
-						"edmovepath": "4호선 명동 방면",
-						"imgpath": "http://hc.kric.go.kr/hc/ext/images/visual/handicapped/mvPath/S1/S1_3_0563_4_3.png",
-						"elvttpcd": {},
-						"elvtsttcd": {}
-					},
-					{
-						"mvpathmgno": 4,
-						"chtnmvtpordr": 4,
-						"mvcontdtl": "4) 4호선 명동 방면 엘리베이터 탑승",
-						"stmovepath": "3호선 동대입구 방면",
-						"edmovepath": "4호선 명동 방면",
-						"imgpath": "http://hc.kric.go.kr/hc/ext/images/visual/handicapped/mvPath/S1/S1_3_0563_4_3.png",
-						"elvttpcd": {},
-						"elvtsttcd": {}
-					},
-					{
-						"mvpathmgno": 4,
-						"chtnmvtpordr": 5,
-						"mvcontdtl": "5) (B3) 4호선 명동 방면 승강장으로 이동",
-						"stmovepath": "3호선 동대입구 방면",
-						"edmovepath": "4호선 명동 방면",
-						"imgpath": "http://hc.kric.go.kr/hc/ext/images/visual/handicapped/mvPath/S1/S1_3_0563_4_3.png",
-						"elvttpcd": {},
-						"elvtsttcd": {}
-					},
-					{
-						"mvpathmgno": 4,
-						"chtnmvtpordr": 6,
-						"mvcontdtl": "6) 승차 (휠체어칸)",
-						"stmovepath": "3호선 동대입구 방면",
-						"edmovepath": "4호선 명동 방면",
-						"imgpath": "http://hc.kric.go.kr/hc/ext/images/visual/handicapped/mvPath/S1/S1_3_0563_4_3.png",
-						"elvttpcd": {},
-						"elvtsttcd": {}
-					}
-				]
-			}
-
-		})
-	}
-	catch (e) {
-		console.error(e);
-		return res.status(500).json({
-			error: e,
-			errorString: e.toString(),
-		})
-	}
-})
-
-router.get('/platformDis/stinCd/:stinCd', async (req, res) => {
-	try {
-
-	}
-	catch (e) {
-		console.error(e);
-		return res.status(500).json({
-			error: e,
-			errorString: e.toString(),
-		})
-	}
-})
-
-router.get('/wheelchairPlace/stinCd', async (req, res) => {
-	try {
-
-	}
-	catch (e) {
-		console.error(e);
-		return res.status(500).json({
-			error: e,
-			errorString: e.toString(),
-		})
-	}
-})
-
-router.get('/liftRoute/:stCd', async (req, res) => {
-
-})
+});
 
 module.exports = router;

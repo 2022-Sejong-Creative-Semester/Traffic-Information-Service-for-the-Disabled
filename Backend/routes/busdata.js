@@ -2,18 +2,6 @@
 const request = require('request');
 const convert = require('xml-js');
 const serviceKey = require('../Key/serviceKey.json');
-//const gpsdata = require('../routes/GPS.json');
-//request 사용
-//GET 형식이므로 method 사용 X
-function getTraffic(callback) {
-
-	const url = "http://ws.bus.go.kr/api/rest/buspos/getBusPosByRouteSt?serviceKey=" + serviceKey.serviceKey + "&busRouteId=100100118&startOrd=1&endOrd=13"
-
-	return request({ url: url }, (err, response, body) => {
-		console.log(body);
-		callback(body);
-	})
-}
 
 function getStation(stNm, callback) {
 	try {
@@ -108,6 +96,21 @@ function getStationInfo(arsId, callback) {
 					const nxtStn = stationinfo.elements[i].elements[22].elements[0].text;
 					const arrmsg1 = stationinfo.elements[i].elements[1].elements[0].text;
 
+					let min = "";
+					let sec = "";
+
+					if (arrmsg1 != "운행종료") {
+						//min, sec
+						//min
+						//sec
+						const msgSplit = arrmsg1.split("분");
+						min = msgSplit[0];
+						sec = msgSplit[1].split("초")[0];
+					}
+
+					//console.log(min);
+					//console.log(sec);
+					
 					busInfo.push({
 						busrouteid: busrouteid,
 						busrouteAbrv: busrouteAbrv,
@@ -116,6 +119,8 @@ function getStationInfo(arsId, callback) {
 						congestion: congestion,
 						nxtStn: nxtStn,
 						arrmsg1: arrmsg1,
+						min: min,
+						sec: sec,
 					})
 				}
 
@@ -124,8 +129,6 @@ function getStationInfo(arsId, callback) {
 				callback(busInfo);
 			}
 			//callback(stationinfo);
-
-
 
 		});
 	}
@@ -138,29 +141,6 @@ function getStationInfo(arsId, callback) {
 	}
 
 }
-
-
-router.get('/traffic', async (req, res) => {
-	await getTraffic();
-
-	return res.json({
-		text: "why"
-	})
-})
-
-/*
-router.get('/station', async (req, res) => {
-
-	
-	const stNm = req.params.stNm;
-	console.log(stNm);
-	await getStation("세종대", station => {
-		//console.log(station);
-		return res.json(station);
-	})
-	
-})
-*/
 
 router.get('/stNm/:stNm', async (req, res) => {
 
@@ -189,19 +169,6 @@ router.get('/stNm/:stNm', async (req, res) => {
 
 })
 
-
-/*
-router.get('/stationInfo', async (req, res) => {
-
-	//const stNm = req.params.stNm;
-	console.log("stationInfo");
-	await getStationInfo('05251', station => {
-		//console.log(station);
-		return res.json(station);
-	})
-})
-*/
-
 router.get('/arsId/:arsId', async (req, res) => {
 
 	console.log('arsId');
@@ -229,20 +196,5 @@ router.get('/arsId/:arsId', async (req, res) => {
 	};
 
 })
-
-/*
-router.get('/GPS',async (req,res)=>{
-	try{
-		return res.json(gpsdata);
-	}
-	catch(e){
-		console.error(e);
-		return res.status(500).json({
-			error: e,
-			errorString: e.toString(),
-		});
-	}
-})
-*/
 
 module.exports = router;
