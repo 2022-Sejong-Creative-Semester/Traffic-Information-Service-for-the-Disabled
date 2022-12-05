@@ -53,7 +53,7 @@ function getSubwayStationName(stNm, callback){
 function getSubwayStationInfo(stCd, stNm, callback) {
 	try {
 
-		let sql = "Select * FROM test WHERE StCd = ?;";	//VM용
+		let sql = "Select * FROM test WHERE StCd = ? and StNm = ?;";	//VM용
 		//let sql = "Select *  FROM stationinfotest WHERE StCd = ? and StNm = ?;";
 
 		connection.query(sql, [stCd, stNm], function (err, results, fields) {
