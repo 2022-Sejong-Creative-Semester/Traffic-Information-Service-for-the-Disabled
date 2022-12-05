@@ -85,38 +85,34 @@ function getStationInfo(arsId, callback) {
 			else {
 				const buslength = stationinfo.elements.length;
 
+				
+
 				let busInfo = [];
 
 				for (let i = 0; i < buslength; i++) {
-					const busrouteid = stationinfo.elements[i].elements[5].elements[0].text;
-					const busrouteAbrv = stationinfo.elements[i].elements[4].elements[0].text;
-					const bustype = stationinfo.elements[i].elements[6].elements[0].text;
+					console.log(stationinfo.elements[i]);
 					const adirection = stationinfo.elements[i].elements[0].elements[0].text;
-					const congestion = stationinfo.elements[i].elements[9].elements[0].text;
-					const nxtStn = stationinfo.elements[i].elements[22].elements[0].text;
 					const arrmsg1 = stationinfo.elements[i].elements[1].elements[0].text;
+					const busrouteAbrv = stationinfo.elements[i].elements[4].elements[0].text;
+					const busrouteid = stationinfo.elements[i].elements[5].elements[0].text;
+					const bustype = stationinfo.elements[i].elements[6].elements[0].text;
+					const nxtStn = stationinfo.elements[i].elements[22].elements[0].text;
+					
 
 					let min = "";
 					let sec = "";
 
 					if (arrmsg1 != "운행종료") {
-						//min, sec
-						//min
-						//sec
 						const msgSplit = arrmsg1.split("분");
 						min = msgSplit[0];
 						sec = msgSplit[1].split("초")[0];
 					}
-
-					//console.log(min);
-					//console.log(sec);
 					
 					busInfo.push({
 						busrouteid: busrouteid,
 						busrouteAbrv: busrouteAbrv,
 						bustype: bustype,
 						adirection: adirection,
-						congestion: congestion,
 						nxtStn: nxtStn,
 						arrmsg1: arrmsg1,
 						min: min,
