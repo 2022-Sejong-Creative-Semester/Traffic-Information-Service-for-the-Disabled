@@ -7,9 +7,9 @@ import MenuExplan from "./MenuExplan"
 const StyleMenuBar = styled.div`
 display:flex;
 justify-content: space-between;
-width: 100%;
+width: 1920px;
 padding-top:5vw;
-height: auto;
+height: 633px;
 `
 
 

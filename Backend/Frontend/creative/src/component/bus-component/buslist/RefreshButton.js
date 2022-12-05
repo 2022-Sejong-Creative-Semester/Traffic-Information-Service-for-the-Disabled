@@ -13,6 +13,9 @@ background-color:transparent;
 img{
     width:100%;
 }
+:hover{
+    cursor: pointer;
+}
 `
 
 

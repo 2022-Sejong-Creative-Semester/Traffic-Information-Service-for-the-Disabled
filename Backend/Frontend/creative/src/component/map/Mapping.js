@@ -31,9 +31,9 @@ const Mapping = () => {
                 clickable: true,
                 image: markerImage
             })
-            window.kakao.maps.event.addListener(marker, 'click', () => {
+            /*window.kakao.maps.event.addListener(marker, 'click', () => {
                 submitStationId(element.arsId)
-            })
+            })*/
             marker.setMap(map)
         });
     }

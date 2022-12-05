@@ -8,7 +8,7 @@ import { api } from "../../auth/Api.js";
 
 const StyledForm = styled.form`
     display:flex;
-    width: 735px;
+    width: 727px;
     height: 98px;
     border: 4px solid #9255F5
 `

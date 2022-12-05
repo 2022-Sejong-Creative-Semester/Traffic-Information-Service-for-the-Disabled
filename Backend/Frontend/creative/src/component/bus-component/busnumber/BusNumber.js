@@ -11,6 +11,7 @@ height:50px;
 width:90%;
 height:auto;
 font-size:30px;
+font-family: 'Pretendard-Regular';
 padding:0;
 p{
     font-weight:bold;
@@ -23,7 +24,6 @@ const BusNumber = (props) => {
     return (
         <StyledBusNumber>
             <p>{props.text}{props.count}</p>
-
             {busCheck && <RefreshButton />}
         </StyledBusNumber>
     )

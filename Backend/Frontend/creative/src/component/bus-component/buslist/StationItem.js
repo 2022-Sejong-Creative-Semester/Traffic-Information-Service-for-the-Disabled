@@ -44,7 +44,7 @@ const StationItem = (props) => {
 
     return (
         <StyledStationItem color={color} onClick={ClickClass}>
-            < p className="Name" > {stNm}</p >
+            <p className="Name" > {stNm}</p >
             <p className="id">{arsId}</p>
         </StyledStationItem >
     )
@@ -53,26 +53,28 @@ const StationItem = (props) => {
 
 const StyledStationItem = styled.li`
 display:flex;
-justify-content:space-around;  
+justify-content:space-between;  
 width:100%;
 list-style:none;
 border-bottom: 1px solid #D2D2D2;
-background-color:${props => (props.color ? "white" : "#CDD029")};
-
+background-color:${props => (props.color ? "#FFFFFF" : "#CDD029")};
+font-family: 'Pretendard-Regular';
 :hover{
     cursor: pointer;
 }
 
 .Name{
+    padding-left:20px;
     font-family: 'Pretendard';
     font-style: normal;
     font-weight: 600;
     font-size: 40px;
     line-height: 60px;
-    color:${props => (props.color ? "black" : "white")};
+    color:${props => (props.color ? "#000000" : "#FFFFFF")};
 }
 
 .id{
+    padding-right:20px;
     font-family: 'Pretendard';
     font-style: normal;
     font-weight: 600;

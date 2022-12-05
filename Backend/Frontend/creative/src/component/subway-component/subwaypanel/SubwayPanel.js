@@ -1,48 +1,33 @@
 import styled from "styled-components";
-import { useSelector } from "react-redux";
 
-const StyledPanel = styled.div`
+
+const StyledSubwayPanel = styled.div`
 display:flex;
 flex-direction:column;
 align-items:center;
-width: 729px;
-height: 821px;
-background-color:white;
-border: 4px solid #9255F5;
-.name{
-    display:flex;
-    justify-content:center;
-    width:80%;
-    height:auto;
-    font-weight: 600;
+text-align:center;
+width: 348px;
+height: 795x;
+margin-right:30px;
+font-family: 'GmarketSansMedium';
+background: linear-gradient(270deg, #7C34F3 -44.25%, rgba(146, 85, 245, 0) 222.13%);
+.first{
     font-size: 50px;
-    border-bottom:2px solid;
+    color: #FFFFFF;
 }
-.info{
-    margin-left:50px;
-    width:100%;
-    display:flex;
-    flex-direction:column;
-    align-items:start;
-    font-weight: 600;
+.second{
     font-size: 30px;
+    color: #FFFFFF;
 }
 `
 
+const SubwayPanel = (props) => {
 
-const SubwayPanel = () => {
-    const subway = useSelector(state => state.subway.subwayInfo)
     return (
-        <StyledPanel>
-            <div className="name">
-                <p>{subway.stinNm}</p>
-            </div>
-            <div className="info">
-                <p>{subway.lonmAdr}</p>
-                <p>{subway.roadNmAdr}</p>
-            </div>
-        </StyledPanel>
+        <StyledSubwayPanel>
+            <p className="first">{props.text}</p>
+        </StyledSubwayPanel>
     )
 }
 
-export default SubwayPanel;
+export default SubwayPanel

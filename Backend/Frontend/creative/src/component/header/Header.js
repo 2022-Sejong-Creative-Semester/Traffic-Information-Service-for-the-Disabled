@@ -13,8 +13,8 @@ font-weight: 700;
 font-size: 60px;
 background-color:#FFFFFF;
 border-bottom: 2px solid #EBEBEB;
-width:95%;
-height:100px;
+width:1728px;
+height:148px;
 a{  
     color:#000000;
     text-decoration:none;

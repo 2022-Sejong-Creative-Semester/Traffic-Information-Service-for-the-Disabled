@@ -5,7 +5,8 @@ const SubwaySlice = createSlice({
     initialState: {
         subway: [],
         subwayCheck: false,
-        subwayInfo: {}
+        subwayInfo: {},
+        currentSubway: ""
     },
     reducers: {
         addSubwayInfo(state, action) {
@@ -19,6 +20,9 @@ const SubwaySlice = createSlice({
             state.subway = [];
             state.subwayCheck = false;
             state.subwayInfo = {};
+        },
+        clickSubway(state, action) {
+            state.currentSubway = action.payload;
         }
     }
 })

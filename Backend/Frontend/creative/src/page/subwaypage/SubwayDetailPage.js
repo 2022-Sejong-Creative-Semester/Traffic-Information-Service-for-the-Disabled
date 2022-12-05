@@ -1,7 +1,7 @@
 import Mapping from "../../component/map/Mapping.js"
 import classes from "./SubwayDetailPage.module.css"
 import SubwayBar from "../../component/subway-component/subwaymenubar/SubwayBar.js"
-import SubwayPanel from "../../component/subway-component/subwaypanel/SubwayPanel.js"
+import SubwayDetail from "../../component/subway-component/subwaydetail/SubwayDetail.js"
 import { useParams } from "react-router-dom"
 import { useEffect } from "react"
 import { api } from "../../component/auth/Api.js"
@@ -22,7 +22,7 @@ const SubwayDetailPage = () => {
         <div className={classes.subwaypage}>
             <div>
                 <div className={classes.main}>
-                    <SubwayPanel />
+                    <SubwayDetail />
                     <div className={classes.subwaymeubar}>
                         <SubwayBar />
                         <Mapping />

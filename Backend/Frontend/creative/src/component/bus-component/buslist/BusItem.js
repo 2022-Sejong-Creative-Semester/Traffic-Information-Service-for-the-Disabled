@@ -2,18 +2,19 @@ import styled from "styled-components";
 
 const StyledBusItem = styled.li`
 display:flex;
-justify-content:space-around;
+justify-content:space-between;
 align-items:center;
-width:700px;
+width:100%;
 list-style:none;
 border-bottom: 1px solid #D2D2D2;
+font-family: 'Pretendard-Regular';
 :hover{
     cursor: pointer;
 }
 a{  
-    width:700px;
+    width:100%;
     display:flex;
-    justify-content:space-around;
+    justify-content:space-between;
     align-items:center;
     color:black;
     text-decoration:none;
@@ -23,6 +24,7 @@ div{
     align-items:center;
 }
 .Name{
+    padding-left:20px;
     font-family: 'Pretendard';
     font-style: normal;
     font-weight: 600;
@@ -37,6 +39,7 @@ div{
     line-height: 29px;
 }
 .id{
+    padding-right:20px;
     font-family: 'Pretendard';
     font-style: normal;
     font-weight: 600;
@@ -48,10 +51,10 @@ div{
 
 const BusItem = (props) => {
     const { busrouteid, busrouteAbrv, adirection, arrmsg1 } = props.items;
-    console.log(busrouteid)
+    console.log(busrouteid);
     return (
         <StyledBusItem>
-            <a href={`https://map.naver.com/v5/search/${busrouteAbrv}/bus-route/${busrouteid}`} target="_blank">
+            <a href={`https://map.naver.com/v5/search/${busrouteAbrv}번/bus-route/${busrouteid}?c=0,0`} target="_blank">
                 <div>
                     <p className="Name">{busrouteAbrv}</p>
                     <p className="direction">{adirection}방면</p>
