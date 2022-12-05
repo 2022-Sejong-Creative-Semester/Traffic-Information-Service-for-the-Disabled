@@ -20,8 +20,8 @@ let connection = mysql.createConnection(conn);  // DB Connect
 function getSubwayStationName(stNm, callback){
 	try {
 
-		let sql = "Select *  FROM test WHERE StNm like ?; ";		//VM용
-		//let sql = "Select *  FROM stationinfotest WHERE StNm like ?; ";
+		let sql = "Select *  FROM test WHERE StNm like ?; ";
+
 		let NameList = [];
 		connection.query(sql, ["%"+stNm+"%"], function (err, results, fields) {
 			if (err) {
@@ -53,8 +53,8 @@ function getSubwayStationName(stNm, callback){
 function getSubwayStationInfo(stCd, stNm, callback) {
 	try {
 
-		let sql = "Select * FROM test WHERE StCd = ? and StNm = ?;";	//VM용
-		//let sql = "Select *  FROM stationinfotest WHERE StCd = ? and StNm = ?;";
+		let sql = "Select * FROM test WHERE StCd = ? and StNm = ?;";
+		
 
 		connection.query(sql, [stCd, stNm], function (err, results, fields) {
 			if (err) {

@@ -29,6 +29,7 @@ function getStation(stNm, callback) {
 				let stationRes = [];
 
 				for (let i = 0; i < stationlength; i++) {
+					//arsId가 0인 경우 처리
 					const arsId = stationinfo.elements[i].elements[0].elements[0].text;
 					const stId = stationinfo.elements[i].elements[3].elements[0].text;
 					const stNm = stationinfo.elements[i].elements[4].elements[0].text;
@@ -76,7 +77,7 @@ function getStationInfo(arsId, callback) {
 			const parseJson = convert.xml2json(body);
 			const stationinfo = JSON.parse(parseJson).elements[0].elements[2];
 
-			console.log(stationinfo);
+			//console.log(stationinfo);
 
 			if (stationinfo.elements == null) {
 				callback(0);
@@ -90,7 +91,7 @@ function getStationInfo(arsId, callback) {
 				let busInfo = [];
 
 				for (let i = 0; i < buslength; i++) {
-					console.log(stationinfo.elements[i]);
+					//console.log(stationinfo.elements[i]);
 					const adirection = stationinfo.elements[i].elements[0].elements[0].text;
 					const arrmsg1 = stationinfo.elements[i].elements[1].elements[0].text;
 					const busrouteAbrv = stationinfo.elements[i].elements[4].elements[0].text;
@@ -101,13 +102,33 @@ function getStationInfo(arsId, callback) {
 					
 					let min = "";
 					let sec = "";
-					/*
-					if (arrmsg1 != "운행종료") {
-						const msgSplit = arrmsg1.split("분");
-						min = msgSplit[0];
-						sec = msgSplit[1].split("초")[0];
+
+					let subtime = arrmsg1;
+					//[첫차] or [막차] 인 경우
+					if (subtime[0] == "[") {
+						subtime = subtime.substr(6,);
 					}
-					*/
+					
+					//분 없는 경우
+					//초 없는 경우
+
+					if (subtime != "운행종료" && subtime != "곧 도착") {
+						//console.log(subtime.split("분"));
+
+						let msgSplit = [];
+						
+						if (subtime.indexOf("분") != -1) {
+							msgSplit = subtime.split("분");
+							min = msgSplit[0];
+							if (subtime.indexOf("초") != -1) {
+								sec = msgSplit[1].split("초")[0];
+							}
+						}
+						else {
+							sec = subtime.split("초")[0];
+						}
+					}
+					
 					busInfo.push({
 						busrouteid: busrouteid,
 						busrouteAbrv: busrouteAbrv,
