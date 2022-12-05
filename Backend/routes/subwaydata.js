@@ -6,7 +6,6 @@ const convert = require('xml-js');
 const SQL_info = require('../Key/SQL_info.json')
 const mysql = require('mysql');
 
-
 const conn = {
 	host: SQL_info.host,
 	port: SQL_info.port,
@@ -21,8 +20,8 @@ let connection = mysql.createConnection(conn);  // DB Connect
 function getSubwayStationName(stNm, callback){
 	try {
 
-		//let sql = "Select *  FROM test WHERE StNm like ?; ";		//VM용
-		let sql = "Select *  FROM stationinfotest WHERE StNm like ?; ";
+		let sql = "Select *  FROM test WHERE StNm like ?; ";		//VM용
+		//let sql = "Select *  FROM stationinfotest WHERE StNm like ?; ";
 		let NameList = [];
 		connection.query(sql, ["%"+stNm+"%"], function (err, results, fields) {
 			if (err) {
@@ -51,79 +50,16 @@ function getSubwayStationName(stNm, callback){
 	}
 }
 
-/*
-function getSubwayStationInfo(stCd, callback) {
-	try {
-
-		let sql = "Select *  FROM test WHERE StCd = ?;";
-
-		connection.query(sql, [stCd], function (err, results, fields) {
-			if (err) {
-				console.log(err);
-			}
-
-			console.log(results);
-
-			const url = 'https://openapi.kric.go.kr/openapi/convenientInfo/stationInfo';
-			let queryParams = '?' + encodeURI('serviceKey');
-			queryParams += '=' + serviceKey.subwayRailKey;
-			queryParams += '&' + encodeURI('format') + '=' + encodeURI('json');
-			queryParams += '&' + encodeURI('railOprIsttCd');
-			queryParams += '=' + encodeURI(results[0].RailCd);
-			queryParams += '&' + encodeURI('lnCd');
-			queryParams += '=' + encodeURI(results[0].LnCd);
-			queryParams += '&' + encodeURI('stinCd');
-			queryParams += '=' + encodeURI(results[0].StCd);
-			queryParams += '&' + encodeURI('stinNm');
-			queryParams += '=' + encodeURI(results[0].StNm);
-
-			//console.log(url + queryParams);
-
-			return request({
-				url: url + queryParams,
-				method: 'GET'
-			}, function (error, response, body) {
-
-				//console.log(body);
-
-				const stationinfo = JSON.parse(body).body[0];
-				
-				callback({
-					railCd: stationinfo.railOprIsttCd,
-					lnCd: stationinfo.lnCd,
-					stCd: stationinfo.stinCd,
-					stNm: stationinfo.stinNm,
-					roadNm: stationinfo.roadNmAdr,
-					tmX: stationinfo.stinLocLon,
-					tmY: stationinfo.stinLocLat
-				});
-			});
-
-		});
-
-	}
-	catch (e) {
-		console.error(e);
-		callback(e);
-	}
-}
-*/
-
 function getSubwayStationInfo(stCd, stNm, callback) {
 	try {
 
-		//let sql = "Select * FROM test WHERE StCd = ?;";	//VM용
-		let sql = "Select *  FROM stationinfotest WHERE StCd = ? and StNm = ?;";
+		let sql = "Select * FROM test WHERE StCd = ?;";	//VM용
+		//let sql = "Select *  FROM stationinfotest WHERE StCd = ? and StNm = ?;";
 
 		connection.query(sql, [stCd, stNm], function (err, results, fields) {
 			if (err) {
 				console.log(err);
 			}
-
-			//console.log(results);
-			
-			//console.log(results[0].RailCd);
-			
 			
 			const url = 'https://openapi.kric.go.kr/openapi/convenientInfo/stationInfo';
 			let queryParams = '?' + encodeURI('serviceKey');
@@ -137,10 +73,6 @@ function getSubwayStationInfo(stCd, stNm, callback) {
 			queryParams += '=' + encodeURI(results[0].StCd);
 			queryParams += '&' + encodeURI('stinNm');
 			queryParams += '=' + encodeURI(results[0].StNm);
-			
-
-			//console.log(url + queryParams);
-
 			
 			return request({
 				url: url + queryParams,
@@ -177,7 +109,7 @@ function getSubwayStationInfo(stCd, stNm, callback) {
 function getLiftPos(stCd, stNm, callback) {
 	try {
 
-		let sql = "Select *  FROM stationinfotest WHERE StCd = ? and StNm = ?;";
+		//let sql = "Select *  FROM stationinfotest WHERE StCd = ? and StNm = ?;";
 
 		connection.query(sql, [stCd, stNm], function (err, results, fields) {
 			if (err) {
