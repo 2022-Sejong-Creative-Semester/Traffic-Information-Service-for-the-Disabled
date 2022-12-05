@@ -98,16 +98,16 @@ function getStationInfo(arsId, callback) {
 					const bustype = stationinfo.elements[i].elements[6].elements[0].text;
 					const nxtStn = stationinfo.elements[i].elements[22].elements[0].text;
 					
-
+					
 					let min = "";
 					let sec = "";
-
+					/*
 					if (arrmsg1 != "운행종료") {
 						const msgSplit = arrmsg1.split("분");
 						min = msgSplit[0];
 						sec = msgSplit[1].split("초")[0];
 					}
-					
+					*/
 					busInfo.push({
 						busrouteid: busrouteid,
 						busrouteAbrv: busrouteAbrv,

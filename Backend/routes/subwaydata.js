@@ -106,43 +106,31 @@ function getSubwayStationInfo(stCd, stNm, callback) {
 	}
 }
 
-function getLiftPos(stCd, stNm, callback) {
+function getLiftPos(stCd, stNm, railCd, lnCd, callback) {
 	try {
 
-		//let sql = "Select *  FROM stationinfotest WHERE StCd = ? and StNm = ?;";
+		const url = 'https://openapi.kric.go.kr/openapi/vulnerableUserInfo/stationWheelchairLiftLocation';
+		let queryParams = '?' + encodeURI('serviceKey') + '=' + serviceKey.subwayRailKey;
+		queryParams += '&' + encodeURI('format') + '=' + encodeURI('json');
+		queryParams += '&' + encodeURI('railOprIsttCd') + '=' + encodeURI(railCd);
+		queryParams += '&' + encodeURI('lnCd') + '=' + encodeURI(lnCd);
+		queryParams += '&' + encodeURI('stinCd') + '=' + encodeURI(stCd);
 
-		connection.query(sql, [stCd, stNm], function (err, results, fields) {
-			if (err) {
-				console.log(err);
-			}
+		console.log(url + queryParams);
 
-			console.log(results);
-			//callback(results);
+		return request({
+			url: url + queryParams,
+			method: 'GET'
+		}, function (error, response, body) {
 
-			
-			const url = 'https://openapi.kric.go.kr/openapi/vulnerableUserInfo/stationWheelchairLiftLocation';
-			let queryParams = '?' + encodeURI('serviceKey') + '=' + serviceKey.subwayRailKey;
-			queryParams += '&' + encodeURI('format') + '=' + encodeURI('json');
-			queryParams += '&' + encodeURI('railOprIsttCd') + '=' + encodeURI(results[0].RailCd);
-			queryParams += '&' + encodeURI('lnCd') + '=' + encodeURI(results[0].LnCd);
-			queryParams += '&' + encodeURI('stinCd') + '=' + encodeURI(stCd);
+			console.log(body);
+			callback(body);
 
-			console.log(url + queryParams);
 
-			return request({
-				url: url + queryParams,
-				method: 'GET'
-			}, function (error, response, body) {
-
-				console.log(body);
-				callback(body);
-			
-				
-				//tNum:
-				//wNum:
-			});
-			
+			//tNum:
+			//wNum:
 		});
+
 	}
 	catch {
 		console.error(e);
@@ -245,10 +233,12 @@ router.get('/stNm/:stNm', async (req, res) => {
 	}
 })
 
-router.get('/stationInfo/:stinCd/:stNm', async (req, res) => {
+router.get('/stationInfo/:stCd/:stNm', async (req, res) => {
 	try {
-		stCd = req.params.stinCd;
+
+		stCd = req.params.stCd;
 		stNm = req.params.stNm;
+
 		await getSubwayStationInfo(stCd, stNm, stationinfo => {
 			//console.log(stationinfo.tmY);
 			return res.json({
@@ -267,7 +257,7 @@ router.get('/stationInfo/:stinCd/:stNm', async (req, res) => {
 
 router.get('/liftPos/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 	try {
-		stCd = req.params.stinCd;
+		stCd = req.params.stCd;
 		stNm = req.params.stNm;
 		railCd = req.params.railCd;
 		lnCd = req.params.lnCd;
