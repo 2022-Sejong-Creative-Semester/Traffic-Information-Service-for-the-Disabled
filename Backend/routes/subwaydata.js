@@ -20,8 +20,8 @@ let connection = mysql.createConnection(conn);  // DB Connect
 function getSubwayStationName(stNm, callback){
 	try {
 
-		let sql = "Select *  FROM test WHERE StNm like ?; ";		//VM용
-		//let sql = "Select *  FROM stationinfotest WHERE StNm like ?; ";
+		let sql = "Select *  FROM test WHERE StNm like ?; ";
+
 		let NameList = [];
 		connection.query(sql, ["%"+stNm+"%"], function (err, results, fields) {
 			if (err) {
@@ -53,8 +53,8 @@ function getSubwayStationName(stNm, callback){
 function getSubwayStationInfo(stCd, stNm, callback) {
 	try {
 
-		let sql = "Select * FROM test WHERE StCd = ? and StNm = ?;";	//VM용
-		//let sql = "Select *  FROM stationinfotest WHERE StCd = ? and StNm = ?;";
+		let sql = "Select * FROM test WHERE StCd = ? and StNm = ?;";
+		
 
 		connection.query(sql, [stCd, stNm], function (err, results, fields) {
 			if (err) {
@@ -123,8 +123,11 @@ function getLiftPos(stCd, stNm, railCd, lnCd, callback) {
 			method: 'GET'
 		}, function (error, response, body) {
 
-			console.log(body);
-			callback(body);
+			liftPosInfo = JSON.parse(body).body;
+
+			console.log(liftPosInfo[0]);
+
+			callback(liftPosInfo[0]);
 
 
 			//tNum:
@@ -138,25 +141,119 @@ function getLiftPos(stCd, stNm, railCd, lnCd, callback) {
 	}
 }
 
-function getLiftMove(stCd, callback) {
+function getLiftMove(stCd, stNm, railCd, lnCd, callback) {
 	try {
 
-		console.log(stNm);
+		console.log("LiftMove");
+		//console.log(stNm);
 
 		const url = 'https://openapi.kric.go.kr/openapi/vulnerableUserInfo/stationWheelchairLiftMovement';
 		let queryParams = '?' + encodeURIComponent('serviceKey');
 		queryParams += '=' + serviceKey.subwayRailKey;
 		queryParams += '&' + encodeURIComponent('format') + '=' + encodeURIComponent('json');
-		queryParams += '&' + encodeURIComponent('railOprIsttCd');
-		queryParams += '/' + encodeURIComponent('1');
-		queryParams += '/' + encodeURIComponent('5');
-		queryParams += '/' + encodeURIComponent(stNm) + '/';
+		queryParams += '&' + encodeURIComponent('railOprIsttCd') + '=' + encodeURIComponent(railCd);
+		queryParams += '&' + encodeURIComponent('lnCd') + '=' + encodeURIComponent(lnCd);
+		queryParams += '&' + encodeURIComponent('stinCd') + '=' + encodeURIComponent(stCd);
 
 		console.log(url + queryParams);
 
-		const tempurl = 'http://openapi.seoul.go.kr:8088/' + serviceKey.subwayStNmKey + '/json/SearchInfoBySubwayNameService/1/5/%EC%A2%85%EB%A1%9C3%EA%B0%80/';
+		return request({
+			url: url + queryParams,
+			method: 'GET'
+		}, function (error, response, body) {
+
+			liftMoveInfo = JSON.parse(body).body;
+			console.log(liftMoveInfo.length);
+			callback(liftMoveInfo);
+		});
+	}
+	catch (e) {
+		console.error(e);
+		callback(e);
+	}
+}
+
+function getElevatorPos(stCd, stNm, railCd, lnCd, callback) {
+	try {
+		console.log(stNm);
+
+		const url = 'https://openapi.kric.go.kr/openapi/convenientInfo/stationElevator';
+
+		let queryParams = '?' + encodeURIComponent('serviceKey');
+		queryParams += '=' + serviceKey.subwayRailKey;
+		queryParams += '&' + encodeURIComponent('format') + '=' + encodeURIComponent('json');
+		queryParams += '&' + encodeURIComponent('railOprIsttCd') + '=' + encodeURIComponent(railCd);
+		queryParams += '&' + encodeURIComponent('lnCd') + '=' + encodeURIComponent(lnCd);
+		queryParams += '&' + encodeURIComponent('stinCd') + '=' + encodeURIComponent(stCd);
+
 		console.log(url + queryParams);
-		console.log(tempurl);
+
+		return request({
+			url: url + queryParams,
+			method: 'GET'
+		}, function (error, response, body) {
+			ElevatorPosInfo = JSON.parse(body).body;
+			callback(ElevatorPosInfo);
+		});
+	}
+	catch (e) {
+		console.error(e);
+		callback(e);
+	}
+}
+
+
+function getElevatorMove(stCd, stNm, railCd, lnCd, callback) {
+	try {
+
+		console.log(stNm);
+		
+		const url = 'https://openapi.kric.go.kr/openapi/trafficWeekInfo/stinElevatorMovement';
+		let queryParams = '?' + encodeURIComponent('serviceKey');
+		queryParams += '=' + serviceKey.subwayRailKey;
+		queryParams += '&' + encodeURIComponent('format') + '=' + encodeURIComponent('json');
+		queryParams += '&' + encodeURIComponent('railOprIsttCd') + '=' + encodeURIComponent(railCd);
+		queryParams += '&' + encodeURIComponent('lnCd') + '=' + encodeURIComponent(lnCd);
+		queryParams += '&' + encodeURIComponent('stinCd') + '=' + encodeURIComponent(stCd);
+
+		console.log(url + queryParams);
+
+		return request({
+			url: url + queryParams,
+			method: 'GET'
+		}, function (error, response, body) {
+			JSON.parse(body).body;
+			callback(JSON.parse(body).body);
+		});
+	}
+	catch (e) {
+		console.error(e);
+		callback(e);
+	}
+}
+
+
+function getTransfer(stCd, stNm, railCd, lnCd, callback) {
+	try {
+
+		console.log(stNm);
+
+		//환승역 검색을 통해서 찾아야함
+		//환승역 여러 개인 경우 선택할지 아니면 다 보여줄 지
+
+		const url = 'https://openapi.kric.go.kr/openapi/vulnerableUserInfo/transferMovement';
+		let queryParams = '?' + encodeURIComponent('serviceKey');
+		queryParams += '=' + serviceKey.subwayRailKey;
+		queryParams += '&' + encodeURIComponent('format') + '=' + encodeURIComponent('json');
+		queryParams += '&' + encodeURIComponent('railOprIsttCd') + '=' + encodeURIComponent(railCd);
+		queryParams += '&' + encodeURIComponent('lnCd') + '=' + encodeURIComponent(lnCd);
+		queryParams += '&' + encodeURIComponent('stinCd') + '=' + encodeURIComponent(stCd);
+		queryParams += '&' + encodeURIComponent('prevStinCd') + '=' + encodeURIComponent(stCd);
+		queryParams += '&' + encodeURIComponent('chthTgtLn') + '=' + encodeURIComponent(stCd);
+		queryParams += '&' + encodeURIComponent('chtnNextStinCd') + '=' + encodeURIComponent(stCd);
+
+		console.log(url + queryParams);
+
 		return request({
 			url: url + queryParams,
 			method: 'GET'
@@ -171,7 +268,7 @@ function getLiftMove(stCd, callback) {
 	}
 }
 
-function getLiftMove(stCd, callback) {
+function getConvenience(stCd, stNm, railCd, lnCd, callback) {
 	try {
 
 		console.log(stNm);
@@ -180,16 +277,12 @@ function getLiftMove(stCd, callback) {
 		let queryParams = '?' + encodeURIComponent('serviceKey');
 		queryParams += '=' + serviceKey.subwayRailKey;
 		queryParams += '&' + encodeURIComponent('format') + '=' + encodeURIComponent('json');
-		queryParams += '&' + encodeURIComponent('railOprIsttCd');
-		queryParams += '/' + encodeURIComponent('1');
-		queryParams += '/' + encodeURIComponent('5');
-		queryParams += '/' + encodeURIComponent(stNm) + '/';
+		queryParams += '&' + encodeURIComponent('railOprIsttCd') + '=' + encodeURIComponent(railCd);
+		queryParams += '&' + encodeURIComponent('lnCd') + '=' + encodeURIComponent(lnCd);
+		queryParams += '&' + encodeURIComponent('stinCd') + '=' + encodeURIComponent(stCd);
 
 		console.log(url + queryParams);
 
-		const tempurl = 'http://openapi.seoul.go.kr:8088/' + serviceKey.subwayStNmKey + '/json/SearchInfoBySubwayNameService/1/5/%EC%A2%85%EB%A1%9C3%EA%B0%80/';
-		console.log(url + queryParams);
-		console.log(tempurl);
 		return request({
 			url: url + queryParams,
 			method: 'GET'
@@ -262,11 +355,22 @@ router.get('/liftPos/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 		railCd = req.params.railCd;
 		lnCd = req.params.lnCd;
 
-		await getLiftPos(stCd, stNm, railCd, lnCd, callback => {
-			console.log(callback);
+		await getLiftPos(stCd, stNm, railCd, lnCd, liftPosInfo => {
+			//console.log(callback);
 
 			return res.json({
-				callback
+				"railOprIsttCd": liftPosInfo.railOprIsttCd,
+				"lnCd": liftPosInfo.lnCd,
+				"stinCd": liftPosInfo.stinCd,
+				"exitNo": liftPosInfo.exitNo,
+				"dtlLoc": liftPosInfo.dtlLoc,
+				"grndDvNmFr": liftPosInfo.grndDvNmFr,
+				"runStinFlorFr": liftPosInfo.runStinFlorFr,
+				"grndDvNmTo": liftPosInfo.grndDvNmTo,
+				"runStinFlorTo": liftPosInfo.runStinFlorTo,
+				"len": liftPosInfo.len,
+				"wd": liftPosInfo.wd,
+				"bndWgt": liftPosInfo.bndWgt
 			});
 		})
 
@@ -284,16 +388,14 @@ router.get('/liftPos/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 router.get('/liftMove/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 	console.log("liftMove");
 	try {
-		stCd = req.params.stinCd;
+		stCd = req.params.stCd;
 		stNm = req.params.stNm;
 		railCd = req.params.railCd;
 		lnCd = req.params.lnCd;
 
 		await getLiftMove(stCd, stNm, railCd, lnCd, callback => {
-			console.log(callback);
-			return res.json({
-				callback
-			})
+			//console.log(callback);
+			return res.json(callback);
 		});
 	}
 	catch (e) {
@@ -307,16 +409,14 @@ router.get('/liftMove/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 
 router.get('/ElevatorPos/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 	try {
-		stCd = req.params.stinCd;
+		stCd = req.params.stCd;
 		stNm = req.params.stNm;
 		railCd = req.params.railCd;
 		lnCd = req.params.lnCd;
 
 		await getElevatorPos(stCd, stNm, railCd, lnCd, callback => {
 			console.log(callback);
-			return res.json({
-				callback
-			})
+			return res.json(callback)
 		});
 	}
 	catch (e) {
@@ -330,7 +430,7 @@ router.get('/ElevatorPos/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 
 router.get('/ElevatorMove/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 	try {
-		stCd = req.params.stinCd;
+		stCd = req.params.stCd;
 		stNm = req.params.stNm;
 		railCd = req.params.railCd;
 		lnCd = req.params.lnCd;
@@ -354,7 +454,7 @@ router.get('/ElevatorMove/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 
 router.get('/transferMove/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 	try {
-		stCd = req.params.stinCd;
+		stCd = req.params.stCd;
 		stNm = req.params.stNm;
 		railCd = req.params.railCd;
 		lnCd = req.params.lnCd;
@@ -376,9 +476,9 @@ router.get('/transferMove/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 });
 
 
-router.get('/image/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
+router.get('/convenience/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 	try {
-		stCd = req.params.stinCd;
+		stCd = req.params.stCd;
 		stNm = req.params.stNm;
 		railCd = req.params.railCd;
 		lnCd = req.params.lnCd;
@@ -396,7 +496,7 @@ router.get('/image/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 	}
 });
 
-router.get('/nevigatoin', async (req, res) => {
+router.get('/nevigation', async (req, res) => {
 	try {
 		return res.json({
 
