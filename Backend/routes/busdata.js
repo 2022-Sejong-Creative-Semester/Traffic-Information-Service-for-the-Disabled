@@ -103,23 +103,16 @@ function getStationInfo(arsId, callback) {
 					let sec = "";
 
 					if (arrmsg1 != "운행종료") {
-						//min, sec
-						//min
-						//sec
 						const msgSplit = arrmsg1.split("분");
 						min = msgSplit[0];
 						sec = msgSplit[1].split("초")[0];
 					}
-
-					//console.log(min);
-					//console.log(sec);
 					
 					busInfo.push({
 						busrouteid: busrouteid,
 						busrouteAbrv: busrouteAbrv,
 						bustype: bustype,
 						adirection: adirection,
-						congestion: congestion,
 						nxtStn: nxtStn,
 						arrmsg1: arrmsg1,
 						min: min,
