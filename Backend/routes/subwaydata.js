@@ -54,7 +54,6 @@ function getSubwayStationInfo(stCd, stNm, callback) {
 	try {
 
 		let sql = "Select * FROM stationinfotest WHERE StCd = ? and StNm = ?;";
-		
 
 		connection.query(sql, [stCd, stNm], function (err, results, fields) {
 			if (err) {
