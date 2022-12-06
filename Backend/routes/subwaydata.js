@@ -20,7 +20,7 @@ let connection = mysql.createConnection(conn);  // DB Connect
 function getSubwayStationName(stNm, callback){
 	try {
 
-		let sql = "Select *  FROM test WHERE StNm like ?; ";
+		let sql = "Select *  FROM stationinfotest WHERE StNm like ?; ";
 
 		let NameList = [];
 		connection.query(sql, ["%"+stNm+"%"], function (err, results, fields) {
@@ -53,14 +53,15 @@ function getSubwayStationName(stNm, callback){
 function getSubwayStationInfo(stCd, stNm, callback) {
 	try {
 
-		let sql = "Select * FROM test WHERE StCd = ? and StNm = ?;";
-		
+		let sql = "Select * FROM stationinfotest WHERE StCd = ? and StNm = ?;";
 
 		connection.query(sql, [stCd, stNm], function (err, results, fields) {
 			if (err) {
 				console.log(err);
 			}
-			
+
+			console.log(results);
+
 			const url = 'https://openapi.kric.go.kr/openapi/convenientInfo/stationInfo';
 			let queryParams = '?' + encodeURI('serviceKey');
 			queryParams += '=' + serviceKey.subwayRailKey;
