@@ -234,35 +234,59 @@ function getElevatorMove(stCd, stNm, railCd, lnCd, callback) {
 }
 
 
-function getTransfer(stCd, stNm, railCd, lnCd, callback) {
+function getTransferMove(stCd, stNm, railCd, lnCd, callback) {
 	try {
 
-		console.log(stNm);
+		let sql = "Select * FROM stationinfotest WHERE StNm = ?;";
+		let TransferInfo = [];
 
-		//환승역 검색을 통해서 찾아야함
-		//환승역 여러 개인 경우 선택할지 아니면 다 보여줄 지
+		connection.query(sql, [stNm], function (err, results, fields) {
 
-		const url = 'https://openapi.kric.go.kr/openapi/vulnerableUserInfo/transferMovement';
-		let queryParams = '?' + encodeURIComponent('serviceKey');
-		queryParams += '=' + serviceKey.subwayRailKey;
-		queryParams += '&' + encodeURIComponent('format') + '=' + encodeURIComponent('json');
-		queryParams += '&' + encodeURIComponent('railOprIsttCd') + '=' + encodeURIComponent(railCd);
-		queryParams += '&' + encodeURIComponent('lnCd') + '=' + encodeURIComponent(lnCd);
-		queryParams += '&' + encodeURIComponent('stinCd') + '=' + encodeURIComponent(stCd);
-		queryParams += '&' + encodeURIComponent('prevStinCd') + '=' + encodeURIComponent(stCd);
-		queryParams += '&' + encodeURIComponent('chthTgtLn') + '=' + encodeURIComponent(stCd);
-		queryParams += '&' + encodeURIComponent('chtnNextStinCd') + '=' + encodeURIComponent(stCd);
+			if (err) {
+				console.log(err);
+			}
 
-		console.log(url + queryParams);
+			let prevStinCd = [];
+			let chthTgtLn = [];
+			let chtnNextStinCd = [];
 
-		return request({
-			url: url + queryParams,
-			method: 'GET'
-		}, function (error, response, body) {
-			console.log(body);
-			callback(body);
+			for (let i = 0; i < results.length; i++) {
+				if (results[i].StCd != stCd) {
+					prevStinCd.push(parseInt(results[i].StCd) + 1);
+					prevStinCd.push(parseInt(results[i].StCd) - 1);
+					chthTgtLn.push(results[i].LnCd);
+					chthTgtLn.push(results[i].LnCd);
+					chtnNextStinCd.push(parseInt(results[i].StCd) - 1);
+					chtnNextStinCd.push(parseInt(results[i].StCd) + 1);
+				}
+			}
+
+			for (let i = 0; i < prevStinCd.length; i++) {
+				const url = 'https://openapi.kric.go.kr/openapi/vulnerableUserInfo/transferMovement';
+				let queryParams = '?' + encodeURIComponent('serviceKey');
+				queryParams += '=' + serviceKey.subwayRailKey;
+				queryParams += '&' + encodeURIComponent('format') + '=' + encodeURIComponent('json');
+				queryParams += '&' + encodeURIComponent('railOprIsttCd') + '=' + encodeURIComponent(railCd);
+				queryParams += '&' + encodeURIComponent('lnCd') + '=' + encodeURIComponent(lnCd);
+				queryParams += '&' + encodeURIComponent('stinCd') + '=' + encodeURIComponent(stCd);
+				queryParams += '&' + encodeURIComponent('prevStinCd') + '=' + encodeURIComponent(prevStinCd[i]);
+				queryParams += '&' + encodeURIComponent('chthTgtLn') + '=' + encodeURIComponent(chthTgtLn[i]);
+				queryParams += '&' + encodeURIComponent('chtnNextStinCd') + '=' + encodeURIComponent(chtnNextStinCd[i]);
+
+				console.log(url + queryParams);
+				return request({
+					url: url + queryParams,
+					method: 'GET'
+				}, function (error, response, body) {
+					TransferInfo.push(body);
+					callback(TransferInfo);
+				});
+			}
+
 		});
+		
 	}
+
 	catch (e) {
 		console.error(e);
 		callback(e);
@@ -455,17 +479,17 @@ router.get('/ElevatorMove/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 
 router.get('/transferMove/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 	try {
+
 		stCd = req.params.stCd;
 		stNm = req.params.stNm;
 		railCd = req.params.railCd;
 		lnCd = req.params.lnCd;
 
-		await getTranferMove(stCd, stNm, railCd, lnCd, callback => {
-			console.log(callback);
-			return res.json({
-				callback
-			})
+		await getTransferMove(stCd, stNm, railCd, lnCd, callback => {
+			//console.log(stationinfo);
+			return res.json(callback)
 		});
+		
 	}
 	catch (e) {
 		console.error(e);
@@ -484,9 +508,11 @@ router.get('/convenience/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 		railCd = req.params.railCd;
 		lnCd = req.params.lnCd;
 
-		return res.json({
+		await getTransfer(stCd, stNm, railCd, lnCd, callback => {
+			return res.json(callback);
+		});
 
-		})
+		
 	}
 	catch (e) {
 		console.error(e);
