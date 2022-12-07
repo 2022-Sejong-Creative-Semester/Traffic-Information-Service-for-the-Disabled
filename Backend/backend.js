@@ -3,8 +3,6 @@ const app = express();
 const port = 3005;
 const path = require('path');
 const cors = require('cors');
-const mysql = require('mysql');
-const SQL_info = require('./Key/SQL_info.json')
 
 const busRouter = require('./routes/busdata');
 const subwayRouter = require('./routes/subwaydata');
@@ -34,22 +32,21 @@ connection.query(sql, function (err, results, fields) {
 */
 
 let corsOptions = {
-    origin: ['http://localhost:3000','http://172.30.1.35:5000', 'http://game.jerrykang.com', 'http://admin.jerrykang.com', 'http://localhost:5000'],
+    origin: ['http://localhost:3000', 'http://172.30.1.35:5000', 'http://game.jerrykang.com', 'http://admin.jerrykang.com', 'http://localhost:5000'],
     credentials: true
 }
 
 app.use(cors(corsOptions));
-
-//app.use(express.static(path.join(__dirname, './Frontend/creative/build')))
+app.use(express.static(path.join(__dirname, './Frontend/creative/build')))
 
 app.use('/bus', busRouter);
 app.use('/subway', subwayRouter);
 
-/*
+
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, './Frontend/creative/build/index.html'));
 })
-*/
+
 
 app.get('/', (req, res) => {
     res.json({

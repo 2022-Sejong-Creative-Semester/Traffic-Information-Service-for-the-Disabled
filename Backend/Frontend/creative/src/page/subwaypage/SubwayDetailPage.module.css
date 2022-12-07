@@ -4,20 +4,20 @@
     width: 1920px;
 }
 
-.buspage {
+.subwaypage {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
 }
 
-.busmain {
-    display: flex;
-    margin-top: 20px;
-}
-
-.buslist {
+.subwaylist {
     display: flex;
     flex-direction: column;
     margin-right: 30px;
+}
+
+.subwaymain {
+    display: flex;
+    margin-top: 20px;
 }
