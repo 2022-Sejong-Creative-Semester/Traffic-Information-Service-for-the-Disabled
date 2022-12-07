@@ -1,21 +1,24 @@
-import MenuButton from "./MenuButton"
+import MenuBusButton from "./MenuBusButton"
+import MenuSubwayButton from "./MenuSubwayButton"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
+import MenuExplan from "./MenuExplan"
 
 const StyleMenuBar = styled.div`
 display:flex;
-flex-direction:column;
 justify-content: space-between;
-width: 800px;
-height: 535px;
+width: 1920px;
+padding-top:5vw;
+height: 633px;
 `
 
 
 const MenuBar = () => {
     return (
         <StyleMenuBar>
-            <Link to="/bus"><MenuButton name="저상버스" /></Link>
-            <Link to="/subway"><MenuButton name="지하철" /></Link>
+            <Link to="/bus"><MenuBusButton /></Link>
+            <MenuExplan />
+            <Link to="/subway"><MenuSubwayButton /></Link>
         </StyleMenuBar>
     )
 }

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import axios from "axios"
+import { api } from "../../auth/Api";
 import { useDispatch, useSelector } from "react-redux";
 import { BusActions } from "../../../store/Bus-slice";
 import { MapActions } from "../../../store/Map-slice";
@@ -19,7 +20,6 @@ const StationItem = (props) => {
 
 
     const ClickClass = () => {
-        console.log(station, arsId);
         if (station === arsId) {
             SubmitStation();
         }
@@ -31,20 +31,20 @@ const StationItem = (props) => {
     }
 
     const SubmitStation = () => {
-        axios.get(`/bus/arsId/${arsId}`, {
+        api.get(`/bus/arsId/${arsId}`, {
 
         }).then(res => {
             const { data } = res;
             dispatch(BusActions.refreshBus(arsId))
             dispatch(BusActions.addBusInfo(data))
         }).catch(error => {
-            alert(error)
+            alert("저상 버스가 없습니다.")
         })
     }
 
     return (
         <StyledStationItem color={color} onClick={ClickClass}>
-            < p className="Name" > {stNm}</p >
+            <p className="Name" > {stNm}</p >
             <p className="id">{arsId}</p>
         </StyledStationItem >
     )
@@ -53,26 +53,28 @@ const StationItem = (props) => {
 
 const StyledStationItem = styled.li`
 display:flex;
-justify-content:space-around;  
+justify-content:space-between;  
 width:100%;
 list-style:none;
 border-bottom: 1px solid #D2D2D2;
-background-color:${props => (props.color ? "white" : "#CDD029")};
-
+background-color:${props => (props.color ? "#FFFFFF" : "#CDD029")};
+font-family: 'Pretendard-Regular';
 :hover{
     cursor: pointer;
 }
 
 .Name{
+    padding-left:20px;
     font-family: 'Pretendard';
     font-style: normal;
     font-weight: 600;
     font-size: 40px;
     line-height: 60px;
-    color:${props => (props.color ? "black" : "white")};
+    color:${props => (props.color ? "#000000" : "#FFFFFF")};
 }
 
 .id{
+    padding-right:20px;
     font-family: 'Pretendard';
     font-style: normal;
     font-weight: 600;

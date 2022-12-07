@@ -20,9 +20,6 @@ const BusSlice = createSlice({
         refreshBus(state, action) {
             state.busId = action.payload
         },
-        refreshBus(state, action) {
-            state.busId = action.payload
-        },
         addBusInfo(state, action) {
             state.buslist = action.payload
             state.stationCheck = false
@@ -30,6 +27,14 @@ const BusSlice = createSlice({
         },
         ClickStation(state, action) {
             state.currentStation = action.payload
+        },
+        initialState(state) {
+            state.buslist = [];
+            state.station = [];
+            state.busId = "";
+            state.stationCheck = false;
+            state.busCheck = false;
+            state.currentStation = "";
         }
     }
 });

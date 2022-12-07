@@ -3,26 +3,24 @@ import { useSelector, useDispatch } from 'react-redux';
 import classes from "./Mapping.module.css"
 import axios from "axios";
 import { BusActions } from "../../store/Bus-slice";
-import { MapActions } from "../../store/Map-slice";
 
 const Mapping = () => {
     const dispatch = useDispatch()
-    const stationInfo = useSelector(state => state.bus.station)
+    const marker = useSelector(state => state.map.marker)
     const position = useSelector(state => state.map.position)
     useEffect(() => {
         const container = document.getElementById("map");
-        console.log(position.tmX, position.tmY)
         const options = {
             center: new window.kakao.maps.LatLng(position.tmY, position.tmX),
             level: 3,
         };
         const map = new window.kakao.maps.Map(container, options);
-        if (Array.isArray(stationInfo))
-            mapcoordinate(stationInfo, map)
+        if (Array.isArray(marker))
+            mapcoordinate(marker, map)
     })
 
-    const mapcoordinate = (stationInfo, map) => {
-        stationInfo.forEach(element => {
+    const mapcoordinate = (marker, map) => {
+        marker.forEach(element => {
             const imageSrc = './image/busImage.png' // 마커이미지의 주소입니다    
             const imageSize = new window.kakao.maps.Size(64, 69)
             const imageOption = { offset: new window.kakao.maps.Point(27, 69) };
@@ -33,9 +31,9 @@ const Mapping = () => {
                 clickable: true,
                 image: markerImage
             })
-            window.kakao.maps.event.addListener(marker, 'click', () => {
+            /*window.kakao.maps.event.addListener(marker, 'click', () => {
                 submitStationId(element.arsId)
-            })
+            })*/
             marker.setMap(map)
         });
     }
@@ -45,11 +43,11 @@ const Mapping = () => {
 
         }).then(res => {
             const { data } = res;
+            console.log(data)
             dispatch(BusActions.refreshBus(id))
             dispatch(BusActions.addBusInfo(data))
-            dispatch(MapActions.positioning(data))
         }).catch(error => {
-            alert(error)
+            alert("저상 버스가 없습니다.")
         })
     }
 

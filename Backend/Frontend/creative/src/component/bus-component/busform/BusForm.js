@@ -2,27 +2,29 @@ import BusButton from "./BusButton";
 import BusInput from "./BusInput";
 import styled from "styled-components";
 import axios from "axios"
-import { BusActions } from "../../../store/Bus-slice";
+import { api } from "../../auth/Api";
 import { MapActions } from "../../../store/Map-slice";
+import { BusActions } from "../../../store/Bus-slice";
 import { useDispatch } from "react-redux";
 
 
 const StyledForm = styled.form`
     display:flex;
-    width: 735px;
+    width: 727px;
     height: 98px;
-    border: 4px solid #CDD029
+    border: 4px solid #CDD029;
 `
 
 
 const BusForm = () => {
     const dispatch = useDispatch();
     const SubmitBusStation = (value) => {
-
-        axios.get(`/bus/stNm/${value}`, {
+        api.get(`/bus/stNm/${value}`, {
 
         }).then(res => {
             const { data } = res;
+            dispatch(BusActions.initialState())
+            dispatch(MapActions.makerchacking(data))
             dispatch(BusActions.addStationInfo(data))
             dispatch(MapActions.positioning(data[0]))
         }).catch(error => {
@@ -39,7 +41,7 @@ const BusForm = () => {
     }
     return (
         <StyledForm onSubmit={BusStationData}>
-            <BusInput placeholder="버스정류장 이름을 입력해주세요." />
+            <BusInput />
             <BusButton />
         </StyledForm>
     )
