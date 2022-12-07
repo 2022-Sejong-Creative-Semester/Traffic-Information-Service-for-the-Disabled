@@ -8,7 +8,7 @@ const busRouter = require('./routes/busdata');
 const subwayRouter = require('./routes/subwaydata');
 
 let corsOptions = {
-    origin: ['http://localhost:3000', 'http://172.30.1.35:5000', 'http://localhost:5000'],
+    origin: ['http://localhost:3000', 'http://34.168.52.103:3000', 'http://172.30.1.35:5000', 'http://localhost:5000'],
     credentials: true
 }
 
