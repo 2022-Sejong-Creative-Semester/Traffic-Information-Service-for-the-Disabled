@@ -47,7 +47,6 @@ border: 4px solid #9255F5;
 
 
 const SubwayDetail = ({ info }) => {
-    console.log(info)
     return (
         <StyledDetail>
             <div className="name">

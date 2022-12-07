@@ -5,7 +5,7 @@ import { MapActions } from '../../store/Map-slice'
 const StyledButton = styled.button`
 width: 442.5px;
 height: 537px;
-font-size: 3vw;
+font-size: 60px;
 color: #FFFFFF;
 font-family: 'Pretendard-Regular';
 background: rgba(205, 208, 41, 0.8);

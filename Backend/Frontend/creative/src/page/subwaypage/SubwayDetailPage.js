@@ -1,5 +1,4 @@
 import Mapping from "../../component/map/Mapping.js"
-import SubwayList from "../../component/subway-component/subwaylist/SubwayList.js"
 import classes from "./SubwayDetailPage.module.css"
 import Header from "../../component/header/Header.js"
 import SubwayPanel from "../../component/subway-component/subwaypanel/SubwayPanel.js"
