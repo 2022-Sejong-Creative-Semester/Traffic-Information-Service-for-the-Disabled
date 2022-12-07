@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { useSelector } from "react-redux";
 
 const StyledSubwayNumber = styled.header`
 display:flex;

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -11,6 +10,7 @@ const SubwayItems = ({ items }) => {
     const [color, setColor] = useState(true);
     const dispatch = useDispatch()
     const currentSubway = useSelector(state => state.subway.currentSubway)
+
     useEffect(() => {
         if (currentSubway !== stCd) {
             setColor(true)
@@ -73,7 +73,7 @@ a{
     font-family: 'Pretendard';
     font-style: normal;
     font-weight: 600;
-    font-size: 24px;
+    font-size: 100%;
     width: 48px;
     height: 48px;
     background-color:#A76E00;

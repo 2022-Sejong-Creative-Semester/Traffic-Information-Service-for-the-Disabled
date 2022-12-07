@@ -1,32 +1,44 @@
 import Mapping from "../../component/map/Mapping.js"
+import SubwayList from "../../component/subway-component/subwaylist/SubwayList.js"
 import classes from "./SubwayDetailPage.module.css"
-import SubwayBar from "../../component/subway-component/subwaymenubar/SubwayBar.js"
+import Header from "../../component/header/Header.js"
+import SubwayPanel from "../../component/subway-component/subwaypanel/SubwayPanel.js"
 import SubwayDetail from "../../component/subway-component/subwaydetail/SubwayDetail.js"
-import { useParams } from "react-router-dom"
-import { useEffect } from "react"
+import SubwayBar from "../../component/subway-component/subwaymenubar/SubwayBar.js"
+import { useDispatch } from "react-redux"
+import { SubwayActions } from "../../store/Subway-slice.js"
 import { api } from "../../component/auth/Api.js"
+import { useParams } from "react-router-dom"
+import { useEffect, useState } from "react"
 
 
 const SubwayDetailPage = () => {
     const params = useParams()
+    const dispatch = useDispatch()
+    const [info, setInfo] = useState({})
     useEffect(() => {
-        const stCd = params.stCd
-        const stNm = params.stNm
-        const getDetatl = async () => {
-            await api.get(`/subway/stationInfo/${stCd}/${stNm}`)
-                .then(res => console.log(res.data))
+        const stCd = params.stCd;
+        const stNm = params.stNm;
+        const getDetail = () => {
+            api.get(`subway/stationInfo/${stCd}/${stNm}`)
+                .then(res => {
+                    const { data } = res;
+                    setInfo(data.stationinfo);
+                    dispatch(SubwayActions.saveSubway(data.stationinfo))
+                })
         }
-        getDetatl()
-    })
+        getDetail()
+    }, [])
     return (
         <div className={classes.subwaypage}>
-            <div>
-                <div className={classes.main}>
-                    <SubwayDetail />
-                    <div className={classes.subwaymeubar}>
-                        <SubwayBar />
-                        <Mapping />
+            <Header />
+            <div className={classes.main}>
+                <SubwayPanel text={["지하철", <br />, "편의시설"]} menu={<SubwayBar />} />
+                <div className={classes.subwaymain}>
+                    <div className={classes.subwaylist}>
+                        <SubwayDetail info={info} />
                     </div>
+                    <Mapping />
                 </div>
             </div>
         </div>

@@ -25,7 +25,6 @@ const Header = () => {
     const dispatch = useDispatch();
 
     const reduxReset = () => {
-        console.log("asd")
         dispatch(BusActions.initialState())
         dispatch(SubwayActions.initialState())
         dispatch(MapActions.initialization())

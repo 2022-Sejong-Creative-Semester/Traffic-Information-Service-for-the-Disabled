@@ -1,16 +1,22 @@
 import Mapping from "../../component/map/Mapping.js"
-import classes from "./SubwayTransfer.module.css"
-import SubwayBar from "../../component/subway-component/subwaymenubar/SubwayBar.js"
+import SubwayForm from "../../component/subway-component/subwayform/SubwayForm.js"
+import SubwayList from "../../component/subway-component/subwaylist/SubwayList.js"
+import classes from "./SubwayBathchair.module.css"
+import Header from "../../component/header/Header.js"
+import SubwayPanel from "../../component/subway-component/subwaypanel/SubwayPanel.js"
 
-const SubwayTransferPage = () => {
+const SubwayTransfer = () => {
     return (
         <div className={classes.subwaypage}>
-            <div>
-                <div className={classes.main}>
-                    <div className={classes.subwaymeubar}>
-                        <SubwayBar />
-                        <Mapping />
+            <Header />
+            <div className={classes.main}>
+                <SubwayPanel text={["환승", <br />, "이동경로"]} />
+                <div className={classes.subwaymain}>
+                    <div className={classes.subwaylist}>
+                        <SubwayForm />
+                        <SubwayList />
                     </div>
+                    <Mapping />
                 </div>
             </div>
         </div>
@@ -19,4 +25,4 @@ const SubwayTransferPage = () => {
 
 
 
-export default SubwayTransferPage 
+export default SubwayTransfer 

@@ -1,14 +1,23 @@
+import Mapping from "../../component/map/Mapping.js"
+import SubwayForm from "../../component/subway-component/subwayform/SubwayForm.js"
+import SubwayList from "../../component/subway-component/subwaylist/SubwayList.js"
 import classes from "./SubwayBathchair.module.css"
-import SubwayBar from "../../component/subway-component/subwaymenubar/SubwayBar.js"
-import SubwayInfo from "../../component/subway-component/subwayinfo/SubwayInfo"
+import Header from "../../component/header/Header.js"
+import SubwayPanel from "../../component/subway-component/subwaypanel/SubwayPanel.js"
 
-
-const SubwayBathChairPage = () => {
+const SubwayBathchair = () => {
     return (
-        <div className={classes.main}>
-            <SubwayBar />
-            <div>
-                <SubwayInfo />
+        <div className={classes.subwaypage}>
+            <Header />
+            <div className={classes.main}>
+                <SubwayPanel text={["휠체어 관련", <br />, "위치"]} />
+                <div className={classes.subwaymain}>
+                    <div className={classes.subwaylist}>
+                        <SubwayForm />
+                        <SubwayList />
+                    </div>
+                    <Mapping />
+                </div>
             </div>
         </div>
     )
@@ -16,4 +25,4 @@ const SubwayBathChairPage = () => {
 
 
 
-export default SubwayBathChairPage 
+export default SubwayBathchair 

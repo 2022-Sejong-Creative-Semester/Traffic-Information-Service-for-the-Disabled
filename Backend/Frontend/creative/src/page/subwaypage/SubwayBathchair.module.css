@@ -1,5 +1,23 @@
 .main {
     display: flex;
+    justify-content: start;
+    width: 1920px;
+}
+
+.subwaypage {
+    display: flex;
     flex-direction: column;
-    width: 800px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.subwaylist {
+    display: flex;
+    flex-direction: column;
+    margin-right: 30px;
+}
+
+.subwaymain {
+    display: flex;
+    margin-top: 20px;
 }

@@ -10,7 +10,7 @@ const SubwayPage = () => {
         <div className={classes.subwaypage}>
             <Header />
             <div className={classes.main}>
-                <SubwayPanel text={["지하철", <br />, "편의시설"]} />
+                <SubwayPanel key="panel" text={["지하철", <br />, "편의시설"]} menu={null} />
                 <div className={classes.subwaymain}>
                     <div className={classes.subwaylist}>
                         <SubwayForm />
