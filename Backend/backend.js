@@ -7,7 +7,7 @@ const cors = require('cors');
 const busRouter = require('./routes/busdata');
 const subwayRouter = require('./routes/subwaydata');
 
-/*
+
 const conn = {
     host: SQL_info.host,
     port: SQL_info.port,
@@ -16,9 +16,9 @@ const conn = {
     database: SQL_info.database
 };
 
-let connection = mysql.createConnection(conn); 
-connection.connect();  
-*/
+let connection = mysql.createConnection(conn);  // DB 目池记 积己
+connection.connect();   // DB 立加
+
 
 /*
 let sql = "DELETE FROM member where name = 'test';";
