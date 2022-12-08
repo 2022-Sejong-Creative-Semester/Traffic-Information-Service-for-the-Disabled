@@ -234,11 +234,12 @@ function getElevatorMove(stCd, stNm, railCd, lnCd, callback) {
 }
 
 
-function getTransferMove(stCd, stNm, railCd, lnCd, callback) {
+function getTransferList(stCd, stNm, railCd, lnCd, callback) {
 	try {
 
 		let sql = "Select * FROM stationinfotest WHERE StNm = ?;";
-		let TransferInfo = [];
+
+		let transferList = [];
 
 		connection.query(sql, [stNm], function (err, results, fields) {
 
@@ -246,43 +247,33 @@ function getTransferMove(stCd, stNm, railCd, lnCd, callback) {
 				console.log(err);
 			}
 
-			let prevStinCd = [];
-			let chthTgtLn = [];
-			let chtnNextStinCd = [];
-
-			for (let i = 0; i < results.length; i++) {
-				if (results[i].StCd != stCd) {
-					prevStinCd.push(parseInt(results[i].StCd) + 1);
-					prevStinCd.push(parseInt(results[i].StCd) - 1);
-					chthTgtLn.push(results[i].LnCd);
-					chthTgtLn.push(results[i].LnCd);
-					chtnNextStinCd.push(parseInt(results[i].StCd) - 1);
-					chtnNextStinCd.push(parseInt(results[i].StCd) + 1);
-				}
-			}
-
-			for (let i = 0; i < prevStinCd.length; i++) {
-				const url = 'https://openapi.kric.go.kr/openapi/vulnerableUserInfo/transferMovement';
-				let queryParams = '?' + encodeURIComponent('serviceKey');
-				queryParams += '=' + serviceKey.subwayRailKey;
-				queryParams += '&' + encodeURIComponent('format') + '=' + encodeURIComponent('json');
-				queryParams += '&' + encodeURIComponent('railOprIsttCd') + '=' + encodeURIComponent(railCd);
-				queryParams += '&' + encodeURIComponent('lnCd') + '=' + encodeURIComponent(lnCd);
-				queryParams += '&' + encodeURIComponent('stinCd') + '=' + encodeURIComponent(stCd);
-				queryParams += '&' + encodeURIComponent('prevStinCd') + '=' + encodeURIComponent(prevStinCd[i]);
-				queryParams += '&' + encodeURIComponent('chthTgtLn') + '=' + encodeURIComponent(chthTgtLn[i]);
-				queryParams += '&' + encodeURIComponent('chtnNextStinCd') + '=' + encodeURIComponent(chtnNextStinCd[i]);
-
-				console.log(url + queryParams);
-				return request({
-					url: url + queryParams,
-					method: 'GET'
-				}, function (error, response, body) {
-					TransferInfo.push(body);
-					callback(TransferInfo);
+			if (results.length == 1) {
+				return callback({
+					error: 404,
+					errorString: "Not Transfer Station"
 				});
 			}
 
+			for (let i = 0; i < results.length; i++) {
+				if (results[i].StCd != stCd) {
+					const sql2 = "Select * FROM stationinfotest WHERE (StCd = ? or StCd = ?) and RailCd = ?;";
+					connection.query(sql2, [parseInt(results[i].StCd) + 1, parseInt(results[i].StCd) - 1, results[i].RailCd], function (err, results2, fields) {
+						console.log(results2);
+						for (let j = 0; j < results2.length; j++) {
+							transferList.push({
+								stCd: results2[j].StCd,
+								stNm: results2[j].StNm,
+								railCd: results2[j].RailCd,
+								lnCd: results2[j].LnCd
+							})
+						}
+						callback(transferList);
+					});
+					
+				}
+			}
+
+			
 		});
 		
 	}
@@ -293,12 +284,73 @@ function getTransferMove(stCd, stNm, railCd, lnCd, callback) {
 	}
 }
 
-function getConvenience(stCd, stNm, railCd, lnCd, callback) {
+function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn , chtnNextStinCd , callback) {
 	try {
 
-		console.log(stNm);
+		let sql = "Select * FROM stationinfotest WHERE StNm = ? and LnCd = ?;";
+		let transferInfo = [];
 
-		const url = 'https://openapi.kric.go.kr/openapi/vulnerableUserInfo/stationWheelchairLiftMovement';
+		connection.query(sql, [stNm, chthTgtLn], function (err, results, fields) {
+
+			if (err) {
+				console.log(err);
+			}
+
+			let prevStinCd = "";
+
+			if (parseInt(results[0].StCd) + 1 == parseInt(chtnNextStinCd)) {
+				prevStinCd = parseInt(results[0].StCd) - 1;
+			}
+			else {
+				console.log(2);
+				prevStinCd = parseInt(results[0].StCd) + 1;
+			}
+
+			const url = 'https://openapi.kric.go.kr/openapi/vulnerableUserInfo/transferMovement';
+			let queryParams = '?' + encodeURIComponent('serviceKey');
+			queryParams += '=' + serviceKey.subwayRailKey;
+			queryParams += '&' + encodeURIComponent('format') + '=' + encodeURIComponent('json');
+			queryParams += '&' + encodeURIComponent('railOprIsttCd') + '=' + encodeURIComponent(railCd);
+			queryParams += '&' + encodeURIComponent('lnCd') + '=' + encodeURIComponent(lnCd);
+			queryParams += '&' + encodeURIComponent('stinCd') + '=' + encodeURIComponent(stCd);
+			queryParams += '&' + encodeURIComponent('prevStinCd') + '=' + encodeURIComponent(prevStinCd);
+			queryParams += '&' + encodeURIComponent('chthTgtLn') + '=' + encodeURIComponent(chthTgtLn);
+			queryParams += '&' + encodeURIComponent('chtnNextStinCd') + '=' + encodeURIComponent(chtnNextStinCd);
+
+			console.log(url + queryParams);
+
+			return request({
+				url: url + queryParams,
+				method: 'GET'
+			}, function (error, response, body) {
+				const parse = JSON.parse(body).body;
+				for (let i = 0; i < parse.length; i++) {
+					//상행선이라면
+					if ((parseInt(stCd) + 1 == parseInt(prev) && (parse[i].mvPathMgNo == 1 || parse[i].mvPathMgNo == 2))
+						|| (parseInt(stCd) - 1 == parseInt(prev) && (parse[i].mvPathMgNo == 3 || parse[i].mvPathMgNo == 4))
+					) {
+						transferInfo.push(parse[i]);
+					}
+				}
+				callback(transferInfo);
+			});
+
+		});
+
+	}
+
+	catch (e) {
+		console.error(e);
+		callback(e);
+	}
+}
+
+function getConvenience(stCd, stNm, railCd, lnCd, category, callback) {
+	try {
+
+		let conveneinceInfo = [];
+
+		const url = 'https://openapi.kric.go.kr/openapi/handicapped/stationCnvFacl';
 		let queryParams = '?' + encodeURIComponent('serviceKey');
 		queryParams += '=' + serviceKey.subwayRailKey;
 		queryParams += '&' + encodeURIComponent('format') + '=' + encodeURIComponent('json');
@@ -312,8 +364,23 @@ function getConvenience(stCd, stNm, railCd, lnCd, callback) {
 			url: url + queryParams,
 			method: 'GET'
 		}, function (error, response, body) {
-			console.log(body);
-			callback(body);
+			const parse = JSON.parse(body).body;
+
+			for (let i = 0; i < parse.length; i++) {
+				if (category == parse[i].gubun) {
+					conveneinceInfo.push(parse[i]);
+				}
+			}
+
+			//No Data
+			if (conveneinceInfo.length == 0) {
+				conveneinceInfo.push({
+					error: 404,
+					errorString: "No conveneince"
+				})
+			}
+
+			callback(conveneinceInfo);
 		});
 	}
 	catch (e) {
@@ -477,7 +544,7 @@ router.get('/ElevatorMove/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 })
 
 
-router.get('/transferMove/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
+router.get('/transferMove/transferList/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 	try {
 
 		stCd = req.params.stCd;
@@ -485,8 +552,10 @@ router.get('/transferMove/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 		railCd = req.params.railCd;
 		lnCd = req.params.lnCd;
 
-		await getTransferMove(stCd, stNm, railCd, lnCd, callback => {
-			//console.log(stationinfo);
+		await getTransferList(stCd, stNm, railCd, lnCd, callback => {
+			if (callback[0].error != null) {
+				return res.status(404).json(callback[0])
+			}
 			return res.json(callback)
 		});
 		
@@ -500,15 +569,44 @@ router.get('/transferMove/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 	}
 });
 
+router.get('/transferMove/transferInfo/:stCd/:stNm/:railCd/:lnCd/:prevStinCd/:chthTgtLn/:chtnNextStinCd', async (req, res) => {
+	try {
 
-router.get('/convenience/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
+		stCd = req.params.stCd;
+		stNm = req.params.stNm;
+		railCd = req.params.railCd;
+		lnCd = req.params.lnCd;
+		prevStinCd = req.params.prevStinCd;
+		chthTgtLn = req.params.chthTgtLn;
+		chtnNextStinCd = req.params.chtnNextStinCd;
+
+		await getTransferInfo(stCd, stNm, railCd, lnCd, prevStinCd, chthTgtLn, chtnNextStinCd, callback => {
+			
+			return res.json(callback)
+		});
+
+	}
+	catch (e) {
+		console.error(e);
+		return res.status(500).json({
+			error: e,
+			errorString: e.toString(),
+		})
+	}
+});
+
+router.get('/convenience/:stCd/:stNm/:railCd/:lnCd/:category', async (req, res) => {
 	try {
 		stCd = req.params.stCd;
 		stNm = req.params.stNm;
 		railCd = req.params.railCd;
 		lnCd = req.params.lnCd;
+		category = req.params.category;
 
-		await getTransfer(stCd, stNm, railCd, lnCd, callback => {
+		await getConvenience(stCd, stNm, railCd, lnCd, category, callback => {
+			if (callback[0].error != null) {
+				return res.status(404).json(callback[0]);
+			}
 			return res.json(callback);
 		});
 
