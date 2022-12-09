@@ -146,7 +146,8 @@ function getLiftMove(stCd, stNm, railCd, lnCd, callback) {
 	try {
 
 		console.log("LiftMove");
-		//console.log(stNm);
+
+		let liftMoveInfo = [];
 
 		const url = 'https://openapi.kric.go.kr/openapi/vulnerableUserInfo/stationWheelchairLiftMovement';
 		let queryParams = '?' + encodeURIComponent('serviceKey');
@@ -158,13 +159,32 @@ function getLiftMove(stCd, stNm, railCd, lnCd, callback) {
 
 		console.log(url + queryParams);
 
+
+
 		return request({
 			url: url + queryParams,
 			method: 'GET'
 		}, function (error, response, body) {
 
-			liftMoveInfo = JSON.parse(body).body;
-			console.log(liftMoveInfo.length);
+			//목적지 별로 구분하여 제공
+			const liftMoveParse = JSON.parse(body).body;
+
+			let liftInfo = [];
+
+			for (let i = 0; i < liftMoveParse.length; i++) {
+				if (liftMoveParse[i].mvTpOrdr == 1) {
+					if (liftInfo.length != 0) {
+						liftMoveInfo.push(liftInfo);
+						liftInfo = [];
+					}
+				}
+				liftInfo.push(liftMoveParse[i]);
+			}
+			if (liftInfo.length != 0) {
+				liftMoveInfo.push(liftInfo);
+				liftInfo = [];
+			}
+
 			callback(liftMoveInfo);
 		});
 	}
@@ -219,12 +239,40 @@ function getElevatorMove(stCd, stNm, railCd, lnCd, callback) {
 
 		console.log(url + queryParams);
 
+		let elevatorMove = [];
+
 		return request({
 			url: url + queryParams,
 			method: 'GET'
 		}, function (error, response, body) {
-			JSON.parse(body).body;
-			callback(JSON.parse(body).body);
+
+			let count = 0;
+			let c = 0;
+			let index = 1;
+
+			const elevatorMoveParse = JSON.parse(body).body;
+
+			for (let i = 0; i < elevatorMoveParse.length; i++) {
+				let elevatorInfo = [];
+				if (elevatorMoveParse[i].mvTpOrdr == 1) {
+					count++;
+					elevatorInfo.push(elevatorMoveParse[i]);
+					elevatorMove.push(elevatorInfo);
+				}
+				else {
+					if (elevatorMoveParse[i].mvTpOrdr != index) {
+						index = elevatorMoveParse[i].mvTpOrdr;
+						c = 0;
+					}
+					else {
+						c++;
+					}
+					console.log(elevatorMove[c]);
+					elevatorMove[c].push(elevatorMoveParse[i]);
+				}
+				
+			}
+			callback(elevatorMove);
 		});
 	}
 	catch (e) {
@@ -235,11 +283,42 @@ function getElevatorMove(stCd, stNm, railCd, lnCd, callback) {
 
 
 function getTransferList(stCd, stNm, railCd, lnCd, callback) {
-	try {
-
-		let sql = "Select * FROM stationinfotest WHERE StNm = ?;";
-
+	try { 
 		let transferList = [];
+
+		let sql = "Select * FROM stationinfotest WHERE (StCd = ? or StCd = ?) and LnCd = ?;";
+
+		connection.query(sql, [parseInt(stCd) + 1, parseInt(stCd) -1, lnCd], function (err, results, fields) {
+
+			if (err) {
+				console.log(err);
+			}
+
+			let sourceStation = [];
+
+			if (results.length == 0) {
+				return callback({
+					error: 404,
+					errorString: "Not Transfer Station"
+				});
+			}
+			else {
+				for (let i = 0; i < results.length; i++) {
+					sourceStation.push({
+						stCd: results[i].StCd,
+						stNm: results[i].StNm,
+						railCd: results[i].RailCd,
+						lnCd: results[i].LnCd
+					})
+				}
+
+			}
+			transferList.push({
+				sourceStation: sourceStation
+			})
+		});
+
+		sql = "Select * FROM stationinfotest WHERE StNm = ?;";
 
 		connection.query(sql, [stNm], function (err, results, fields) {
 
@@ -259,20 +338,23 @@ function getTransferList(stCd, stNm, railCd, lnCd, callback) {
 					const sql2 = "Select * FROM stationinfotest WHERE (StCd = ? or StCd = ?) and RailCd = ?;";
 					connection.query(sql2, [parseInt(results[i].StCd) + 1, parseInt(results[i].StCd) - 1, results[i].RailCd], function (err, results2, fields) {
 						console.log(results2);
+						let transferStation = [];
 						for (let j = 0; j < results2.length; j++) {
-							transferList.push({
+							transferStation.push({
 								stCd: results2[j].StCd,
 								stNm: results2[j].StNm,
 								railCd: results2[j].RailCd,
 								lnCd: results2[j].LnCd
 							})
 						}
+						transferList.push({
+							transferStation: transferStation
+						})
 						callback(transferList);
 					});
 					
 				}
 			}
-
 			
 		});
 		
@@ -529,9 +611,7 @@ router.get('/ElevatorMove/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 
 		await getElevatorMove(stCd, stNm, railCd, lnCd, callback => {
 			console.log(callback);
-			return res.json({
-				callback
-			})
+			return res.json(callback);
 		});
 	}
 	catch (e) {
