@@ -9,13 +9,17 @@ display:flex;
 flex-direction:column;
 align-items: center;
 box-sizing: border-box;
-width: 735px;
-height: 640px;
+width: 35vw;
+height: 68vh;
 background: #FFFFFF;
 border: 4px solid #CDD029 ;
 padding:0;
 margin:0;
 overflow:auto;
+@media (max-width:500px) {
+    width:100%;
+    height:50vw;
+}
 `
 
 const BusList = () => {

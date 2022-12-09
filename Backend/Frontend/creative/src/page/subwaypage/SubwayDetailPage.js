@@ -1,5 +1,4 @@
 import Mapping from "../../component/map/Mapping.js"
-import SubwayList from "../../component/subway-component/subwaylist/SubwayList.js"
 import classes from "./SubwayDetailPage.module.css"
 import Header from "../../component/header/Header.js"
 import SubwayPanel from "../../component/subway-component/subwaypanel/SubwayPanel.js"
@@ -23,8 +22,10 @@ const SubwayDetailPage = () => {
             api.get(`subway/stationInfo/${stCd}/${stNm}`)
                 .then(res => {
                     const { data } = res;
-                    setInfo(data.stationinfo);
-                    dispatch(SubwayActions.saveSubway(data.stationinfo))
+                    const { stationinfo } = data;
+
+                    setInfo(stationinfo);
+                    dispatch(SubwayActions.saveSubway(stationinfo))
                 })
         }
         getDetail()
@@ -33,7 +34,7 @@ const SubwayDetailPage = () => {
         <div className={classes.subwaypage}>
             <Header />
             <div className={classes.main}>
-                <SubwayPanel text={["지하철", <br />, "편의시설"]} menu={<SubwayBar />} />
+                <SubwayPanel text={["지하철 편의시설"]} menu={<SubwayBar />} />
                 <div className={classes.subwaymain}>
                     <div className={classes.subwaylist}>
                         <SubwayDetail info={info} />

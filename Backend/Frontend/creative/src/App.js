@@ -15,9 +15,9 @@ function App() {
         <Route path="/bus" element={<BusPage />} />
         <Route path="/subway" element={<SubwayPage />} />
         <Route path="/subway/detail/:stCd/:stNm" element={<SubwayDetailPage />} />
-        <Route path="/subway/elevator/:stCd" element={<SubwayElevatorPage />} />
-        <Route path="/subway/transfer/:stCd" element={<SubwayTransferPage />} />
-        <Route path="/subway/bathchair/:stCd" element={<SubwayBathChairPage />} />
+        <Route path="/subway/elevator/:stCd/:stNm/:railCd/:lnCd" element={<SubwayElevatorPage />} />
+        <Route path="/subway/transfer/:stCd/:stNm/:railCd/:lnCd" element={<SubwayTransferPage />} />
+        <Route path="/subway/bathchair/:stCd/:stNm/:railCd/:lnCd" element={<SubwayBathChairPage />} />
       </Routes>
     </BrowserRouter>
   );
