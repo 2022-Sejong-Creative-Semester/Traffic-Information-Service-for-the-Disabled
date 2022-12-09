@@ -286,9 +286,9 @@ function getTransferList(stCd, stNm, railCd, lnCd, callback) {
 	try { 
 		let transferList = [];
 
-		let sql = "Select * FROM stationinfotest WHERE (StCd = ? or StCd = ?) and LnCd = ?;";
+		let sql = "Select * FROM stationinfotest WHERE (StCd = ? or StCd = ?) and LnCd = ? and RailCd = ?;";
 
-		connection.query(sql, [parseInt(stCd) + 1, parseInt(stCd) -1, lnCd], function (err, results, fields) {
+		connection.query(sql, [parseInt(stCd) + 1, parseInt(stCd) -1, lnCd, railCd], function (err, results, fields) {
 
 			if (err) {
 				console.log(err);
