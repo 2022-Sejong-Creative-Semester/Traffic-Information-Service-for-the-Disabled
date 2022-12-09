@@ -146,7 +146,8 @@ function getLiftMove(stCd, stNm, railCd, lnCd, callback) {
 	try {
 
 		console.log("LiftMove");
-		//console.log(stNm);
+
+		let liftMoveInfo = [];
 
 		const url = 'https://openapi.kric.go.kr/openapi/vulnerableUserInfo/stationWheelchairLiftMovement';
 		let queryParams = '?' + encodeURIComponent('serviceKey');
@@ -158,13 +159,32 @@ function getLiftMove(stCd, stNm, railCd, lnCd, callback) {
 
 		console.log(url + queryParams);
 
+
+
 		return request({
 			url: url + queryParams,
 			method: 'GET'
 		}, function (error, response, body) {
 
-			liftMoveInfo = JSON.parse(body).body;
-			console.log(liftMoveInfo.length);
+			//목적지 별로 구분하여 제공
+			const liftMoveParse = JSON.parse(body).body;
+
+			let liftInfo = [];
+
+			for (let i = 0; i < liftMoveParse.length; i++) {
+				if (liftMoveParse[i].mvTpOrdr == 1) {
+					if (liftInfo.length != 0) {
+						liftMoveInfo.push(liftInfo);
+						liftInfo = [];
+					}
+				}
+				liftInfo.push(liftMoveParse[i]);
+			}
+			if (liftInfo.length != 0) {
+				liftMoveInfo.push(liftInfo);
+				liftInfo = [];
+			}
+
 			callback(liftMoveInfo);
 		});
 	}
@@ -219,12 +239,30 @@ function getElevatorMove(stCd, stNm, railCd, lnCd, callback) {
 
 		console.log(url + queryParams);
 
+		let elevatorMove = [];
+
 		return request({
 			url: url + queryParams,
 			method: 'GET'
 		}, function (error, response, body) {
-			JSON.parse(body).body;
-			callback(JSON.parse(body).body);
+
+			let count = 0;
+			let index = "1";
+			const elevatorMoveParse = JSON.parse(body).body;
+			for (let i = 0; i < elevatorMoveParse.length; i++) {
+				let elevatorInfo = [];
+				if (elevatorMoveParse[i].mvTpOrdr == 1) {
+					count++;
+					elevatorInfo.push(elevatorMoveParse[i]);
+					elevatorMove.push(elevatorInfo);
+				}
+				else {
+
+				}
+				
+			}
+			//11223344 이런형식으로 나옴
+			callback(elevatorMove);
 		});
 	}
 	catch (e) {
@@ -529,9 +567,7 @@ router.get('/ElevatorMove/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 
 		await getElevatorMove(stCd, stNm, railCd, lnCd, callback => {
 			console.log(callback);
-			return res.json({
-				callback
-			})
+			return res.json(callback);
 		});
 	}
 	catch (e) {
