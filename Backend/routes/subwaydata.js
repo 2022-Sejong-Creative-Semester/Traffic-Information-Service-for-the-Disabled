@@ -247,8 +247,11 @@ function getElevatorMove(stCd, stNm, railCd, lnCd, callback) {
 		}, function (error, response, body) {
 
 			let count = 0;
-			let index = "1";
+			let c = 0;
+			let index = 1;
+
 			const elevatorMoveParse = JSON.parse(body).body;
+
 			for (let i = 0; i < elevatorMoveParse.length; i++) {
 				let elevatorInfo = [];
 				if (elevatorMoveParse[i].mvTpOrdr == 1) {
@@ -257,11 +260,18 @@ function getElevatorMove(stCd, stNm, railCd, lnCd, callback) {
 					elevatorMove.push(elevatorInfo);
 				}
 				else {
-
+					if (elevatorMoveParse[i].mvTpOrdr != index) {
+						index = elevatorMoveParse[i].mvTpOrdr;
+						c = 0;
+					}
+					else {
+						c++;
+					}
+					console.log(elevatorMove[c]);
+					elevatorMove[c].push(elevatorMoveParse[i]);
 				}
 				
 			}
-			//11223344 이런형식으로 나옴
 			callback(elevatorMove);
 		});
 	}
