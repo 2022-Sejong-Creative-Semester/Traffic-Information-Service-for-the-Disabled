@@ -501,7 +501,7 @@ router.get('/stNm/:stNm', async (req, res) => {
 
 		await getSubwayStationName(stNm, stationList => {
 			if (stationList == 0) {
-				return res.status(404).json({
+				return res.status(500).json({
 					error: "No Station"
 				})
 			}
@@ -657,7 +657,7 @@ router.get('/transferMove/transferList/:stCd/:stNm/:railCd/:lnCd', async (req, r
 
 		await getTransferList(stCd, stNm, railCd, lnCd, callback => {
 			if (callback[0].error != null) {
-				return res.status(404).json(callback[0])
+				return res.status(500).json(callback[0])
 			}
 			return res.json(callback)
 		});
@@ -708,7 +708,7 @@ router.get('/convenience/:stCd/:stNm/:railCd/:lnCd/:category', async (req, res) 
 
 		await getConvenience(stCd, stNm, railCd, lnCd, category, callback => {
 			if (callback[0].error != null) {
-				return res.status(404).json(callback[0]);
+				return res.status(500).json(callback[0]);
 			}
 			return res.json(callback);
 		});
