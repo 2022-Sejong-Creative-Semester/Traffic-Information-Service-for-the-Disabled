@@ -283,11 +283,42 @@ function getElevatorMove(stCd, stNm, railCd, lnCd, callback) {
 
 
 function getTransferList(stCd, stNm, railCd, lnCd, callback) {
-	try {
-
-		let sql = "Select * FROM stationinfotest WHERE StNm = ?;";
-
+	try { 
 		let transferList = [];
+
+		let sql = "Select * FROM stationinfotest WHERE (StCd = ? or StCd = ?) and LnCd = ?;";
+
+		connection.query(sql, [parseInt(stCd) + 1, parseInt(stCd) -1, lnCd], function (err, results, fields) {
+
+			if (err) {
+				console.log(err);
+			}
+
+			let sourceStation = [];
+
+			if (results.length == 0) {
+				return callback({
+					error: 404,
+					errorString: "Not Transfer Station"
+				});
+			}
+			else {
+				for (let i = 0; i < results.length; i++) {
+					sourceStation.push({
+						stCd: results[i].StCd,
+						stNm: results[i].StNm,
+						railCd: results[i].RailCd,
+						lnCd: results[i].LnCd
+					})
+				}
+
+			}
+			transferList.push({
+				sourceStation: sourceStation
+			})
+		});
+
+		sql = "Select * FROM stationinfotest WHERE StNm = ?;";
 
 		connection.query(sql, [stNm], function (err, results, fields) {
 
@@ -307,20 +338,23 @@ function getTransferList(stCd, stNm, railCd, lnCd, callback) {
 					const sql2 = "Select * FROM stationinfotest WHERE (StCd = ? or StCd = ?) and RailCd = ?;";
 					connection.query(sql2, [parseInt(results[i].StCd) + 1, parseInt(results[i].StCd) - 1, results[i].RailCd], function (err, results2, fields) {
 						console.log(results2);
+						let transferStation = [];
 						for (let j = 0; j < results2.length; j++) {
-							transferList.push({
+							transferStation.push({
 								stCd: results2[j].StCd,
 								stNm: results2[j].StNm,
 								railCd: results2[j].RailCd,
 								lnCd: results2[j].LnCd
 							})
 						}
+						transferList.push({
+							transferStation: transferStation
+						})
 						callback(transferList);
 					});
 					
 				}
 			}
-
 			
 		});
 		
