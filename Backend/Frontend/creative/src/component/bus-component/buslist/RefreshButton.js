@@ -16,6 +16,10 @@ img{
 :hover{
     cursor: pointer;
 }
+@media (max-width:500px){
+    width:8vw;
+    height:8vw;
+}
 `
 
 

@@ -22,8 +22,10 @@ const SubwayDetailPage = () => {
             api.get(`subway/stationInfo/${stCd}/${stNm}`)
                 .then(res => {
                     const { data } = res;
-                    setInfo(data.stationinfo);
-                    dispatch(SubwayActions.saveSubway(data.stationinfo))
+                    const { stationinfo } = data;
+
+                    setInfo(stationinfo);
+                    dispatch(SubwayActions.saveSubway(stationinfo))
                 })
         }
         getDetail()
@@ -32,7 +34,7 @@ const SubwayDetailPage = () => {
         <div className={classes.subwaypage}>
             <Header />
             <div className={classes.main}>
-                <SubwayPanel text={["지하철", <br />, "편의시설"]} menu={<SubwayBar />} />
+                <SubwayPanel text={["지하철 편의시설"]} menu={<SubwayBar />} />
                 <div className={classes.subwaymain}>
                     <div className={classes.subwaylist}>
                         <SubwayDetail info={info} />

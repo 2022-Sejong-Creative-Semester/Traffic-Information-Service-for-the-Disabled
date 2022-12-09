@@ -24,6 +24,23 @@ a{
     border-bottom: 2px solid;
     border-color:#FFFFFF;
 }
+
+@media (max-width:500px){
+    flex-direction: row;
+    justify-content:space-even;
+    font-size:4vw;
+    margin:0;
+    li{
+        margin:0;
+        padding:0;
+    }
+    a{
+        display:flex;
+        justify-content:center;
+        width:35vw;
+        font-size:3.5vw;
+    }
+}
 `
 
 const SubwayBar = () => {

@@ -25,14 +25,14 @@ div{
 }
 .Name{
     padding-left:20px;
-    font-family: 'Pretendard';
+    font-family: 'Pretendard-Regular';
     font-style: normal;
     font-weight: 600;
     font-size: 40px;
     line-height: 60px;
 }
 .direction{
-    font-family: 'Pretendard';
+    font-family: 'Pretendard-Regular';
     font-style: normal;
     font-weight: 600;
     font-size: 24px;
@@ -40,12 +40,25 @@ div{
 }
 .id{
     padding-right:20px;
-    font-family: 'Pretendard';
+    font-family: 'Pretendard-Regular';
     font-style: normal;
     font-weight: 600;
     font-size: 24px;
     line-height: 29px;
     color: #9C9C9C;
+}
+
+@media (max-width:500px){
+    height:43%;
+    .Name{
+        font-size: 5vw;
+    }
+    .direction{
+        font-size: 3vw;
+    }
+    .id{
+        font-size: 3vw;
+    }
 }
 `
 

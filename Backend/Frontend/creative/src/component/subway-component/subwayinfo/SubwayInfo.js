@@ -9,6 +9,12 @@ height: 747px;
 background-color:white;
 border: 4px solid #9255F5;
 overflow:auto;
+
+@media (max-width:500px){
+    margin:0;
+    width: 100%;
+    height: 15vw;
+}
 `
 
 const SubwayInfo = ({ info }) => {

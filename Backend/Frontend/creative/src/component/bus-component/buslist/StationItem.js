@@ -65,25 +65,36 @@ font-family: 'Pretendard-Regular';
 
 .Name{
     padding-left:20px;
-    font-family: 'Pretendard';
+    font-family: 'Pretendard-Regular';
     font-style: normal;
     font-weight: 600;
-    font-size: 40px;
+    font-size: 2vw;
     line-height: 60px;
     color:${props => (props.color ? "#000000" : "#FFFFFF")};
 }
 
 .id{
     padding-right:20px;
-    font-family: 'Pretendard';
+    font-family: 'Pretendard-Regular';
     font-style: normal;
     font-weight: 600;
-    font-size: 24px;
+    font-size: 1.7vw;
     line-height: 29px;
     display: flex;
     align-items: center;
     text-align: center;
     color:${props => (props.color ? "#9C9C9C" : "black")};
+}
+@media (max-width:500px){
+    height:43%;
+    .Name{
+        font-family: 'Pretendard-Regular';
+        font-size: 5vw;
+    }
+    .id{
+        font-family: 'Pretendard-Regular';
+        font-size: 3vw;
+    }
 }
 `
 

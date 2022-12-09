@@ -10,14 +10,18 @@ display:flex;
 align-items:center;
 font-family: 'GmarketSansMedium';
 font-weight: 700;
-font-size: 60px;
+font-size: 4vw;
 background-color:#FFFFFF;
 border-bottom: 2px solid #EBEBEB;
-width:1728px;
-height:148px;
+width:95%;
+height:15vh;
 a{  
     color:#000000;
     text-decoration:none;
+}
+@media (max-width:500px) {
+    font-size:8vw;
+    height:8vh;
 }
 `
 

@@ -10,8 +10,8 @@ display:flex;
 flex-direction:column;
 align-items: center;
 box-sizing: border-box;
-width: 735px;
-height: 644px;
+width: 35vw;
+height: 68vh;
 background: #FFFFFF;
 border: 4px solid #9255F5;
 padding:0;
@@ -19,6 +19,10 @@ margin:0;
 overflow:auto;
 a{ 
     text-decoration:none; 
+}
+@media (max-width:500px) {
+    width:100%;
+    height:50vw;
 }
 `
 

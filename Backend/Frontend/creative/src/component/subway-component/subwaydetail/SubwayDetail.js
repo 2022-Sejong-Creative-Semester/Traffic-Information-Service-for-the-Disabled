@@ -35,13 +35,28 @@ border: 4px solid #9255F5;
     border-radius:200px;   
 }
 .info{
-    margin-left:50px;
     width:100%;
     display:flex;
     flex-direction:column;
     align-items:start;
     font-weight: 600;
     font-size: 30px;
+}
+
+@media (max-width:500px) {
+    width:98%;
+    height:80vw;
+    .line{
+        width: 8vw;
+        height: 8vw;
+    }
+    .name{
+        height:15vw;
+        font-size:5vw;
+    }
+    .name p{
+        margin-left:8vw;
+    }
 }
 `
 

@@ -11,10 +11,18 @@ font-family: 'Pretendard-Regular';
 background: rgba(205, 208, 41, 0.8);
 box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
 border-radius: 0px 20px 20px 0px;
-
-
 :hover{
     cursor: pointer;
+}
+@media (max-width:1630px){
+    font-size: 4vw;
+    width: 26vw;
+    height: 60vh;
+}
+@media (max-width:500px){
+    font-size: 6vw;
+    width: 80vw;
+    height: 10vh;
 }
 `
 
