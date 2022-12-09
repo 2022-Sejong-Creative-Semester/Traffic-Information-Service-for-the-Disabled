@@ -374,6 +374,8 @@ function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn , chtnNextSti
 
 		connection.query(sql, [stNm, chthTgtLn], function (err, results, fields) {
 
+			console.log(results);
+
 			if (err) {
 				console.log(err);
 			}
@@ -401,17 +403,38 @@ function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn , chtnNextSti
 
 			console.log(url + queryParams);
 
+			//chtnNextStinCd -> 상행선 1,3
+			//chtnNextStinCd -> 하행선 2,4
+
 			return request({
 				url: url + queryParams,
 				method: 'GET'
 			}, function (error, response, body) {
 				const parse = JSON.parse(body).body;
+				console.log(parse);
 				for (let i = 0; i < parse.length; i++) {
-					//상행선이라면
-					if ((parseInt(stCd) + 1 == parseInt(prev) && (parse[i].mvPathMgNo == 1 || parse[i].mvPathMgNo == 2))
-						|| (parseInt(stCd) - 1 == parseInt(prev) && (parse[i].mvPathMgNo == 3 || parse[i].mvPathMgNo == 4))
-					) {
-						transferInfo.push(parse[i]);
+					//성수가 211 하행
+					//환승역 방면이 상행선이라면 1,3만 나옴
+					if (parseInt(prevStinCd) > parseInt(chtnNextStinCd)) {
+						//출발 방면이 상행선이라면
+						if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo == 1) {
+							transferInfo.push(parse[i]);
+						}
+						//출발 방면이 하행선이라면
+						else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo == 3) {
+							transferInfo.push(parse[i]);
+						}
+					}
+					//하행선인 경우
+					else {
+						//출발 방면이 상행선이라면
+						if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo == 2) {
+							transferInfo.push(parse[i]);
+						}
+						//출발 방면이 하행선이라면
+						else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo == 4) {
+							transferInfo.push(parse[i]);
+						}
 					}
 				}
 				callback(transferInfo);
@@ -478,7 +501,7 @@ router.get('/stNm/:stNm', async (req, res) => {
 
 		await getSubwayStationName(stNm, stationList => {
 			if (stationList == 0) {
-				return res.status(404).json({
+				return res.status(500).json({
 					error: "No Station"
 				})
 			}
@@ -634,7 +657,7 @@ router.get('/transferMove/transferList/:stCd/:stNm/:railCd/:lnCd', async (req, r
 
 		await getTransferList(stCd, stNm, railCd, lnCd, callback => {
 			if (callback[0].error != null) {
-				return res.status(404).json(callback[0])
+				return res.status(500).json(callback[0])
 			}
 			return res.json(callback)
 		});
@@ -685,7 +708,7 @@ router.get('/convenience/:stCd/:stNm/:railCd/:lnCd/:category', async (req, res) 
 
 		await getConvenience(stCd, stNm, railCd, lnCd, category, callback => {
 			if (callback[0].error != null) {
-				return res.status(404).json(callback[0]);
+				return res.status(500).json(callback[0]);
 			}
 			return res.json(callback);
 		});
