@@ -17,7 +17,22 @@ color:#E2E2E2;
     font-family: 'Pretendard-Regular';
     font-size: 40px;
 }
-
+@media (max-width:1630px){
+    .first{
+        font-size: 4vw;
+    }
+    .second{
+        font-size: 2.5vw;
+    }
+}
+@media (max-width:500px){
+    .first{
+        font-size: 10vw;
+    }
+    .second{
+        font-size: 5vw;
+    }
+}
 `
 
 const MenuExplan = () => {

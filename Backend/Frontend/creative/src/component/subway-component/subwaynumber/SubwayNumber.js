@@ -15,6 +15,10 @@ p{
     font-weight:bold;
     margin:0;
 }
+@media (max-width:500px){
+    font-size:5vw;
+    height:28%;
+}
 `
 
 const SubwayNumber = (props) => {

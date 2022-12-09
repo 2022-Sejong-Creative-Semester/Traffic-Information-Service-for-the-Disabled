@@ -1,7 +1,7 @@
 .main {
     display: flex;
     justify-content: start;
-    width: 1920px;
+    width: 100vw;
 }
 
 .buspage {
@@ -20,4 +20,21 @@
     display: flex;
     flex-direction: column;
     margin-right: 30px;
+}
+
+@media (max-width:500px) {
+    .main {
+        flex-direction: column;
+    }
+
+    .busmain {
+        flex-direction: column;
+        margin-top: 0;
+        height: 100%;
+        justify-content: space-between;
+    }
+
+    .buslist {
+        margin-right: 0;
+    }
 }

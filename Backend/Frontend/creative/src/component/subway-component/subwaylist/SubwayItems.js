@@ -57,7 +57,7 @@ a{
 }
 .name{
     padding-left:20px;
-    font-family: 'Pretendard';
+    font-family: 'Pretendard-Regular';
     font-style: normal;
     font-weight: 600;
     font-size: 40px;
@@ -70,7 +70,7 @@ a{
     justify-content:center;
     align-items:center;
     margin-right:20px;
-    font-family: 'Pretendard';
+    font-family: 'Pretendard-Regular';
     font-style: normal;
     font-weight: 600;
     font-size: 100%;
@@ -79,6 +79,17 @@ a{
     background-color:#A76E00;
     border-radius:200px;
     
+}
+@media (max-width:500px){
+    height:43%;
+    .name{
+        font-size: 5vw;
+    }
+    .line{
+        font-size: 3vw;
+        width: 10vw;
+        height: 10vw;
+    }
 }
 `
 
