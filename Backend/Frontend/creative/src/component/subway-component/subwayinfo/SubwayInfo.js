@@ -12,20 +12,23 @@ overflow:auto;
 
 @media (max-width:500px){
     margin:0;
-    width: 100%;
-    height: 15vw;
+    width: 98%;
+    height:50vw;
 }
 `
 
 const SubwayInfo = ({ info }) => {
+    console.log(info)
     return (
         <StyledInfo>
-            {info.map((element, index) => (
-                <SubwayBathchairInfo
-                    key={index}
-                    mvTpOrdr={element.mvTpOrdr}
-                    mvContDtl={element.mvContDtl}
-                />
+            {info.map((element) => (
+                element.map(node => (
+                    <SubwayBathchairInfo
+                        key={node.mvTpOrdr}
+                        mvTpOrdr={node.mvTpOrdr}
+                        mvContDtl={node.mvContDtl}
+                    />
+                ))
             ))}
         </StyledInfo>
     )

@@ -45,7 +45,6 @@ a{
 
 const SubwayBar = () => {
     const si = useSelector(state => state.subway.subwayInfo)
-    console.log(si)
     return (
         <StyleMenuBar>
             <Link to={`/subway/elevator/${si.stCd}/${si.stNm}/${si.railCd}/${si.lnCd}`}><li>엘리베이터 위치</li></Link>

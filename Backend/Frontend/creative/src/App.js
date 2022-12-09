@@ -7,6 +7,7 @@ import SubwayDetailPage from "./page/subwaypage/SubwayDetailPage.js"
 import SubwayElevatorPage from "./page/subwaypage/SubwayElevator.js";
 import SubwayBathChairPage from "./page/subwaypage/SubwayBathchair.js";
 
+//page마다 url을 따로 지정, 페이지에서 api를 호출할 때 필요한 파라미터를 제공
 function App() {
   return (
     <BrowserRouter>

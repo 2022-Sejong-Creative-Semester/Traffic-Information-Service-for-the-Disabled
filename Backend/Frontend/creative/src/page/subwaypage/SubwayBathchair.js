@@ -4,6 +4,8 @@ import SubwayPanel from "../../component/subway-component/subwaypanel/SubwayPane
 import { useParams } from "react-router-dom"
 import { api } from "../../component/auth/Api.js"
 import { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
+import { SubwayActions } from "../../store/Subway-slice"
 import SubwayBar from "../../component/subway-component/subwaymenubar/SubwayBar.js"
 import SubwayInfo from "../../component/subway-component/subwayinfo/SubwayInfo.js"
 
@@ -11,15 +13,30 @@ import SubwayInfo from "../../component/subway-component/subwayinfo/SubwayInfo.j
 const SubwayBathchair = () => {
     const params = useParams();
     const [bath, setBath] = useState([]);
+    const dispatch = useDispatch()
     useEffect(() => {
         const stCd = params.stCd;
         const stNm = params.stNm;
         const railCd = params.railCd;
         const lnCd = params.lnCd;
-        const getBathChair = () => {
-            api.get(`subway/liftMove/${stCd}/${stNm}/${railCd}/${lnCd}`)
+        dispatch(SubwayActions.saveSubway({ stCd, stNm, railCd, lnCd }))
+        const checklift = async () => {
+            await api.get(`subway/convenience/${stCd}/${stNm}/${railCd}/${lnCd}/WCLF`)
                 .then(res => {
                     const { data } = res;
+                    console.log(data)
+                })
+                .catch(error => {
+                    console.log("에러발생!")
+                    console.log(error)
+                })
+        }
+        checklift();
+        const getBathChair = async () => {
+            await api.get(`subway/liftMove/${stCd}/${stNm}/${railCd}/${lnCd}`)
+                .then(res => {
+                    const { data } = res;
+                    console.log(data)
                     setBath(data)
                 })
         }

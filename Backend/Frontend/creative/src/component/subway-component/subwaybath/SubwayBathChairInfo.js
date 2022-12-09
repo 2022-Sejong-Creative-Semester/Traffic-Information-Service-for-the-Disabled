@@ -3,10 +3,14 @@ import styled from "styled-components";
 const StyledBathChair = styled.div`
 width:100%;
 display:flex;
-font-size:35px;
+font-size:32px;
 font-family: 'Pretendard-Regular';
-margin-left:30px;
-
+font-style: normal;
+font-weight: 600;
+margin-left:23px;
+@media (max-width:500px){
+    font-size:4vw;
+}
 `
 
 
