@@ -406,6 +406,9 @@ function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn , chtnNextSti
 			//chtnNextStinCd -> 상행선 1,3
 			//chtnNextStinCd -> 하행선 2,4
 
+			//parse Int  어캐해야됨
+			//상행 하행 구분 어캐해야됨
+
 			return request({
 				url: url + queryParams,
 				method: 'GET'
@@ -450,7 +453,7 @@ function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn , chtnNextSti
 	}
 }
 
-function getConvenience(stCd, stNm, railCd, lnCd, category, callback) {
+function getConvenience(stCd, stNm, railCd, lnCd, callback) {
 	try {
 
 		let conveneinceInfo = [];
@@ -472,7 +475,7 @@ function getConvenience(stCd, stNm, railCd, lnCd, category, callback) {
 			const parse = JSON.parse(body).body;
 
 			for (let i = 0; i < parse.length; i++) {
-				if (category == parse[i].gubun) {
+				if (parse[i].gubun == "EV" || parse[i].gubun == "WCLF") {
 					conveneinceInfo.push(parse[i]);
 				}
 			}
@@ -698,15 +701,14 @@ router.get('/transferMove/transferInfo/:stCd/:stNm/:railCd/:lnCd/:prevStinCd/:ch
 	}
 });
 
-router.get('/convenience/:stCd/:stNm/:railCd/:lnCd/:category', async (req, res) => {
+router.get('/convenience/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 	try {
 		stCd = req.params.stCd;
 		stNm = req.params.stNm;
 		railCd = req.params.railCd;
 		lnCd = req.params.lnCd;
-		category = req.params.category;
 
-		await getConvenience(stCd, stNm, railCd, lnCd, category, callback => {
+		await getConvenience(stCd, stNm, railCd, lnCd, callback => {
 			if (callback[0].error != null) {
 				return res.status(500).json(callback[0]);
 			}
