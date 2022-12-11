@@ -28,7 +28,7 @@ const SubwayElevator = () => {
                     const { data } = res;
 
                 })
-            await api.get(`subway/convenience/${stCd}/${stNm}/${railCd}/${lnCd}/EV`)
+            await api.get(`subway/convenience/${stCd}/${stNm}/${railCd}/${lnCd}`)
                 .then(res => {
                     const { data } = res;
 
