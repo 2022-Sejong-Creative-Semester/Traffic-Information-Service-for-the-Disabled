@@ -19,7 +19,7 @@ const SubwayItems = ({ items }) => {
 
     const ClickSubway = () => {
         if (currentSubway === stCd) {
-            window.location.href = `/subway/detail/${stCd}/${stNm}`;
+            window.location.href = `/#/subway/detail/${stCd}/${stNm}`;
         }
         else if (currentSubway !== stCd) {
             setColor(false)
