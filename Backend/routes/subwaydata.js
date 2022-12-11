@@ -414,29 +414,59 @@ function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn , chtnNextSti
 				method: 'GET'
 			}, function (error, response, body) {
 				const parse = JSON.parse(body).body;
-				console.log(parse);
+				//console.log(parse);
 				for (let i = 0; i < parse.length; i++) {
 					//성수가 211 하행
-					//환승역 방면이 상행선이라면 1,3만 나옴
-					if (parseInt(prevStinCd) > parseInt(chtnNextStinCd)) {
-						//출발 방면이 상행선이라면
-						if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo == 1) {
-							transferInfo.push(parse[i]);
+					//railCd로 비교
+
+					//2호선의 경우 상 하행이 반대
+					if (railCd == "S1" && lnCd == "2") {
+						//console.log("2호선");
+						//환승역 방면이 상행선이라면 2, 4만 나옴
+						if (parseInt(prevStinCd) > parseInt(chtnNextStinCd)) {
+							//출발 방면이 상행선이라면
+							if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo == 2) {
+								transferInfo.push(parse[i]);
+							}
+							//출발 방면이 하행선이라면
+							else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo == 1) {
+								transferInfo.push(parse[i]);
+							}
 						}
-						//출발 방면이 하행선이라면
-						else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo == 3) {
-							transferInfo.push(parse[i]);
+						//하행선인 경우
+						else {
+							//출발 방면이 상행선이라면
+							if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo == 4) {
+								transferInfo.push(parse[i]);
+							}
+							//출발 방면이 하행선이라면
+							else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo == 3) {
+								transferInfo.push(parse[i]);
+							}
 						}
 					}
-					//하행선인 경우
 					else {
-						//출발 방면이 상행선이라면
-						if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo == 2) {
-							transferInfo.push(parse[i]);
+						//환승역 방면이 상행선이라면 1,3만 나옴
+						if (parseInt(prevStinCd) > parseInt(chtnNextStinCd)) {
+							//출발 방면이 상행선이라면
+							if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo == 1) {
+								transferInfo.push(parse[i]);
+							}
+							//출발 방면이 하행선이라면
+							else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo == 3) {
+								transferInfo.push(parse[i]);
+							}
 						}
-						//출발 방면이 하행선이라면
-						else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo == 4) {
-							transferInfo.push(parse[i]);
+						//하행선인 경우
+						else {
+							//출발 방면이 상행선이라면
+							if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo == 2) {
+								transferInfo.push(parse[i]);
+							}
+							//출발 방면이 하행선이라면
+							else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo == 4) {
+								transferInfo.push(parse[i]);
+							}
 						}
 					}
 				}
