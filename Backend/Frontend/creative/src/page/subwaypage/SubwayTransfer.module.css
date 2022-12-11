@@ -11,11 +11,6 @@
     justify-content: space-between;
 }
 
-.subwaylist {
-    display: flex;
-    flex-direction: column;
-    margin-right: 30px;
-}
 
 .subwaymain {
     display: flex;
@@ -34,7 +29,4 @@
         justify-content: space-between;
     }
 
-    .subwaylist {
-        margin-right: 0;
-    }
 }

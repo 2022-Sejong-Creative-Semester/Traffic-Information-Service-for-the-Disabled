@@ -5,20 +5,26 @@ import { useSelector, useDispatch } from "react-redux";
 import { BusActions } from "../../../store/Bus-slice";
 
 const StyledRefreshButton = styled.button`
-width:50px;
-height:50px;
+width:60px;
+height:60px;
 border: 0;
 border-radius:50px;
 background-color:transparent;
+padding:0;
 img{
-    width:100%;
+    width:70%;
+    height:70%;
 }
 :hover{
     cursor: pointer;
 }
 @media (max-width:500px){
-    width:8vw;
-    height:8vw;
+    width:10vw;
+    height:10vw;
+    img{
+        width:70%;
+        height:70%;
+    }
 }
 `
 
