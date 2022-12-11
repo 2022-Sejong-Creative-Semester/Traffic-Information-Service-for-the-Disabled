@@ -14,6 +14,7 @@ overflow:auto;
     margin:0;
     width: 98%;
     height:50vw;
+
 }
 `
 
