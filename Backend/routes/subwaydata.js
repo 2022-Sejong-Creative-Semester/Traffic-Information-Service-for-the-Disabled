@@ -6,7 +6,6 @@ const convert = require('xml-js');
 const SQL_info = require('../Key/SQL_info.json')
 const mysql = require('mysql');
 
-
 const conn = {
 	host: SQL_info.host,
 	port: SQL_info.port,
@@ -21,7 +20,7 @@ let connection = mysql.createConnection(conn);  // DB Connect
 function getSubwayStationName(stNm, callback){
 	try {
 
-		let sql = "Select *  FROM test WHERE StNm like ?; ";
+		let sql = "Select *  FROM stationinfotest WHERE StNm like ?; ";
 
 		let NameList = [];
 		connection.query(sql, ["%"+stNm+"%"], function (err, results, fields) {
@@ -51,12 +50,12 @@ function getSubwayStationName(stNm, callback){
 	}
 }
 
-function getSubwayStationInfo(stCd, callback) {
+function getSubwayStationInfo(stCd, stNm, callback) {
 	try {
 
-		let sql = "Select *  FROM test WHERE StCd = ?;";
+		let sql = "Select * FROM stationinfotest WHERE StCd = ? and StNm = ?;";
 
-		connection.query(sql, [stCd], function (err, results, fields) {
+		connection.query(sql, [stCd, stNm], function (err, results, fields) {
 			if (err) {
 				console.log(err);
 			}
@@ -75,71 +74,13 @@ function getSubwayStationInfo(stCd, callback) {
 			queryParams += '=' + encodeURI(results[0].StCd);
 			queryParams += '&' + encodeURI('stinNm');
 			queryParams += '=' + encodeURI(results[0].StNm);
-
-			//console.log(url + queryParams);
-
+			
 			return request({
 				url: url + queryParams,
 				method: 'GET'
 			}, function (error, response, body) {
 
-				//console.log(body);
-
-				const stationinfo = JSON.parse(body).body[0];
-				
-				callback({
-					railCd: stationinfo.railOprIsttCd,
-					lnCd: stationinfo.lnCd,
-					stCd: stationinfo.stinCd,
-					stNm: stationinfo.stinNm,
-					roadNm: stationinfo.roadNmAdr,
-					tmX: stationinfo.stinLocLon,
-					tmY: stationinfo.stinLocLat
-				});
-			});
-
-		});
-
-	}
-	catch (e) {
-		console.error(e);
-		callback(e);
-	}
-}
-
-function getSubwayStationInfo(stCd, callback) {
-	try {
-
-		let sql = "Select * FROM test WHERE StCd = ?;";
-
-		connection.query(sql, [stCd], function (err, results, fields) {
-			if (err) {
-				console.log(err);
-			}
-
-			console.log(results);
-
-			const url = 'https://openapi.kric.go.kr/openapi/convenientInfo/stationInfo';
-			let queryParams = '?' + encodeURI('serviceKey');
-			queryParams += '=' + serviceKey.subwayRailKey;
-			queryParams += '&' + encodeURI('format') + '=' + encodeURI('json');
-			queryParams += '&' + encodeURI('railOprIsttCd');
-			queryParams += '=' + encodeURI(results[0].RailCd);
-			queryParams += '&' + encodeURI('lnCd');
-			queryParams += '=' + encodeURI(results[0].LnCd);
-			queryParams += '&' + encodeURI('stinCd');
-			queryParams += '=' + encodeURI(results[0].StCd);
-			queryParams += '&' + encodeURI('stinNm');
-			queryParams += '=' + encodeURI(results[0].StNm);
-
-			//console.log(url + queryParams);
-
-			return request({
-				url: url + queryParams,
-				method: 'GET'
-			}, function (error, response, body) {
-
-				//console.log(body);
+				console.log(body);
 
 				const stationinfo = JSON.parse(body).body[0];
 
@@ -151,10 +92,11 @@ function getSubwayStationInfo(stCd, callback) {
 					roadNm: stationinfo.roadNmAdr,
 					tmX: stationinfo.stinLocLon,
 					tmY: stationinfo.stinLocLat,
-					//tNum: 
-					//wNum:
 				});
+					//tNum:
+					//wNum:
 			});
+			
 
 		});
 
@@ -165,31 +107,385 @@ function getSubwayStationInfo(stCd, callback) {
 	}
 }
 
-function getLiftRoute(stCd, callback) {
+function getLiftPos(stCd, stNm, railCd, lnCd, callback) {
 	try {
 
-		console.log(stNm);
-
-		const url = 'https://openapi.kric.go.kr/openapi/vulnerableUserInfo/stationWheelchairLiftMovement';
-		let queryParams = '?' + encodeURIComponent('serviceKey');
-		queryParams += '=' + serviceKey.iiftRouteKey;
-		queryParams += '&' + encodeURIComponent('format') + '=' + encodeURIComponent('json');
-		queryParams += '&' + encodeURIComponent('railOprIsttCd');
-		queryParams += '/' + encodeURIComponent('1');
-		queryParams += '/' + encodeURIComponent('5');
-		queryParams += '/' + encodeURIComponent(stNm) + '/';
+		const url = 'https://openapi.kric.go.kr/openapi/vulnerableUserInfo/stationWheelchairLiftLocation';
+		let queryParams = '?' + encodeURI('serviceKey') + '=' + serviceKey.subwayRailKey;
+		queryParams += '&' + encodeURI('format') + '=' + encodeURI('json');
+		queryParams += '&' + encodeURI('railOprIsttCd') + '=' + encodeURI(railCd);
+		queryParams += '&' + encodeURI('lnCd') + '=' + encodeURI(lnCd);
+		queryParams += '&' + encodeURI('stinCd') + '=' + encodeURI(stCd);
 
 		console.log(url + queryParams);
 
-		const tempurl = 'http://openapi.seoul.go.kr:8088/' + serviceKey.subwayStNmKey + '/json/SearchInfoBySubwayNameService/1/5/%EC%A2%85%EB%A1%9C3%EA%B0%80/';
-		console.log(url + queryParams);
-		console.log(tempurl);
 		return request({
 			url: url + queryParams,
 			method: 'GET'
 		}, function (error, response, body) {
-			console.log(body);
-			callback(body);
+
+			liftPosInfo = JSON.parse(body).body;
+
+			console.log(liftPosInfo[0]);
+
+			callback(liftPosInfo[0]);
+
+
+			//tNum:
+			//wNum:
+		});
+
+	}
+	catch {
+		console.error(e);
+		callback(e);
+	}
+}
+
+function getLiftMove(stCd, stNm, railCd, lnCd, callback) {
+	try {
+
+		console.log("LiftMove");
+
+		let liftMoveInfo = [];
+
+		const url = 'https://openapi.kric.go.kr/openapi/vulnerableUserInfo/stationWheelchairLiftMovement';
+		let queryParams = '?' + encodeURIComponent('serviceKey');
+		queryParams += '=' + serviceKey.subwayRailKey;
+		queryParams += '&' + encodeURIComponent('format') + '=' + encodeURIComponent('json');
+		queryParams += '&' + encodeURIComponent('railOprIsttCd') + '=' + encodeURIComponent(railCd);
+		queryParams += '&' + encodeURIComponent('lnCd') + '=' + encodeURIComponent(lnCd);
+		queryParams += '&' + encodeURIComponent('stinCd') + '=' + encodeURIComponent(stCd);
+
+		console.log(url + queryParams);
+
+
+
+		return request({
+			url: url + queryParams,
+			method: 'GET'
+		}, function (error, response, body) {
+
+			//목적지 별로 구분하여 제공
+			const liftMoveParse = JSON.parse(body).body;
+
+			let liftInfo = [];
+
+			for (let i = 0; i < liftMoveParse.length; i++) {
+				if (liftMoveParse[i].mvTpOrdr == 1) {
+					if (liftInfo.length != 0) {
+						liftMoveInfo.push(liftInfo);
+						liftInfo = [];
+					}
+				}
+				liftInfo.push(liftMoveParse[i]);
+			}
+			if (liftInfo.length != 0) {
+				liftMoveInfo.push(liftInfo);
+				liftInfo = [];
+			}
+
+			callback(liftMoveInfo);
+		});
+	}
+	catch (e) {
+		console.error(e);
+		callback(e);
+	}
+}
+
+function getElevatorPos(stCd, stNm, railCd, lnCd, callback) {
+	try {
+		console.log(stNm);
+
+		const url = 'https://openapi.kric.go.kr/openapi/convenientInfo/stationElevator';
+
+		let queryParams = '?' + encodeURIComponent('serviceKey');
+		queryParams += '=' + serviceKey.subwayRailKey;
+		queryParams += '&' + encodeURIComponent('format') + '=' + encodeURIComponent('json');
+		queryParams += '&' + encodeURIComponent('railOprIsttCd') + '=' + encodeURIComponent(railCd);
+		queryParams += '&' + encodeURIComponent('lnCd') + '=' + encodeURIComponent(lnCd);
+		queryParams += '&' + encodeURIComponent('stinCd') + '=' + encodeURIComponent(stCd);
+
+		console.log(url + queryParams);
+
+		return request({
+			url: url + queryParams,
+			method: 'GET'
+		}, function (error, response, body) {
+			ElevatorPosInfo = JSON.parse(body).body;
+			callback(ElevatorPosInfo);
+		});
+	}
+	catch (e) {
+		console.error(e);
+		callback(e);
+	}
+}
+
+
+function getElevatorMove(stCd, stNm, railCd, lnCd, callback) {
+	try {
+
+		console.log(stNm);
+		
+		const url = 'https://openapi.kric.go.kr/openapi/trafficWeekInfo/stinElevatorMovement';
+		let queryParams = '?' + encodeURIComponent('serviceKey');
+		queryParams += '=' + serviceKey.subwayRailKey;
+		queryParams += '&' + encodeURIComponent('format') + '=' + encodeURIComponent('json');
+		queryParams += '&' + encodeURIComponent('railOprIsttCd') + '=' + encodeURIComponent(railCd);
+		queryParams += '&' + encodeURIComponent('lnCd') + '=' + encodeURIComponent(lnCd);
+		queryParams += '&' + encodeURIComponent('stinCd') + '=' + encodeURIComponent(stCd);
+
+		console.log(url + queryParams);
+
+		let elevatorMove = [];
+
+		return request({
+			url: url + queryParams,
+			method: 'GET'
+		}, function (error, response, body) {
+
+			let count = 0;
+			let c = 0;
+			let index = 1;
+
+			const elevatorMoveParse = JSON.parse(body).body;
+
+			for (let i = 0; i < elevatorMoveParse.length; i++) {
+				let elevatorInfo = [];
+				if (elevatorMoveParse[i].mvTpOrdr == 1) {
+					count++;
+					elevatorInfo.push(elevatorMoveParse[i]);
+					elevatorMove.push(elevatorInfo);
+				}
+				else {
+					if (elevatorMoveParse[i].mvTpOrdr != index) {
+						index = elevatorMoveParse[i].mvTpOrdr;
+						c = 0;
+					}
+					else {
+						c++;
+					}
+					console.log(elevatorMove[c]);
+					elevatorMove[c].push(elevatorMoveParse[i]);
+				}
+				
+			}
+			callback(elevatorMove);
+		});
+	}
+	catch (e) {
+		console.error(e);
+		callback(e);
+	}
+}
+
+
+function getTransferList(stCd, stNm, railCd, lnCd, callback) {
+	try { 
+		let transferList = [];
+
+		let sql = "Select * FROM stationinfotest WHERE (StCd = ? or StCd = ?) and LnCd = ? and RailCd = ?;";
+
+		connection.query(sql, [parseInt(stCd) + 1, parseInt(stCd) -1, lnCd, railCd], function (err, results, fields) {
+
+			if (err) {
+				console.log(err);
+			}
+
+			let sourceStation = [];
+
+			if (results.length == 0) {
+				return callback({
+					error: 404,
+					errorString: "Not Transfer Station"
+				});
+			}
+			else {
+				for (let i = 0; i < results.length; i++) {
+					sourceStation.push({
+						stCd: results[i].StCd,
+						stNm: results[i].StNm,
+						railCd: results[i].RailCd,
+						lnCd: results[i].LnCd
+					})
+				}
+
+			}
+			transferList.push({
+				sourceStation: sourceStation
+			})
+		});
+
+		sql = "Select * FROM stationinfotest WHERE StNm = ?;";
+
+		connection.query(sql, [stNm], function (err, results, fields) {
+
+			if (err) {
+				console.log(err);
+			}
+
+			if (results.length == 1) {
+				return callback({
+					error: 404,
+					errorString: "Not Transfer Station"
+				});
+			}
+
+			for (let i = 0; i < results.length; i++) {
+				if (results[i].StCd != stCd) {
+					const sql2 = "Select * FROM stationinfotest WHERE (StCd = ? or StCd = ?) and RailCd = ?;";
+					connection.query(sql2, [parseInt(results[i].StCd) + 1, parseInt(results[i].StCd) - 1, results[i].RailCd], function (err, results2, fields) {
+						console.log(results2);
+						let transferStation = [];
+						for (let j = 0; j < results2.length; j++) {
+							transferStation.push({
+								stCd: results2[j].StCd,
+								stNm: results2[j].StNm,
+								railCd: results2[j].RailCd,
+								lnCd: results2[j].LnCd
+							})
+						}
+						transferList.push({
+							transferStation: transferStation
+						})
+						callback(transferList);
+					});
+					
+				}
+			}
+			
+		});
+		
+	}
+
+	catch (e) {
+		console.error(e);
+		callback(e);
+	}
+}
+
+function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn , chtnNextStinCd , callback) {
+	try {
+
+		let sql = "Select * FROM stationinfotest WHERE StNm = ? and LnCd = ?;";
+		let transferInfo = [];
+
+		connection.query(sql, [stNm, chthTgtLn], function (err, results, fields) {
+
+			console.log(results);
+
+			if (err) {
+				console.log(err);
+			}
+
+			let prevStinCd = "";
+
+			if (parseInt(results[0].StCd) + 1 == parseInt(chtnNextStinCd)) {
+				prevStinCd = parseInt(results[0].StCd) - 1;
+			}
+			else {
+				console.log(2);
+				prevStinCd = parseInt(results[0].StCd) + 1;
+			}
+
+			const url = 'https://openapi.kric.go.kr/openapi/vulnerableUserInfo/transferMovement';
+			let queryParams = '?' + encodeURIComponent('serviceKey');
+			queryParams += '=' + serviceKey.subwayRailKey;
+			queryParams += '&' + encodeURIComponent('format') + '=' + encodeURIComponent('json');
+			queryParams += '&' + encodeURIComponent('railOprIsttCd') + '=' + encodeURIComponent(railCd);
+			queryParams += '&' + encodeURIComponent('lnCd') + '=' + encodeURIComponent(lnCd);
+			queryParams += '&' + encodeURIComponent('stinCd') + '=' + encodeURIComponent(stCd);
+			queryParams += '&' + encodeURIComponent('prevStinCd') + '=' + encodeURIComponent(prevStinCd);
+			queryParams += '&' + encodeURIComponent('chthTgtLn') + '=' + encodeURIComponent(chthTgtLn);
+			queryParams += '&' + encodeURIComponent('chtnNextStinCd') + '=' + encodeURIComponent(chtnNextStinCd);
+
+			console.log(url + queryParams);
+
+			//chtnNextStinCd -> 상행선 1,3
+			//chtnNextStinCd -> 하행선 2,4
+
+			return request({
+				url: url + queryParams,
+				method: 'GET'
+			}, function (error, response, body) {
+				const parse = JSON.parse(body).body;
+				console.log(parse);
+				for (let i = 0; i < parse.length; i++) {
+					//성수가 211 하행
+					//환승역 방면이 상행선이라면 1,3만 나옴
+					if (parseInt(prevStinCd) > parseInt(chtnNextStinCd)) {
+						//출발 방면이 상행선이라면
+						if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo == 1) {
+							transferInfo.push(parse[i]);
+						}
+						//출발 방면이 하행선이라면
+						else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo == 3) {
+							transferInfo.push(parse[i]);
+						}
+					}
+					//하행선인 경우
+					else {
+						//출발 방면이 상행선이라면
+						if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo == 2) {
+							transferInfo.push(parse[i]);
+						}
+						//출발 방면이 하행선이라면
+						else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo == 4) {
+							transferInfo.push(parse[i]);
+						}
+					}
+				}
+				callback(transferInfo);
+			});
+
+		});
+
+	}
+
+	catch (e) {
+		console.error(e);
+		callback(e);
+	}
+}
+
+function getConvenience(stCd, stNm, railCd, lnCd, category, callback) {
+	try {
+
+		let conveneinceInfo = [];
+
+		const url = 'https://openapi.kric.go.kr/openapi/handicapped/stationCnvFacl';
+		let queryParams = '?' + encodeURIComponent('serviceKey');
+		queryParams += '=' + serviceKey.subwayRailKey;
+		queryParams += '&' + encodeURIComponent('format') + '=' + encodeURIComponent('json');
+		queryParams += '&' + encodeURIComponent('railOprIsttCd') + '=' + encodeURIComponent(railCd);
+		queryParams += '&' + encodeURIComponent('lnCd') + '=' + encodeURIComponent(lnCd);
+		queryParams += '&' + encodeURIComponent('stinCd') + '=' + encodeURIComponent(stCd);
+
+		console.log(url + queryParams);
+
+		return request({
+			url: url + queryParams,
+			method: 'GET'
+		}, function (error, response, body) {
+			const parse = JSON.parse(body).body;
+
+			for (let i = 0; i < parse.length; i++) {
+				if (category == parse[i].gubun) {
+					conveneinceInfo.push(parse[i]);
+				}
+			}
+
+			//No Data
+			if (conveneinceInfo.length == 0) {
+				conveneinceInfo.push({
+					error: 404,
+					errorString: "No conveneince"
+				})
+			}
+
+			callback(conveneinceInfo);
 		});
 	}
 	catch (e) {
@@ -205,7 +501,7 @@ router.get('/stNm/:stNm', async (req, res) => {
 
 		await getSubwayStationName(stNm, stationList => {
 			if (stationList == 0) {
-				return res.status(404).json({
+				return res.status(500).json({
 					error: "No Station"
 				})
 			}
@@ -227,11 +523,13 @@ router.get('/stNm/:stNm', async (req, res) => {
 	}
 })
 
-router.get('/stationInfo/:stinCd', async (req, res) => {
+router.get('/stationInfo/:stCd/:stNm', async (req, res) => {
 	try {
-		stCd = req.params.stinCd;
 
-		await getSubwayStationInfo(stCd, stationinfo => {
+		stCd = req.params.stCd;
+		stNm = req.params.stNm;
+
+		await getSubwayStationInfo(stCd, stNm, stationinfo => {
 			//console.log(stationinfo.tmY);
 			return res.json({
 				stationinfo
@@ -247,189 +545,32 @@ router.get('/stationInfo/:stinCd', async (req, res) => {
 	}
 })
 
-router.get('/liftPos/stinCd/:stinCd/', async (req, res) => {
+router.get('/liftPos/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 	try {
-		return res.json({
-			"header": {
-				"resultCnt": 0,
-				"resultCode": "03",
-				"resultMsg": "데이터가 없습니다."
-			}
-		})
-	}
-	catch (e) {
-		console.error(e);
-		return res.status(500).json({
-			error: e,
-			errorString: e.toString(),
-		})
-	}
-})
-
-router.get('/liftMove/stinCd/:stinCd', async (req, res) => {
-	console.log("liftMove");
-	try {
-		/*
+		stCd = req.params.stCd;
 		stNm = req.params.stNm;
-		await getLiftRoute(stNm,stationName => {
-			return res.json({
-				stNm: stationName,
-			})
-		});
-		*/
-		return res.json({
-			"header": {
-				"resultCnt": 12,
-				"resultCode": "00",
-				"resultMsg": "정상 처리되었습니다."
-			},
-			"body": [
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 1,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 1,
-					"mvDst": null,
-					"mvContDtl": "1) (1F) 6번 출입구 옆 엘리베이터 탑승"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 1,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 2,
-					"mvDst": null,
-					"mvContDtl": "2) (B2) 대합실로 이동"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 1,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 3,
-					"mvDst": null,
-					"mvContDtl": "3) 표 내는 곳 통과"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 1,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 4,
-					"mvDst": null,
-					"mvContDtl": "4) 승강장 방향 엘리베이터 탑승"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 1,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 5,
-					"mvDst": null,
-					"mvContDtl": "5) (B3) 충무로 방면 승강장으로 이동"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 1,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 6,
-					"mvDst": null,
-					"mvContDtl": "6) 승차 (휠체어칸)"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 2,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 1,
-					"mvDst": null,
-					"mvContDtl": "1) (1F) 6번 출입구 옆 엘리베이터 탑승"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 2,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 2,
-					"mvDst": null,
-					"mvContDtl": "2) (B2) 대합실로 이동"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 2,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 3,
-					"mvDst": null,
-					"mvContDtl": "3) 표 내는 곳 통과"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 2,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 4,
-					"mvDst": null,
-					"mvContDtl": "4) 승강장 방향 엘리베이터 탑승"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 2,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 5,
-					"mvDst": null,
-					"mvContDtl": "5) (B3) 약수 방면 승강장으로 이동"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 2,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 6,
-					"mvDst": null,
-					"mvContDtl": "6) 승차 (휠체어칸)"
-				}
-			]
-		})
-	}
-	catch (e) {
-		console.error(e);
-		return res.status(500).json({
-			error: e,
-			errorString: e.toString(),
-		})
-	}
-})
+		railCd = req.params.railCd;
+		lnCd = req.params.lnCd;
 
-router.get('/ElevatorPos/stinCd/:stinCd/', async (req, res) => {
-	try {
+		await getLiftPos(stCd, stNm, railCd, lnCd, liftPosInfo => {
+			//console.log(callback);
+
+			return res.json({
+				"railOprIsttCd": liftPosInfo.railOprIsttCd,
+				"lnCd": liftPosInfo.lnCd,
+				"stinCd": liftPosInfo.stinCd,
+				"exitNo": liftPosInfo.exitNo,
+				"dtlLoc": liftPosInfo.dtlLoc,
+				"grndDvNmFr": liftPosInfo.grndDvNmFr,
+				"runStinFlorFr": liftPosInfo.runStinFlorFr,
+				"grndDvNmTo": liftPosInfo.grndDvNmTo,
+				"runStinFlorTo": liftPosInfo.runStinFlorTo,
+				"len": liftPosInfo.len,
+				"wd": liftPosInfo.wd,
+				"bndWgt": liftPosInfo.bndWgt
+			});
+		})
+
 		
 	}
 	catch (e) {
@@ -441,151 +582,18 @@ router.get('/ElevatorPos/stinCd/:stinCd/', async (req, res) => {
 	}
 })
 
-router.get('/ElevatorMove/stinCd/:stinCd/', async (req, res) => {
+router.get('/liftMove/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
+	console.log("liftMove");
 	try {
-		return res.json({
+		stCd = req.params.stCd;
+		stNm = req.params.stNm;
+		railCd = req.params.railCd;
+		lnCd = req.params.lnCd;
 
-			"header": {
-				"resultCnt": 12,
-				"resultCode": "00",
-				"resultMsg": "정상 처리되었습니다."
-			},
-			"body": [
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 1,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 1,
-					"mvDst": null,
-					"mvContDtl": "1) (1F) 6번 출입구 옆 엘리베이터 탑승"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 1,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 1,
-					"mvDst": null,
-					"mvContDtl": "1) (1F) 6번 출입구 옆 엘리베이터 탑승"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 2,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 2,
-					"mvDst": null,
-					"mvContDtl": "2) (B2) 대합실로 이동"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 2,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 2,
-					"mvDst": null,
-					"mvContDtl": "2) (B2) 대합실로 이동"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 3,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 3,
-					"mvDst": null,
-					"mvContDtl": "3) 표 내는 곳 통과"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 3,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 3,
-					"mvDst": null,
-					"mvContDtl": "3) 표 내는 곳 통과"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 4,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 4,
-					"mvDst": null,
-					"mvContDtl": "4) 승강장 방향 엘리베이터 탑승"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 4,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 4,
-					"mvDst": null,
-					"mvContDtl": "4) 승강장 방향 엘리베이터 탑승"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 5,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 5,
-					"mvDst": null,
-					"mvContDtl": "5) (B3) 약수 방면 승강장으로 이동"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 5,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 5,
-					"mvDst": null,
-					"mvContDtl": "5) (B3) 충무로 방면 승강장으로 이동"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 6,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 6,
-					"mvDst": null,
-					"mvContDtl": "6) 승차 (휠체어칸)"
-				},
-				{
-					"railOprIsttCd": "S1",
-					"lnCd": "3",
-					"stinCd": "322",
-					"mvPathMgNo": 6,
-					"mvPathDvCd": "1",
-					"mvPathDvNm": "출입구-승강장",
-					"mvTpOrdr": 6,
-					"mvDst": null,
-					"mvContDtl": "6) 승차 (휠체어칸)"
-				}
-			]
-
-		})
+		await getLiftMove(stCd, stNm, railCd, lnCd, callback => {
+			//console.log(callback);
+			return res.json(callback);
+		});
 	}
 	catch (e) {
 		console.error(e);
@@ -596,141 +604,64 @@ router.get('/ElevatorMove/stinCd/:stinCd/', async (req, res) => {
 	}
 })
 
-router.get('/transferMove/stinCd/:stinCd', async (req, res) => {
+router.get('/ElevatorPos/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 	try {
-		return res.json({
+		stCd = req.params.stCd;
+		stNm = req.params.stNm;
+		railCd = req.params.railCd;
+		lnCd = req.params.lnCd;
 
-			"header": {
-				"resultcnt": 12,
-				"resultcode": 0,
-				"resultmsg": "정상 처리되었습니다."
-			},
-			"body": {
-				"item": [
-					{
-						"mvpathmgno": 2,
-						"chtnmvtpordr": 1,
-						"mvcontdtl": "1) (B3) 3호선 을지로3가 방면 승강장 하차",
-						"stmovepath": "3호선 을지로3가 방면",
-						"edmovepath": "4호선 명동 방면",
-						"imgpath": "http://hc.kric.go.kr/hc/ext/images/visual/handicapped/mvPath/S1/S1_3_0563_2_3.png",
-						"elvttpcd": {},
-						"elvtsttcd": {}
-					},
-					{
-						"mvpathmgno": 2,
-						"chtnmvtpordr": 2,
-						"mvcontdtl": "2) 대합실 방향 휠체어리프트 탑승",
-						"stmovepath": "3호선 을지로3가 방면",
-						"edmovepath": "4호선 명동 방면",
-						"imgpath": "http://hc.kric.go.kr/hc/ext/images/visual/handicapped/mvPath/S1/S1_3_0563_2_3.png",
-						"elvttpcd": {},
-						"elvtsttcd": {}
-					},
-					{
-						"mvpathmgno": 2,
-						"chtnmvtpordr": 3,
-						"mvcontdtl": "3) (B2) 대합실로 이동",
-						"stmovepath": "3호선 을지로3가 방면",
-						"edmovepath": "4호선 명동 방면",
-						"imgpath": "http://hc.kric.go.kr/hc/ext/images/visual/handicapped/mvPath/S1/S1_3_0563_2_3.png",
-						"elvttpcd": {},
-						"elvtsttcd": {}
-					},
-					{
-						"mvpathmgno": 2,
-						"chtnmvtpordr": 4,
-						"mvcontdtl": "4) 4호선 명동 방면 엘리베이터 탑승",
-						"stmovepath": "3호선 을지로3가 방면",
-						"edmovepath": "4호선 명동 방면",
-						"imgpath": "http://hc.kric.go.kr/hc/ext/images/visual/handicapped/mvPath/S1/S1_3_0563_2_3.png",
-						"elvttpcd": {},
-						"elvtsttcd": {}
-					},
-					{
-						"mvpathmgno": 2,
-						"chtnmvtpordr": 5,
-						"mvcontdtl": "5) (B3) 4호선 명동 방면 승강장으로 이동",
-						"stmovepath": "3호선 을지로3가 방면",
-						"edmovepath": "4호선 명동 방면",
-						"imgpath": "http://hc.kric.go.kr/hc/ext/images/visual/handicapped/mvPath/S1/S1_3_0563_2_3.png",
-						"elvttpcd": {},
-						"elvtsttcd": {}
-					},
-					{
-						"mvpathmgno": 2,
-						"chtnmvtpordr": 6,
-						"mvcontdtl": "6) 승차 (휠체어칸)",
-						"stmovepath": "3호선 을지로3가 방면",
-						"edmovepath": "4호선 명동 방면",
-						"imgpath": "http://hc.kric.go.kr/hc/ext/images/visual/handicapped/mvPath/S1/S1_3_0563_2_3.png",
-						"elvttpcd": {},
-						"elvtsttcd": {}
-					},
-					{
-						"mvpathmgno": 4,
-						"chtnmvtpordr": 1,
-						"mvcontdtl": "1) (B3) 3호선 동대입구 방면 승강장 하차",
-						"stmovepath": "3호선 동대입구 방면",
-						"edmovepath": "4호선 명동 방면",
-						"imgpath": "http://hc.kric.go.kr/hc/ext/images/visual/handicapped/mvPath/S1/S1_3_0563_4_3.png",
-						"elvttpcd": {},
-						"elvtsttcd": {}
-					},
-					{
-						"mvpathmgno": 4,
-						"chtnmvtpordr": 2,
-						"mvcontdtl": "2) 대합실 방향 휠체어리프트 탑승",
-						"stmovepath": "3호선 동대입구 방면",
-						"edmovepath": "4호선 명동 방면",
-						"imgpath": "http://hc.kric.go.kr/hc/ext/images/visual/handicapped/mvPath/S1/S1_3_0563_4_3.png",
-						"elvttpcd": {},
-						"elvtsttcd": {}
-					},
-					{
-						"mvpathmgno": 4,
-						"chtnmvtpordr": 3,
-						"mvcontdtl": "3) (B2) 대합실로 이동",
-						"stmovepath": "3호선 동대입구 방면",
-						"edmovepath": "4호선 명동 방면",
-						"imgpath": "http://hc.kric.go.kr/hc/ext/images/visual/handicapped/mvPath/S1/S1_3_0563_4_3.png",
-						"elvttpcd": {},
-						"elvtsttcd": {}
-					},
-					{
-						"mvpathmgno": 4,
-						"chtnmvtpordr": 4,
-						"mvcontdtl": "4) 4호선 명동 방면 엘리베이터 탑승",
-						"stmovepath": "3호선 동대입구 방면",
-						"edmovepath": "4호선 명동 방면",
-						"imgpath": "http://hc.kric.go.kr/hc/ext/images/visual/handicapped/mvPath/S1/S1_3_0563_4_3.png",
-						"elvttpcd": {},
-						"elvtsttcd": {}
-					},
-					{
-						"mvpathmgno": 4,
-						"chtnmvtpordr": 5,
-						"mvcontdtl": "5) (B3) 4호선 명동 방면 승강장으로 이동",
-						"stmovepath": "3호선 동대입구 방면",
-						"edmovepath": "4호선 명동 방면",
-						"imgpath": "http://hc.kric.go.kr/hc/ext/images/visual/handicapped/mvPath/S1/S1_3_0563_4_3.png",
-						"elvttpcd": {},
-						"elvtsttcd": {}
-					},
-					{
-						"mvpathmgno": 4,
-						"chtnmvtpordr": 6,
-						"mvcontdtl": "6) 승차 (휠체어칸)",
-						"stmovepath": "3호선 동대입구 방면",
-						"edmovepath": "4호선 명동 방면",
-						"imgpath": "http://hc.kric.go.kr/hc/ext/images/visual/handicapped/mvPath/S1/S1_3_0563_4_3.png",
-						"elvttpcd": {},
-						"elvtsttcd": {}
-					}
-				]
+		await getElevatorPos(stCd, stNm, railCd, lnCd, callback => {
+			console.log(callback);
+			return res.json(callback)
+		});
+	}
+	catch (e) {
+		console.error(e);
+		return res.status(500).json({
+			error: e,
+			errorString: e.toString(),
+		})
+	}
+})
+
+router.get('/ElevatorMove/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
+	try {
+		stCd = req.params.stCd;
+		stNm = req.params.stNm;
+		railCd = req.params.railCd;
+		lnCd = req.params.lnCd;
+
+		await getElevatorMove(stCd, stNm, railCd, lnCd, callback => {
+			console.log(callback);
+			return res.json(callback);
+		});
+	}
+	catch (e) {
+		console.error(e);
+		return res.status(500).json({
+			error: e,
+			errorString: e.toString(),
+		})
+	}
+})
+
+
+router.get('/transferMove/transferList/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
+	try {
+
+		stCd = req.params.stCd;
+		stNm = req.params.stNm;
+		railCd = req.params.railCd;
+		lnCd = req.params.lnCd;
+
+		await getTransferList(stCd, stNm, railCd, lnCd, callback => {
+			if (callback[0].error != null) {
+				return res.status(500).json(callback[0])
 			}
-
-		})
+			return res.json(callback)
+		});
+		
 	}
 	catch (e) {
 		console.error(e);
@@ -739,11 +670,24 @@ router.get('/transferMove/stinCd/:stinCd', async (req, res) => {
 			errorString: e.toString(),
 		})
 	}
-})
+});
 
-router.get('/platformDis/stinCd/:stinCd', async (req, res) => {
+router.get('/transferMove/transferInfo/:stCd/:stNm/:railCd/:lnCd/:prevStinCd/:chthTgtLn/:chtnNextStinCd', async (req, res) => {
 	try {
 
+		stCd = req.params.stCd;
+		stNm = req.params.stNm;
+		railCd = req.params.railCd;
+		lnCd = req.params.lnCd;
+		prevStinCd = req.params.prevStinCd;
+		chthTgtLn = req.params.chthTgtLn;
+		chtnNextStinCd = req.params.chtnNextStinCd;
+
+		await getTransferInfo(stCd, stNm, railCd, lnCd, prevStinCd, chthTgtLn, chtnNextStinCd, callback => {
+			
+			return res.json(callback)
+		});
+
 	}
 	catch (e) {
 		console.error(e);
@@ -752,11 +696,24 @@ router.get('/platformDis/stinCd/:stinCd', async (req, res) => {
 			errorString: e.toString(),
 		})
 	}
-})
+});
 
-router.get('/wheelchairPlace/stinCd', async (req, res) => {
+router.get('/convenience/:stCd/:stNm/:railCd/:lnCd/:category', async (req, res) => {
 	try {
+		stCd = req.params.stCd;
+		stNm = req.params.stNm;
+		railCd = req.params.railCd;
+		lnCd = req.params.lnCd;
+		category = req.params.category;
 
+		await getConvenience(stCd, stNm, railCd, lnCd, category, callback => {
+			if (callback[0].error != null) {
+				return res.status(500).json(callback[0]);
+			}
+			return res.json(callback);
+		});
+
+		
 	}
 	catch (e) {
 		console.error(e);
@@ -765,10 +722,21 @@ router.get('/wheelchairPlace/stinCd', async (req, res) => {
 			errorString: e.toString(),
 		})
 	}
-})
+});
 
-router.get('/liftRoute/:stCd', async (req, res) => {
+router.get('/nevigation', async (req, res) => {
+	try {
+		return res.json({
 
-})
+		})
+	}
+	catch (e) {
+		console.error(e);
+		return res.status(500).json({
+			error: e,
+			errorString: e.toString(),
+		})
+	}
+});
 
 module.exports = router;

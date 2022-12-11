@@ -1,23 +1,87 @@
+html,
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
 .main {
     display: flex;
     flex-direction: column;
-    padding: 2.5rem;
+    align-items: center;
 }
 
 .bottom {
-    display: flex;
-    justify-content: space-between;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(40, 40, 40, 0.8);
 }
 
-@media screen and (max-width:1676px) {
-    .main {
-        display: flex;
-        flex-direction: column;
-        padding: 2.5rem;
+.main {
+    animation: fadein 2s;
+    -moz-animation: fadein 2s;
+    /* Firefox */
+    -webkit-animation: fadein 2s;
+    /* Safari and Chrome */
+    -o-animation: fadein 2s;
+    /* Opera */
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
     }
 
-    .bottom {
-        display: flex;
-        flex-direction: column;
+    to {
+        opacity: 1;
     }
+}
+
+@-moz-keyframes fadein {
+
+    /* Firefox */
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadein {
+
+    /* Safari and Chrome */
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes fadein {
+
+    /* Opera */
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
 }

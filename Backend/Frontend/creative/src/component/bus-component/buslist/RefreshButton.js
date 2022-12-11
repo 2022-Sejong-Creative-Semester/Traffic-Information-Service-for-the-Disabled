@@ -1,36 +1,25 @@
 import styled from "styled-components";
 import axios from "axios";
+import { api } from "../../auth/Api.js"
 import { useSelector, useDispatch } from "react-redux";
 import { BusActions } from "../../../store/Bus-slice";
 
 const StyledRefreshButton = styled.button`
-width:65px;
-height:100%;
+width:50px;
+height:50px;
 border: 0;
 border-radius:50px;
-position:sticky;
-bottom:20px;
+background-color:transparent;
 img{
     width:100%;
 }
 :hover{
-    width:65px;
-    height:65px;
-    background-color:#dcdcdc;
+    cursor: pointer;
 }
-img:hover{
-    -webkit-animation:spin 0.4s linear;
-	-moz-animation:spin 0.4 linear;
-    animation:spin 0.4s linear;
+@media (max-width:500px){
+    width:8vw;
+    height:8vw;
 }
-:visited{
-    width:65px;
-    height:65px;
-    background-color:#dcdcdc;
-}
-@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
-@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
-@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 `
 
 
@@ -42,7 +31,7 @@ const RefreshButton = () => {
     };
     const Refresh = () => {
         clickCheck.check = true;
-        axios.get(`/bus/arsId/${busId}`, {
+        api.get(`/bus/arsId/${busId}`, {
 
         }).then(res => {
             const { data } = res;
