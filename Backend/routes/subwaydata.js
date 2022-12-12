@@ -41,6 +41,7 @@ function getSubwayStationName(stNm, callback){
 					stNm: results[i].StNm,
 					tmX: "0",
 					tmY: "0"
+
 				})
 			}
 
