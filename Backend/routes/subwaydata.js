@@ -177,6 +177,10 @@ function getLiftMove(stCd, stNm, railCd, lnCd, callback) {
 			for (let i = 0; i < liftMoveParse.length; i++) {
 				if (liftMoveParse[i].mvTpOrdr == 1) {
 					if (liftInfo.length != 0) {
+						liftInfo.unshift({
+							direction: liftInfo[liftInfo.length - 2].mvContDtl.split(' ')[2]
+						})
+
 						liftMoveInfo.push(liftInfo);
 						liftInfo = [];
 					}
@@ -184,6 +188,9 @@ function getLiftMove(stCd, stNm, railCd, lnCd, callback) {
 				liftInfo.push(liftMoveParse[i]);
 			}
 			if (liftInfo.length != 0) {
+				liftInfo.unshift({
+					direction: liftInfo[liftInfo.length - 2].mvContDtl.split(' ')[2]
+				})
 				liftMoveInfo.push(liftInfo);
 				liftInfo = [];
 			}
@@ -253,6 +260,9 @@ function getElevatorMove(stCd, stNm, railCd, lnCd, callback) {
 			for (let i = 0; i < elevatorMoveParse.length; i++) {
 				if (elevatorMoveParse[i].mvTpOrdr == 1) {
 					if (elevatorInfo.length != 0) {
+						elevatorInfo.unshift({
+							direction: elevatorInfo[elevatorInfo.length - 2].mvContDtl.split(' ')[2]
+						})
 						elevatorMove.push(elevatorInfo);
 						elevatorInfo = [];
 					}
@@ -260,6 +270,9 @@ function getElevatorMove(stCd, stNm, railCd, lnCd, callback) {
 				elevatorInfo.push(elevatorMoveParse[i]);
 			}
 			if (elevatorInfo.length != 0) {
+				elevatorInfo.unshift({
+					direction: elevatorInfo[elevatorInfo.length - 2].mvContDtl.split(' ')[2]
+				})
 				elevatorMove.push(elevatorInfo);
 				elevatorInfo = [];
 			}
@@ -329,7 +342,6 @@ function getTransferList(stCd, stNm, railCd, lnCd, callback) {
 				if (results[i].StCd != stCd) {
 					const sql2 = "Select * FROM stationinfotest WHERE (StCd = ? or StCd = ?) and RailCd = ?;";
 					connection.query(sql2, [parseInt(results[i].StCd) + 1, parseInt(results[i].StCd) - 1, results[i].RailCd], function (err, results2, fields) {
-						console.log(results2);
 						let transferStation = [];
 						for (let j = 0; j < results2.length; j++) {
 							transferStation.push({
@@ -365,8 +377,6 @@ function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn , chtnNextSti
 		let transferInfo = [];
 
 		connection.query(sql, [stNm, chthTgtLn], function (err, results, fields) {
-
-			console.log(results);
 
 			if (err) {
 				console.log(err);
@@ -410,7 +420,7 @@ function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn , chtnNextSti
 
 					//2호선의 경우 상 하행이 반대
 					if (railCd == "S1" && lnCd == "2") {
-						//console.log("2호선");
+
 						//환승역 방면이 상행선이라면 2, 4만 나옴
 						if (parseInt(prevStinCd) > parseInt(chtnNextStinCd)) {
 							//출발 방면이 상행선이라면
