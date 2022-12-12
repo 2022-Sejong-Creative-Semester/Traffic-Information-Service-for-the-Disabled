@@ -177,8 +177,9 @@ function getLiftMove(stCd, stNm, railCd, lnCd, callback) {
 			for (let i = 0; i < liftMoveParse.length; i++) {
 				if (liftMoveParse[i].mvTpOrdr == 1) {
 					if (liftInfo.length != 0) {
+						const direction = liftInfo[liftInfo.length - 2].mvContDtl.split(' 방면')[0].split(' ');
 						liftInfo.unshift({
-							direction: liftInfo[liftInfo.length - 2].mvContDtl.split(' ')[2]
+							direction: direction[direction.length - 1]
 						})
 
 						liftMoveInfo.push(liftInfo);
@@ -188,8 +189,9 @@ function getLiftMove(stCd, stNm, railCd, lnCd, callback) {
 				liftInfo.push(liftMoveParse[i]);
 			}
 			if (liftInfo.length != 0) {
+				const direction = liftInfo[liftInfo.length - 2].mvContDtl.split(' 방면')[0].split(' ');
 				liftInfo.unshift({
-					direction: liftInfo[liftInfo.length - 2].mvContDtl.split(' ')[2]
+					direction: direction[direction.length - 1]
 				})
 				liftMoveInfo.push(liftInfo);
 				liftInfo = [];
@@ -260,8 +262,9 @@ function getElevatorMove(stCd, stNm, railCd, lnCd, callback) {
 			for (let i = 0; i < elevatorMoveParse.length; i++) {
 				if (elevatorMoveParse[i].mvTpOrdr == 1) {
 					if (elevatorInfo.length != 0) {
+						const direction = elevatorInfo[elevatorInfo.length - 2].mvContDtl.split(' 방면')[0].split(' ');
 						elevatorInfo.unshift({
-							direction: elevatorInfo[elevatorInfo.length - 2].mvContDtl.split(' ')[2]
+							direction: direction[direction.length - 1]
 						})
 						elevatorMove.push(elevatorInfo);
 						elevatorInfo = [];
@@ -270,8 +273,9 @@ function getElevatorMove(stCd, stNm, railCd, lnCd, callback) {
 				elevatorInfo.push(elevatorMoveParse[i]);
 			}
 			if (elevatorInfo.length != 0) {
+				const direction = elevatorInfo[elevatorInfo.length - 2].mvContDtl.split(' 방면')[0].split(' ');
 				elevatorInfo.unshift({
-					direction: elevatorInfo[elevatorInfo.length - 2].mvContDtl.split(' ')[2]
+					direction: direction[direction.length - 1]
 				})
 				elevatorMove.push(elevatorInfo);
 				elevatorInfo = [];
