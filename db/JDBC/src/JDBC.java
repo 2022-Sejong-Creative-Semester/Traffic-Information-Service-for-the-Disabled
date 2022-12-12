@@ -9,9 +9,9 @@ public class JDBC {
 
 	public JDBC() {
 		try {
-			String url = "jdbc:mysql://localhost/api?characterEncoding=UTF-8&serverTimezone=UTC";
-			String user = "root";
-			String passwd = "djfxlaoxmflrtm5";
+			String url = "jdbc:mysql://tmp@34.168.52.103:22:xe/api?characterEncoding=UTF-8&serverTimezone=UTC";
+			String user = "tmp";
+			String passwd = "test";
 			con = DriverManager.getConnection(url,
 					user, passwd);
 			
