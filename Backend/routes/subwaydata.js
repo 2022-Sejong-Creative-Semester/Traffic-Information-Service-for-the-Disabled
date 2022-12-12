@@ -39,8 +39,8 @@ function getSubwayStationName(stNm, callback){
 					lnNm: results[i].LnNm,
 					stCd: results[i].StCd,
 					stNm: results[i].StNm,
-					tmX: stationinfo.stinLocLon,
-					tmY: stationinfo.stinLocLat
+					tmX: "0",
+					tmY: "0"
 				})
 			}
 
