@@ -11,6 +11,11 @@ const SubwaySlice = createSlice({
             elechack: false,
             imgPath: "",
             //elemethod: []
+        },
+        transferDetail: {
+            transCheck: false,
+            prev: {},
+            next: {}
         }
     },
     reducers: {
@@ -31,6 +36,11 @@ const SubwaySlice = createSlice({
                 imgPath: "",
                 //elemethod: []
             }
+            state.transferDetail = {
+                transCheck: false,
+                prev: {},
+                next: {}
+            }
         },
         clickSubway(state, action) {
             state.currentSubway = action.payload;
@@ -39,6 +49,11 @@ const SubwaySlice = createSlice({
             state.elevatorDetail.imgPath = action.payload.imgPath;
             //state.elevatorDetail.elemethod = action.payload.elemethod;
             state.elevatorDetail.elechack = true;
+        },
+        addTransfer(state, action) {
+            state.transferDetail.transCheck = true;
+            state.transferDetail.prev = action.payload.prev;
+            state.transferDetail.next = action.payload.next;
         }
     }
 })

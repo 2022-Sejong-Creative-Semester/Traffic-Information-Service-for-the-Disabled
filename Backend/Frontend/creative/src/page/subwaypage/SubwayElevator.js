@@ -7,26 +7,31 @@ import SubwayPanel from "../../component/subway-component/subwaypanel/SubwayPane
 import { useParams } from "react-router-dom"
 import { api } from "../../component/auth/Api.js"
 import { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import { SubwayActions } from "../../store/Subway-slice"
 
 const SubwayElevator = () => {
-    const params = useParams()
+    const params = useParams();
+    const dispatch = useDispatch();
     const elevatorDetail = useSelector(state => state.subway.elevatorDetail)
+    const elechack = useSelector(state => state.subway.elevatorDetail.elechack)
     const [ElePos, setElePos] = useState([]);
     useEffect(() => {
         const stCd = params.stCd;
         const stNm = params.stNm;
         const railCd = params.railCd;
         const lnCd = params.lnCd;
+        dispatch(SubwayActions.saveSubway({ stCd, stNm, railCd, lnCd }))
         const getBathChair = async () => {
             await api.get(`subway/ElevatorMove/${stCd}/${stNm}/${railCd}/${lnCd}`)
                 .then(res => {
                     const { data } = res;
 
                 })
-            await api.get(`subway/convenience/${stCd}/${stNm}/${railCd}/${lnCd}/EV`)
+            await api.get(`subway/convenience/${stCd}/${stNm}/${railCd}/${lnCd}`)
                 .then(res => {
                     const { data } = res;
+
                     setElePos(data)
 
                 })
@@ -40,10 +45,10 @@ const SubwayElevator = () => {
                 <SubwayPanel text={["엘리베이터 위치"]} menu={<SubwayBar />} />
                 <div className={classes.subwaymain}>
                     <SubwayElevatorDetail info={ElePos} />
-                    <div className={classes.subwaylist}>
+                    {elechack && <div className={classes.subwaylist}>
                         <SubwayElevatorMap />
                         <img src={`${elevatorDetail.imgPath}`} />
-                    </div>
+                    </div>}
                 </div>
             </div>
         </div>

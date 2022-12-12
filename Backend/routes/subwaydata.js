@@ -402,6 +402,7 @@ function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn , chtnNextSti
 				method: 'GET'
 			}, function (error, response, body) {
 				const parse = JSON.parse(body).body;
+
 				for (let i = 0; i < parse.length; i++) {
 					//성수가 211 하행
 					//railCd로 비교

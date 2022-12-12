@@ -18,12 +18,11 @@ const SubwayDetailPage = () => {
     useEffect(() => {
         const stCd = params.stCd;
         const stNm = params.stNm;
-        const getDetail = () => {
-            api.get(`subway/stationInfo/${stCd}/${stNm}`)
+        const getDetail = async () => {
+            await api.get(`subway/stationInfo/${stCd}/${stNm}`)
                 .then(res => {
                     const { data } = res;
                     const { stationinfo } = data;
-
                     setInfo(stationinfo);
                     dispatch(SubwayActions.saveSubway(stationinfo))
                 })
