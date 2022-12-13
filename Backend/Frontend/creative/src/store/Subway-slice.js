@@ -7,15 +7,14 @@ const SubwaySlice = createSlice({
         subwayCheck: false,
         subwayInfo: {},
         currentSubway: "",
-        elevatorDetail: {
-            elechack: false,
-            imgPath: "",
-            //elemethod: []
-        },
         transferDetail: {
             transCheck: false,
-            prev: {},
-            next: {}
+            transRoad: [],
+            transferImage: ""
+        },
+        transprevnext: {
+            prev: "",
+            next: ""
         }
     },
     reducers: {
@@ -31,29 +30,38 @@ const SubwaySlice = createSlice({
             state.subwayCheck = false;
             state.subwayInfo = {};
             state.currentSubway = "";
-            state.elevatorDetail = {
-                elechack: false,
-                imgPath: "",
-                //elemethod: []
-            }
             state.transferDetail = {
                 transCheck: false,
-                prev: {},
-                next: {}
-            }
+                transRoad: [],
+                transferImage: ""
+            };
+            state.transprevnext = {
+                prev: "",
+                next: ""
+            };
         },
         clickSubway(state, action) {
             state.currentSubway = action.payload;
         },
-        addelevator(state, action) {
-            state.elevatorDetail.imgPath = action.payload.imgPath;
-            //state.elevatorDetail.elemethod = action.payload.elemethod;
-            state.elevatorDetail.elechack = true;
-        },
         addTransfer(state, action) {
             state.transferDetail.transCheck = true;
-            state.transferDetail.prev = action.payload.prev;
-            state.transferDetail.next = action.payload.next;
+            state.transferDetail.transRoad = action.payload;
+            state.transferDetail.transferImage = action.payload[0].imgPath;
+        },
+        addprenex(state, action) {
+            state.transprevnext.next = action.payload.next;
+            state.transprevnext.prev = action.payload.prev;
+        },
+        initialtrans(state) {
+            state.transferDetail = {
+                transCheck: false,
+                transRoad: [],
+                transferImage: ""
+            };
+            state.transprevnext = {
+                prev: "",
+                next: ""
+            }
         }
     }
 })

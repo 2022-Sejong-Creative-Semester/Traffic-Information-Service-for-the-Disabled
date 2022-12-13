@@ -17,8 +17,9 @@ padding:0;
 margin:0;
 overflow:auto;
 @media (max-width:500px) {
+    border: 4px solid #CDD029 ;
     width:100%;
-    height:50vw;
+    height:30vh;
 }
 `
 

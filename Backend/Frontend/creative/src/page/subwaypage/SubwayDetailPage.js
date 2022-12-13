@@ -9,7 +9,7 @@ import { SubwayActions } from "../../store/Subway-slice.js"
 import { api } from "../../component/auth/Api.js"
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
-
+import axios from "axios"
 
 const SubwayDetailPage = () => {
     const params = useParams()
@@ -19,7 +19,7 @@ const SubwayDetailPage = () => {
         const stCd = params.stCd;
         const stNm = params.stNm;
         const getDetail = async () => {
-            await api.get(`subway/stationInfo/${stCd}/${stNm}`)
+            await axios.get(`/subway/stationInfo/${stCd}/${stNm}`)
                 .then(res => {
                     const { data } = res;
                     const { stationinfo } = data;

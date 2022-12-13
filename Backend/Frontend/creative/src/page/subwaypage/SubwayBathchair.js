@@ -6,7 +6,7 @@ import { api } from "../../component/auth/Api.js"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { SubwayActions } from "../../store/Subway-slice"
-
+import axios from "axios"
 import SubwayBar from "../../component/subway-component/subwaymenubar/SubwayBar.js"
 import SubwayInfo from "../../component/subway-component/subwayinfo/SubwayInfo.js"
 
@@ -21,23 +21,10 @@ const SubwayBathchair = () => {
         const railCd = params.railCd;
         const lnCd = params.lnCd;
         dispatch(SubwayActions.saveSubway({ stCd, stNm, railCd, lnCd }))
-        const checklift = async () => {
-            await api.get(`subway/convenience/${stCd}/${stNm}/${railCd}/${lnCd}/WCLF`)
-                .then(res => {
-                    const { data } = res;
-                    console.log(data)
-                })
-                .catch(error => {
-                    console.log("에러발생!")
-                    console.log(error)
-                })
-        }
-        checklift();
         const getBathChair = async () => {
-            await api.get(`subway/liftMove/${stCd}/${stNm}/${railCd}/${lnCd}`)
+            await axios.get(`/subway/liftMove/${stCd}/${stNm}/${railCd}/${lnCd}`)
                 .then(res => {
                     const { data } = res;
-                    console.log(data)
                     setBath(data)
                 })
         }

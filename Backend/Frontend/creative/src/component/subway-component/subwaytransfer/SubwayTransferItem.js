@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SubwayActions } from "../../../store/Subway-slice";
-
+import { api } from "../../auth/Api";
+import axios from "axios"
 const StyldeSubwayItems = styled.li`
 display:flex;
 justify-content:space-between;
@@ -25,7 +26,7 @@ font-family: 'Pretendard-Regular';
     color:#000000;
 }
 @media (max-width:500px){
-    height:43%;
+    height:40%;
     .name{
         font-size: 4.5vw;
     }
@@ -34,10 +35,19 @@ font-family: 'Pretendard-Regular';
 
 const SubwayTransferItems = ({ items }) => {
     const { prev, next } = items
+    const si = useSelector(state => state.subway.subwayInfo)
     const dispatch = useDispatch();
 
     const ClickSubway = () => {
-        dispatch(SubwayActions.addTransfer({ prev, next }))
+        const getTransfer = async () => {
+            await axios.get(`/subway/transferMove/transferInfo/${si.stCd}/${si.stNm}/${si.railCd}/${si.lnCd}/${prev.stCd}/${next.lnCd}/${next.stCd}`)
+                .then(res => {
+                    const { data } = res;
+                    dispatch(SubwayActions.addTransfer(data))
+                    dispatch(SubwayActions.addprenex({ prev, next }))
+                })
+        }
+        getTransfer()
     }
 
     return (

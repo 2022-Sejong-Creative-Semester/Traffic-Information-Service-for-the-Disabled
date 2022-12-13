@@ -1,13 +1,15 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import classes from "./Mapping.module.css"
-import axios from "axios";
+import { api } from "../auth/Api";
 import { BusActions } from "../../store/Bus-slice";
+import axios from "axios"
 
 const Mapping = () => {
     const dispatch = useDispatch()
     const marker = useSelector(state => state.map.marker)
     const position = useSelector(state => state.map.position)
+    const arsid = useSelector(state => state.bus.currentStation)
     useEffect(() => {
         const container = document.getElementById("map");
         const options = {
@@ -20,6 +22,7 @@ const Mapping = () => {
     })
 
     const mapcoordinate = (marker, map) => {
+        const element = marker.filter(id => id.arsId === arsid)
         marker.forEach(element => {
             const imageSrc = './image/busImage.png' // 마커이미지의 주소입니다    
             const imageSize = new window.kakao.maps.Size(64, 69)
@@ -31,24 +34,22 @@ const Mapping = () => {
                 clickable: true,
                 image: markerImage
             })
-            /*window.kakao.maps.event.addListener(marker, 'click', () => {
+            window.kakao.maps.event.addListener(marker, 'click', () => {
                 submitStationId(element.arsId)
-            })*/
+            })
             marker.setMap(map)
         });
     }
 
     const submitStationId = (id) => {
-        axios.get(`/bus/arsId/${id}`, {
-
-        }).then(res => {
-            const { data } = res;
-            console.log(data)
-            dispatch(BusActions.refreshBus(id))
-            dispatch(BusActions.addBusInfo(data))
-        }).catch(error => {
-            alert("저상 버스가 없습니다.")
-        })
+        axios.get(`/bus/arsId/${id}`)
+            .then(res => {
+                const { data } = res;
+                dispatch(BusActions.refreshBus(id))
+                dispatch(BusActions.addBusInfo(data))
+            }).catch(error => {
+                alert("저상 버스가 없습니다.")
+            })
     }
 
     return (

@@ -1,5 +1,3 @@
-import SubwayElevatorDetail from "../../component/subway-component/subwayElevator/SubwayElevatorDetail"
-import SubwayElevatorMap from "../../component/subway-component/subwayElevator/SubwayElevatorMap"
 import classes from "./SubwayElevator.module.css"
 import Header from "../../component/header/Header.js"
 import SubwayBar from "../../component/subway-component/subwaymenubar/SubwayBar.js"
@@ -7,14 +5,12 @@ import SubwayPanel from "../../component/subway-component/subwaypanel/SubwayPane
 import { useParams } from "react-router-dom"
 import { api } from "../../component/auth/Api.js"
 import { useEffect, useState } from "react"
-import { useSelector, useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
 import { SubwayActions } from "../../store/Subway-slice"
-
+import axios from "axios"
 const SubwayElevator = () => {
     const params = useParams();
     const dispatch = useDispatch();
-    const elevatorDetail = useSelector(state => state.subway.elevatorDetail)
-    const elechack = useSelector(state => state.subway.elevatorDetail.elechack)
     const [ElePos, setElePos] = useState([]);
     useEffect(() => {
         const stCd = params.stCd;
@@ -23,17 +19,10 @@ const SubwayElevator = () => {
         const lnCd = params.lnCd;
         dispatch(SubwayActions.saveSubway({ stCd, stNm, railCd, lnCd }))
         const getBathChair = async () => {
-            await api.get(`subway/ElevatorMove/${stCd}/${stNm}/${railCd}/${lnCd}`)
+            await axios.get(`/subway/convenience/${stCd}/${stNm}/${railCd}/${lnCd}`)
                 .then(res => {
                     const { data } = res;
-
-                })
-            await api.get(`subway/convenience/${stCd}/${stNm}/${railCd}/${lnCd}`)
-                .then(res => {
-                    const { data } = res;
-
                     setElePos(data)
-
                 })
         }
         getBathChair()
@@ -43,12 +32,8 @@ const SubwayElevator = () => {
             <Header />
             <div className={classes.main}>
                 <SubwayPanel text={["엘리베이터 위치"]} menu={<SubwayBar />} />
-                <div className={classes.subwaymain}>
-                    <SubwayElevatorDetail info={ElePos} />
-                    {elechack && <div className={classes.subwaylist}>
-                        <SubwayElevatorMap />
-                        <img src={`${elevatorDetail.imgPath}`} />
-                    </div>}
+                <div className="elevator">
+                    <img src={`${ElePos[0]?.imgPath}`} />
                 </div>
             </div>
         </div>

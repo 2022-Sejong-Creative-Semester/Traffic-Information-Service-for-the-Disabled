@@ -13,13 +13,11 @@ overflow:auto;
 @media (max-width:500px){
     margin:0;
     width: 98%;
-    height:50vw;
-
+    height:80vw;
 }
 `
 
 const SubwayInfo = ({ info }) => {
-    console.log(info)
     return (
         <StyledInfo>
             {info.map((element) => (
