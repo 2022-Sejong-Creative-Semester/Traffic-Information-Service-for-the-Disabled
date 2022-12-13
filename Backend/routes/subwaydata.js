@@ -175,9 +175,9 @@ function getLiftMove(stCd, stNm, railCd, lnCd, callback) {
 			for (let i = 0; i < liftMoveParse.length; i++) {
 				if (liftMoveParse[i].mvTpOrdr == 1) {
 					if (liftInfo.length != 0) {
-						const direction = liftInfo[liftInfo.length - 2].mvContDtl.split('승강장')[0].split(' ');
+						const direction = liftInfo[liftInfo.length - 2].mvContDtl.split('승강장')[0];
 						liftInfo.unshift({
-							direction: direction[direction.length - 1]
+							direction: direction
 						})
 
 						liftMoveInfo.push(liftInfo);
@@ -187,9 +187,9 @@ function getLiftMove(stCd, stNm, railCd, lnCd, callback) {
 				liftInfo.push(liftMoveParse[i]);
 			}
 			if (liftInfo.length != 0) {
-				const direction = liftInfo[liftInfo.length - 2].mvContDtl.split('승강장')[0].split(' ');
+				const direction = liftInfo[liftInfo.length - 2].mvContDtl.split('승강장')[0];
 				liftInfo.unshift({
-					direction: direction[direction.length - 1]
+					direction: direction
 				})
 				liftMoveInfo.push(liftInfo);
 				liftInfo = [];
@@ -260,9 +260,9 @@ function getElevatorMove(stCd, stNm, railCd, lnCd, callback) {
 			for (let i = 0; i < elevatorMoveParse.length; i++) {
 				if (elevatorMoveParse[i].mvTpOrdr == 1) {
 					if (elevatorInfo.length != 0) {
-						const direction = elevatorInfo[elevatorInfo.length - 2].mvContDtl.split('승강장')[0].split(' ');
+						const direction = elevatorInfo[elevatorInfo.length - 2].mvContDtl.split('승강장')[0];
 						elevatorInfo.unshift({
-							direction: direction[direction.length - 1]
+							direction: direction
 						})
 						elevatorMove.push(elevatorInfo);
 						elevatorInfo = [];
@@ -271,9 +271,9 @@ function getElevatorMove(stCd, stNm, railCd, lnCd, callback) {
 				elevatorInfo.push(elevatorMoveParse[i]);
 			}
 			if (elevatorInfo.length != 0) {
-				const direction = elevatorInfo[elevatorInfo.length - 2].mvContDtl.split('승강장')[0].split(' ');
+				const direction = elevatorInfo[elevatorInfo.length - 2].mvContDtl.split('승강장')[0];
 				elevatorInfo.unshift({
-					direction: direction[direction.length - 1]
+					direction: direction
 				})
 				elevatorMove.push(elevatorInfo);
 				elevatorInfo = [];
