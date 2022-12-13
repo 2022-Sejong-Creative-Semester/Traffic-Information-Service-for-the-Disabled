@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { SubwayActions } from "../../../store/Subway-slice.js";
 import { api } from "../../auth/Api.js";
-
+import axios from "axios";
 
 const StyledForm = styled.form`
     display:flex;
@@ -21,7 +21,7 @@ const StyledForm = styled.form`
 const SubwayForm = () => {
     const dispatch = useDispatch();
     const SubmitSubwayStation = (value) => {
-        api.get(`subway/stNm/${value}`)
+        axios.get(`/subway/stNm/${value}`)
             .then(res => {
                 const { data } = res;
                 dispatch(SubwayActions.addSubwayInfo(data))
