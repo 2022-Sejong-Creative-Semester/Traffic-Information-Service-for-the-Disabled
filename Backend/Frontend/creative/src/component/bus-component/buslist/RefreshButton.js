@@ -5,8 +5,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { BusActions } from "../../../store/Bus-slice";
 
 const StyledRefreshButton = styled.button`
-width:60px;
-height:60px;
+width:3.5vw;
+height:3.5vw;
 border: 0;
 border-radius:50px;
 background-color:transparent;
@@ -35,9 +35,9 @@ const RefreshButton = () => {
     const clickCheck = {
         check: false
     };
-    const Refresh = () => {
+    const Refresh = async () => {
         clickCheck.check = true;
-        axios.get(`/bus/arsId/${busId}`)
+        await api.get(`/bus/arsId/${busId}`)
             .then(res => {
                 const { data } = res;
                 dispatch(BusActions.addBusInfo(data))

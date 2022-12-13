@@ -3,14 +3,13 @@ import Header from "../../component/header/Header.js"
 import SubwayBar from "../../component/subway-component/subwaymenubar/SubwayBar.js"
 import SubwayPanel from "../../component/subway-component/subwaypanel/SubwayPanel.js"
 import SubwayTransferDetail from "../../component/subway-component/subwaytransfer/SubwayTrasferDetail.js"
-
 import { useParams } from "react-router-dom"
 import { api } from "../../component/auth/Api.js"
-import axios from "axios"
 import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { SubwayActions } from "../../store/Subway-slice"
-import axios from "axios"
+
+
 const SubwayTransfer = () => {
     const params = useParams();
     const dispatch = useDispatch();
@@ -25,7 +24,7 @@ const SubwayTransfer = () => {
         const lnCd = params.lnCd;
         dispatch(SubwayActions.saveSubway({ stCd, stNm, railCd, lnCd }))
         const getBathChair = async () => {
-            await axios.get(`/subway/transferMove/transferList/${stCd}/${stNm}/${railCd}/${lnCd}`)
+            await api.get(`/subway/transferMove/transferList/${stCd}/${stNm}/${railCd}/${lnCd}`)
 
                 .then(res => {
                     const { data } = res;

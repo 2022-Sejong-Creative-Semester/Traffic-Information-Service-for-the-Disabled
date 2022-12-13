@@ -20,8 +20,8 @@ const StyledForm = styled.form`
 
 const SubwayForm = () => {
     const dispatch = useDispatch();
-    const SubmitSubwayStation = (value) => {
-        axios.get(`/subway/stNm/${value}`)
+    const SubmitSubwayStation = async (value) => {
+        await api.get(`/subway/stNm/${value}`)
             .then(res => {
                 const { data } = res;
                 dispatch(SubwayActions.addSubwayInfo(data))

@@ -28,14 +28,14 @@ div{
     font-family: 'Pretendard-Regular';
     font-style: normal;
     font-weight: 600;
-    font-size: 40px;
+    font-size: 2vw;
     line-height: 60px;
 }
 .direction{
     font-family: 'Pretendard-Regular';
     font-style: normal;
     font-weight: 600;
-    font-size: 24px;
+    font-size: 1.5vw;
     line-height: 29px;
 }
 .id{
@@ -43,7 +43,7 @@ div{
     font-family: 'Pretendard-Regular';
     font-style: normal;
     font-weight: 600;
-    font-size: 24px;
+    font-size: 1.5vw;
     line-height: 29px;
     color: #9C9C9C;
 }
