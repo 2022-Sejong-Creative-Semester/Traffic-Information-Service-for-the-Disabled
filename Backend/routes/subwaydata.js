@@ -393,6 +393,7 @@ function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn , chtnNextSti
 			}
 
 			let prevStinCd = "";
+			console.log(results);
 
 			if (parseInt(results[0].STIN_CD) + 1 == parseInt(chtnNextStinCd)) {
 				prevStinCd = parseInt(results[0].STIN_CD) - 1;
