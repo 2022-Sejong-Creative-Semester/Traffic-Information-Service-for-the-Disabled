@@ -383,7 +383,7 @@ function getTransferList(stCd, stNm, railCd, lnCd, callback) {
 function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn , chtnNextStinCd , callback) {
 	try {
 
-		let sql = "Select * FROM subcod_1 WHERE STIN_NM = ? and STIN_CD = ?;";
+		let sql = "Select * FROM subcode_1 WHERE STIN_NM = ? and LN_CD = ?;";
 		let transferInfo = [];
 
 		connection.query(sql, [stNm, chthTgtLn], function (err, results, fields) {
@@ -393,6 +393,7 @@ function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn , chtnNextSti
 			}
 
 			let prevStinCd = "";
+			console.log(results);
 
 			if (parseInt(results[0].STIN_CD) + 1 == parseInt(chtnNextStinCd)) {
 				prevStinCd = parseInt(results[0].STIN_CD) - 1;
