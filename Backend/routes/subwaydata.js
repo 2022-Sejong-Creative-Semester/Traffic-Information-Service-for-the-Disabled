@@ -33,11 +33,7 @@ function getSubwayStationName(stNm, callback){
 				console.log(err);
 			}
 			for (let i = 0; i < results.length; i++) {
-				/*
-				if (results[i].LnNm[results[i].LnNm.length - 2] == "호") {
-					results[i].LnNm = results[i].LnCd;
-				}
-				*/
+				
 				NameList.push({
 					railCd: results[i].RAIL_OPR_ISTT_CD,
 					lnCd: results[i].LN_CD,
@@ -69,7 +65,7 @@ function getSubwayStationInfo(stCd, stNm, callback) {
 			}
 
 			console.log("SubwayStationInfo");
-			console.log(results);
+			//console.log(results);
 			
 			//NULL error
 			if (results.length == 0) {
@@ -352,7 +348,7 @@ function getTransferList(stCd, stNm, railCd, lnCd, callback) {
 					const sql2 = "Select * FROM subcode_1 WHERE (STIN_CD = ? or STIN_CD = ?) and RAIL_OPR_ISTT_CD = ?;";
 					connection.query(sql2, [parseInt(results[i].STIN_CD) + 1, parseInt(results[i].STIN_CD) - 1, results[i].RAIL_OPR_ISTT_CD], function (err, results2, fields) {
 						let transferStation = [];
-						console.log(results2);
+
 						for (let j = 0; j < results2.length; j++) {
 							transferStation.push({
 								stCd: results2[j].STIN_CD,
@@ -393,7 +389,6 @@ function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn , chtnNextSti
 			}
 
 			let prevStinCd = "";
-			console.log(results);
 
 			if (parseInt(results[0].STIN_CD) + 1 == parseInt(chtnNextStinCd)) {
 				prevStinCd = parseInt(results[0].STIN_CD) - 1;
@@ -741,10 +736,10 @@ router.get('/convenience/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 		lnCd = req.params.lnCd;
 
 		await getConvenience(stCd, stNm, railCd, lnCd, callback => {
-			if (callback[0].error != null) {
+			if (callback.error != null) {
 				return res.status(500).json(callback[0]);
 			}
-			return res.json(callback);
+			else return res.json(callback);
 		});
 
 		
