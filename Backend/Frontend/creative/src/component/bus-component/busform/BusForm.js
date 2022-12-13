@@ -29,6 +29,7 @@ const BusForm = () => {
                 dispatch(MapActions.makerchacking(data))
                 dispatch(BusActions.addStationInfo(data))
                 dispatch(MapActions.positioning(data[0]))
+                dispatch(MapActions.Onbusmode())
             }).catch(error => {
                 console.log(error)
                 alert("해당 정류장이 없습니다.")

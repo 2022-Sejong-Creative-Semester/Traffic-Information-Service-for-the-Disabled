@@ -6,8 +6,8 @@
 
 
 .transfer {
-    width: 650px;
-    height: 650px;
+    width: 30vw;
+    height: 70vh;
 }
 
 .subwaylist {
@@ -40,8 +40,8 @@
     }
 
     .transfer {
-        width: 747px;
-        height: 747px;
+        width: 100%;
+        height: 40vh;
     }
 
     .subwaymain {

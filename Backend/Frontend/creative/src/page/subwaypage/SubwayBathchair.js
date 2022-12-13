@@ -35,7 +35,7 @@ const SubwayBathchair = () => {
         <div className={classes.subwaypage}>
             <Header />
             <div className={classes.main}>
-                <SubwayPanel text={["휠체어 관련 위치"]} menu={<SubwayBar />} />
+                <SubwayPanel text={["휠체어 관련위치"]} menu={<SubwayBar />} />
                 <div className={classes.subwaymain}>
                     <div className={classes.subwaylist}>
                         <SubwayInfo info={bath} />

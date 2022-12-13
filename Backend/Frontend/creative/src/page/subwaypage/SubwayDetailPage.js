@@ -19,10 +19,10 @@ const SubwayDetailPage = () => {
         const stNm = params.stNm;
         const getDetail = async () => {
             await api.get(`/subway/stationInfo/${stCd}/${stNm}`)
-
                 .then(res => {
                     const { data } = res;
                     const { stationinfo } = data;
+                    console.log(data)
                     setInfo(stationinfo);
                     dispatch(SubwayActions.saveSubway(stationinfo))
                 })

@@ -25,7 +25,6 @@ const SubwayTransfer = () => {
         dispatch(SubwayActions.saveSubway({ stCd, stNm, railCd, lnCd }))
         const getBathChair = async () => {
             await api.get(`/subway/transferMove/transferList/${stCd}/${stNm}/${railCd}/${lnCd}`)
-
                 .then(res => {
                     const { data } = res;
                     setTrans(data)
@@ -44,7 +43,7 @@ const SubwayTransfer = () => {
                 <div className={classes.subwaymain}>
                     <SubwayTransferDetail info={trans} />
                     <div className={classes.subwaylist}>
-                        {transcheck && <img className="transfer" src={`${tranferImage}`} />}
+                        {transcheck && <img className={classes.transfer} src={`${tranferImage}`} />}
                     </div>
 
                 </div>

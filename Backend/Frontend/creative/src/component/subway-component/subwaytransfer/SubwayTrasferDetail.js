@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 const StyledTransferDetail = styled.div`
 display:flex;
 flex-direction:column;
-width: 749px;
+width: 720px;
 height: 720px;
 background-color:white;
 border: 4px solid #9255F5;

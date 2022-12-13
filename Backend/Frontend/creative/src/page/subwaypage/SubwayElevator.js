@@ -33,11 +33,8 @@ const SubwayElevator = () => {
         <div className={classes.subwaypage}>
             <Header />
             <div className={classes.main}>
-                <SubwayPanel text={["엘리베이터 위치"]} menu={<SubwayBar />} />
-                <div className="elevator">
-                    <img src={`${ElePos[0]?.imgPath}`} />
-
-                </div>
+                <SubwayPanel text={["편의시설 위치"]} menu={<SubwayBar />} />
+                <img className={classes.elevator} src={`${ElePos[0]?.imgPath}`} />
             </div>
         </div>
     )

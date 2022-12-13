@@ -81,6 +81,8 @@ p{
 
 
 const SubwayDetail = ({ info }) => {
+    console.log(info)
+    //<img className="info-image" src="./image/Call.png" />
     return (
         <StyledDetail>
             <div className="name">
@@ -89,8 +91,7 @@ const SubwayDetail = ({ info }) => {
             </div>
             <div className="info">
                 <p><img className="info-image" src="./image/phone.png" />{info.roadNm}</p>
-                <p><img className="info-image" src="./image/Call.png" />{info.tNum}</p>
-                <p>교통약자 도우미 <br /> {info.wNum}</p>
+                <p> 교통약자 도우미 전화번호<br />{info.wNum}</p>
             </div>
         </StyledDetail>
     )

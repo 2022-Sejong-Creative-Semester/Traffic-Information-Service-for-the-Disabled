@@ -3,29 +3,41 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { SubwayActions } from "../../../store/Subway-slice";
-
+import { MapActions } from "../../../store/Map-slice";
+import { api } from "../../auth/Api";
 
 const SubwayItems = ({ items }) => {
     const { stNm, lnNm, stCd } = items
+    const [position, setPosition] = useState("");
     const [color, setColor] = useState(true);
     const dispatch = useDispatch()
     const currentSubway = useSelector(state => state.subway.currentSubway)
-
     useEffect(() => {
         if (currentSubway !== stCd) {
             setColor(true)
         }
+        const locationRecive = async () => {
+            await api.get(`/subway/stationInfo/${stCd}/${stNm}`)
+                .then(res => {
+                    const { data } = res;
+                    setPosition(data.stationinfo)
+                })
+        }
+        locationRecive()
     }, [currentSubway])
-
     const ClickSubway = () => {
         if (currentSubway === stCd) {
             window.location.href = `/#/subway/detail/${stCd}/${stNm}`;
         }
         else if (currentSubway !== stCd) {
             setColor(false)
+            console.log(position)
+            dispatch(MapActions.positioning(position))
+            dispatch(MapActions.makerchacking(position))
             dispatch(SubwayActions.clickSubway(stCd))
         }
     }
+
     return (
         <StyldeSubwayItems color={color} onClick={ClickSubway}>
             <p className="name">{stNm}</p>
