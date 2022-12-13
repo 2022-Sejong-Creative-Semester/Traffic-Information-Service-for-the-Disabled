@@ -9,7 +9,7 @@ import { api } from "../../auth/Api";
 const SubwayItems = ({ items }) => {
     const { stNm, lnNm, stCd } = items
     const [position, setPosition] = useState("");
-    const [color, setColor] = useState(true);
+    const [color, setColor] = useState(false);
     const dispatch = useDispatch()
     const currentSubway = useSelector(state => state.subway.currentSubway)
     useEffect(() => {
@@ -20,11 +20,11 @@ const SubwayItems = ({ items }) => {
             await api.get(`/subway/stationInfo/${stCd}/${stNm}`)
                 .then(res => {
                     const { data } = res;
-                    console.log(data.stationinfo)
                     setPosition(data.stationinfo)
                 })
         }
         locationRecive()
+
     }, [currentSubway])
     const ClickSubway = () => {
         if (currentSubway === stCd) {
