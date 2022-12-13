@@ -79,6 +79,7 @@ const MenuBusButton = () => {
 
     const initialization = () => {
         dispatch(MapActions.initialization())
+        dispatch(MapActions.Onbusmode())
     }
     return (
         <StyledButton onClick={initialization}>

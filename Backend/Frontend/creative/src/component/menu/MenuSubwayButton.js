@@ -85,6 +85,7 @@ const MenuSubwayButton = () => {
     const dispatch = useDispatch();
     const initialization = () => {
         dispatch(MapActions.initialization())
+        dispatch(MapActions.Onsubwaymode())
     }
     return (
         <StyledButton onClick={initialization}>
