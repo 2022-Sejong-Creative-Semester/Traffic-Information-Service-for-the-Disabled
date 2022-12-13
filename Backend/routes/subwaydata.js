@@ -107,9 +107,9 @@ function getSubwayStationInfo(stCd, stNm, callback) {
 					roadNm: stationinfo.roadNmAdr,
 					tmX: stationinfo.stinLocLon,
 					tmY: stationinfo.stinLocLat,
+					wNum: results[0].'교통약자도우미 전화번호'
 					
 				});
-				//wNum: results[0].
 					
 			});
 			
