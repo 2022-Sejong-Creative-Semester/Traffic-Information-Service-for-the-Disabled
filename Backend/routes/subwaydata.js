@@ -61,7 +61,7 @@ function getSubwayStationInfo(stCd, stNm, callback) {
 	try {
 
 		//let sql = "select * from subcode_1,subcode_2";
-		let sql = "Select * FROM subcode_1 a, 도우미번호 b WHERE (a.stin_nm = b.역명 and a.ln_cd = b.노선번호) and a.stin_cd = ? and a.stin_nm = ?";
+		let sql = "Select * FROM subcode_1 a, 도우미번호 b WHERE (a.stin_nm = b.역명 and a.ln_cd = b.운영노선명) and a.stin_cd = ? and a.stin_nm = ?";
 
 		connection.query(sql, [stCd, stNm], function (err, results, fields) {
 			if (err) {
