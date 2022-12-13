@@ -13,6 +13,7 @@ import SubwayInfo from "../../component/subway-component/subwayinfo/SubwayInfo.j
 const SubwayBathchair = () => {
     const params = useParams();
     const [bath, setBath] = useState([]);
+    const [image, setimage] = useState("");
     const dispatch = useDispatch()
     useEffect(() => {
         const stCd = params.stCd;
@@ -22,11 +23,15 @@ const SubwayBathchair = () => {
         dispatch(SubwayActions.saveSubway({ stCd, stNm, railCd, lnCd }))
         const getBathChair = async () => {
             await api.get(`/subway/liftMove/${stCd}/${stNm}/${railCd}/${lnCd}`)
-
                 .then(res => {
                     const { data } = res;
                     console.log(data)
                     setBath(data)
+                })
+            await api.get(`/subway/convenience/${stCd}/${stNm}/${railCd}/${lnCd}`)
+                .then(res => {
+                    const { data } = res;
+                    setimage(data[0].imgPath)
                 })
         }
         getBathChair()
@@ -39,6 +44,7 @@ const SubwayBathchair = () => {
                 <div className={classes.subwaymain}>
                     <div className={classes.subwaylist}>
                         <SubwayInfo info={bath} />
+                        <img className={classes.subwayImage} src={`${image}`} />
                     </div>
                 </div>
             </div>

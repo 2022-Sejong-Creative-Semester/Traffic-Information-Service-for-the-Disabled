@@ -20,10 +20,8 @@ const SubwayElevator = () => {
         dispatch(SubwayActions.saveSubway({ stCd, stNm, railCd, lnCd }))
         const getBathChair = async () => {
             await api.get(`/subway/convenience/${stCd}/${stNm}/${railCd}/${lnCd}`)
-
                 .then(res => {
                     const { data } = res;
-
                     setElePos(data)
                 })
         }
