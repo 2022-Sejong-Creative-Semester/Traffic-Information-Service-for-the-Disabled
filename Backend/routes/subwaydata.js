@@ -25,7 +25,7 @@ function getSubwayStationName(stNm, callback){
 
 		console.log("StationName");
 
-		let sql = "Select *  FROM subcode_1 WHERE STIN_NM like ?; ";
+		let sql = "Select *  FROM subcode_1 a, 도우미번호 b WHERE (a.stin_nm = b.역명 and a.ln_cd = b.운영노선명) and a.STIN_NM like ?; ";
 
 		let NameList = [];
 		connection.query(sql, ["%"+stNm+"%"], function (err, results, fields) {
