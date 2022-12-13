@@ -10,7 +10,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { SubwayActions } from "../../store/Subway-slice"
-import axios from "axios"
+
 const SubwayTransfer = () => {
     const params = useParams();
     const dispatch = useDispatch();
