@@ -7,7 +7,9 @@ const MapSlice = createSlice({
             tmY: 37.55068403524657,
             tmX: 127.07411251036736
         },
-        marker: []
+        marker: [],
+        busmode: false,
+        subwaymode: false
     },
     reducers: {
         positioning(state, action) {
@@ -23,6 +25,16 @@ const MapSlice = createSlice({
                 tmX: 127.07411251036736
             };
             state.marker = [];
+            state.busmode = false;
+            state.subwaymode = false;
+        },
+        Onbusmode(state) {
+            state.busmode = true;
+            state.subwaymode = false;
+        },
+        Onsubwaymode(state) {
+            state.busmode = false;
+            state.subwaymode = true;
         }
     }
 })

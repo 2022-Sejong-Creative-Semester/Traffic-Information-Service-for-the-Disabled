@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { SubwayActions } from "../../../store/Subway-slice.js";
 import { api } from "../../auth/Api.js";
-import axios from "axios";
+import { MapActions } from "../../../store/Map-slice.js";
 
 const StyledForm = styled.form`
     display:flex;
@@ -20,11 +20,12 @@ const StyledForm = styled.form`
 
 const SubwayForm = () => {
     const dispatch = useDispatch();
-    const SubmitSubwayStation = (value) => {
-        axios.get(`/subway/stNm/${value}`)
+    const SubmitSubwayStation = async (value) => {
+        await api.get(`/subway/stNm/${value}`)
             .then(res => {
                 const { data } = res;
                 dispatch(SubwayActions.addSubwayInfo(data))
+                dispatch(MapActions.Onsubwaymode())
             }).catch(error => {
                 alert("데이터를 받아오지 못했습니다.")
             });

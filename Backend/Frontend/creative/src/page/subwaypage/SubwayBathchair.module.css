@@ -11,10 +11,13 @@
     justify-content: space-between;
 }
 
+.subwayImage {
+    width: 40vw;
+    height: 68vh;
+}
+
 .subwaylist {
     display: flex;
-    flex-direction: column;
-    margin-right: 30px;
 }
 
 .subwaymain {
@@ -35,6 +38,11 @@
     }
 
     .subwaylist {
-        margin-right: 0;
+        flex-direction: column;
+    }
+
+    .subwayImage {
+        width: 100%;
+        height: 30vh;
     }
 }

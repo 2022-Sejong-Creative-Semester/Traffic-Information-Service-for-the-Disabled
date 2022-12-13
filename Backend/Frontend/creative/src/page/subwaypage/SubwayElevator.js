@@ -7,7 +7,7 @@ import { api } from "../../component/auth/Api.js"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { SubwayActions } from "../../store/Subway-slice"
-import axios from "axios"
+
 const SubwayElevator = () => {
     const params = useParams();
     const dispatch = useDispatch();
@@ -19,11 +19,9 @@ const SubwayElevator = () => {
         const lnCd = params.lnCd;
         dispatch(SubwayActions.saveSubway({ stCd, stNm, railCd, lnCd }))
         const getBathChair = async () => {
-            await axios.get(`/subway/convenience/${stCd}/${stNm}/${railCd}/${lnCd}`)
-
+            await api.get(`/subway/convenience/${stCd}/${stNm}/${railCd}/${lnCd}`)
                 .then(res => {
                     const { data } = res;
-
                     setElePos(data)
                 })
         }
@@ -33,11 +31,8 @@ const SubwayElevator = () => {
         <div className={classes.subwaypage}>
             <Header />
             <div className={classes.main}>
-                <SubwayPanel text={["엘리베이터 위치"]} menu={<SubwayBar />} />
-                <div className="elevator">
-                    <img src={`${ElePos[0]?.imgPath}`} />
-
-                </div>
+                <SubwayPanel text={["편의시설 위치"]} menu={<SubwayBar />} />
+                <img className={classes.elevator} src={`${ElePos[0]?.imgPath}`} />
             </div>
         </div>
     )
