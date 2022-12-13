@@ -6,8 +6,14 @@ justify-content:space-between;
 align-items:center;
 width:100%;
 list-style:none;
+text-align: center;
 border-bottom: 1px solid #D2D2D2;
 font-family: 'Pretendard-Regular';
+.mark{
+    width:1.5vw;
+    height:1.5vw;
+    margin-right:0.3vw;
+}
 :hover{
     cursor: pointer;
 }
@@ -24,6 +30,9 @@ div{
     align-items:center;
 }
 .Name{
+    display:flex;
+    justify-content:center;
+    align-items:center;
     padding-left:20px;
     font-family: 'Pretendard-Regular';
     font-style: normal;
@@ -35,7 +44,7 @@ div{
     font-family: 'Pretendard-Regular';
     font-style: normal;
     font-weight: 600;
-    font-size: 1.5vw;
+    font-size: 1.3vw;
     line-height: 29px;
 }
 .id{
@@ -49,7 +58,7 @@ div{
 }
 
 @media (max-width:500px){
-    height:43%;
+    height:28%;
     .Name{
         font-size: 5vw;
     }
@@ -58,6 +67,11 @@ div{
     }
     .id{
         font-size: 3vw;
+    }
+    .mark{
+        width:100%;
+        height:100%;
+        margin-right:2vw;
     }
 }
 `
@@ -68,7 +82,7 @@ const BusItem = (props) => {
         <StyledBusItem>
             <a href={`https://map.naver.com/v5/search/${busrouteAbrv}번버스/bus-route/${busrouteid}?c=0,0`} target="_blank">
                 <div>
-                    <p className="Name">{busrouteAbrv}</p>
+                    <p className="Name"><img className="mark" src="./image/MARK.png" />{busrouteAbrv}</p>
                     <p className="direction">{adirection}방면</p>
                 </div>
                 <p className="id">{arrmsg1}</p>

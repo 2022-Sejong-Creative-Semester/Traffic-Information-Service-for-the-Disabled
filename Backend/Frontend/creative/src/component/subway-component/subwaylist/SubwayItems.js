@@ -20,6 +20,7 @@ const SubwayItems = ({ items }) => {
             await api.get(`/subway/stationInfo/${stCd}/${stNm}`)
                 .then(res => {
                     const { data } = res;
+                    console.log(data.stationinfo)
                     setPosition(data.stationinfo)
                 })
         }
@@ -31,7 +32,6 @@ const SubwayItems = ({ items }) => {
         }
         else if (currentSubway !== stCd) {
             setColor(false)
-            console.log(position)
             dispatch(MapActions.positioning(position))
             dispatch(MapActions.makerchacking(position))
             dispatch(SubwayActions.clickSubway(stCd))
@@ -93,7 +93,7 @@ a{
     
 }
 @media (max-width:500px){
-    height:43%;
+    height:25%;
     .name{
         font-size: 5vw;
     }

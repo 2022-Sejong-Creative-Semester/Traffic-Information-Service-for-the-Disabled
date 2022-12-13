@@ -56,9 +56,8 @@ p{
     border: 2px solid #9255F5;
     width:99%;
     height:80vw;
-    .info-image{
-        width: 4.5vw;
-        height: 4.5vw;
+    .info p{
+        margin-bottom:1vw;
     }
     .line{
         width: 8vw;
@@ -73,8 +72,12 @@ p{
     }
     .info{
         padding-left:3vw;
-        font-size:4vw;
+        font-size:5vw;
         width:90%;
+    }
+    .info-image{
+        width: 7vw;
+        height: 7vw;
     }
 }
 `
@@ -92,6 +95,8 @@ const SubwayDetail = ({ info }) => {
             <div className="info">
                 <p><img className="info-image" src="./image/phone.png" />{info.roadNm}</p>
                 <p> 교통약자 도우미 전화번호<br />{info.wNum}</p>
+                <p>지하철역 영문명: {info.eName}</p>
+                <p>지하철역 FR_CODE: {info.fCode}</p>
             </div>
         </StyledDetail>
     )

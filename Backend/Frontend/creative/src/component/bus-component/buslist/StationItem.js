@@ -52,7 +52,8 @@ const StationItem = (props) => {
 
 const StyledStationItem = styled.li`
 display:flex;
-justify-content:space-between;  
+justify-content:space-between;
+align-items:center;
 width:100%;
 list-style:none;
 border-bottom: 1px solid #D2D2D2;
@@ -85,7 +86,7 @@ font-family: 'Pretendard-Regular';
     color:${props => (props.color ? "#9C9C9C" : "black")};
 }
 @media (max-width:500px){
-    height:43%;
+    height:28%;
     .Name{
         font-family: 'Pretendard-Regular';
         font-size: 5vw;

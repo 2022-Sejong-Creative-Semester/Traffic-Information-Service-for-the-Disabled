@@ -5,8 +5,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { BusActions } from "../../../store/Bus-slice";
 
 const StyledRefreshButton = styled.button`
-width:3.5vw;
-height:3.5vw;
+width:3vw;
+height:3vw;
 border: 0;
 border-radius:50px;
 background-color:transparent;
