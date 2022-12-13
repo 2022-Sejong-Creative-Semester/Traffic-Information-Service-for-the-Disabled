@@ -5,11 +5,10 @@ import SubwayPanel from "../../component/subway-component/subwaypanel/SubwayPane
 import SubwayTransferDetail from "../../component/subway-component/subwaytransfer/SubwayTrasferDetail.js"
 import { useParams } from "react-router-dom"
 import { api } from "../../component/auth/Api.js"
-import axios from "axios"
 import { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { SubwayActions } from "../../store/Subway-slice"
-
+import axios from "axios"
 const SubwayTransfer = () => {
     const params = useParams();
     const dispatch = useDispatch();
