@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { SubwayActions } from "../../../store/Subway-slice";
 import { api } from "../../auth/Api";
 import axios from "axios"
+
 const StyldeSubwayItems = styled.li`
 display:flex;
 justify-content:space-between;
@@ -27,6 +28,7 @@ font-family: 'Pretendard-Regular';
 }
 @media (max-width:500px){
     height:40%;
+
     .name{
         font-size: 4.5vw;
     }
@@ -35,6 +37,7 @@ font-family: 'Pretendard-Regular';
 
 const SubwayTransferItems = ({ items }) => {
     const { prev, next } = items
+
     const si = useSelector(state => state.subway.subwayInfo)
     const dispatch = useDispatch();
 
@@ -48,6 +51,7 @@ const SubwayTransferItems = ({ items }) => {
                 })
         }
         getTransfer()
+
     }
 
     return (

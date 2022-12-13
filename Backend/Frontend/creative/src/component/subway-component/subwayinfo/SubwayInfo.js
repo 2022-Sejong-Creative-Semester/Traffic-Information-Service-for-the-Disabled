@@ -14,10 +14,12 @@ overflow:auto;
     margin:0;
     width: 98%;
     height:80vw;
+
 }
 `
 
 const SubwayInfo = ({ info }) => {
+    console.log(info)
     return (
         <StyledInfo>
             {info.map((element) => (

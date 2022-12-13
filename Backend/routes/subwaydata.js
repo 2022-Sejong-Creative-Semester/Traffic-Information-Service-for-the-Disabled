@@ -20,6 +20,8 @@ let connection = mysql.createConnection(conn);  // DB Connect
 function getSubwayStationName(stNm, callback){
 	try {
 
+		console.log("StationName");
+
 		let sql = "Select *  FROM stationinfotest WHERE StNm like ?; ";
 
 		let NameList = [];
@@ -36,7 +38,10 @@ function getSubwayStationName(stNm, callback){
 					lnCd: results[i].LnCd,
 					lnNm: results[i].LnNm,
 					stCd: results[i].StCd,
-					stNm: results[i].StNm
+					stNm: results[i].StNm,
+					tmX: "0",
+					tmY: "0"
+
 				})
 			}
 
@@ -60,7 +65,15 @@ function getSubwayStationInfo(stCd, stNm, callback) {
 				console.log(err);
 			}
 
-			console.log(results);
+			console.log("SubwayStationInfo");
+
+			//NULL error
+			if (results.length == 0) {
+				return callback({
+					error: 500,
+					errorString: "No Such Station"
+				})
+			}
 
 			const url = 'https://openapi.kric.go.kr/openapi/convenientInfo/stationInfo';
 			let queryParams = '?' + encodeURI('serviceKey');
@@ -80,8 +93,6 @@ function getSubwayStationInfo(stCd, stNm, callback) {
 				method: 'GET'
 			}, function (error, response, body) {
 
-				console.log(body);
-
 				const stationinfo = JSON.parse(body).body[0];
 
 				callback({
@@ -92,9 +103,10 @@ function getSubwayStationInfo(stCd, stNm, callback) {
 					roadNm: stationinfo.roadNmAdr,
 					tmX: stationinfo.stinLocLon,
 					tmY: stationinfo.stinLocLat,
+					tNum: "000-0000-0000",
+					wNum: "000-0000-0000"
 				});
-					//tNum:
-					//wNum:
+					
 			});
 			
 
@@ -110,14 +122,14 @@ function getSubwayStationInfo(stCd, stNm, callback) {
 function getLiftPos(stCd, stNm, railCd, lnCd, callback) {
 	try {
 
+		console.log("LiftPos");
+
 		const url = 'https://openapi.kric.go.kr/openapi/vulnerableUserInfo/stationWheelchairLiftLocation';
 		let queryParams = '?' + encodeURI('serviceKey') + '=' + serviceKey.subwayRailKey;
 		queryParams += '&' + encodeURI('format') + '=' + encodeURI('json');
 		queryParams += '&' + encodeURI('railOprIsttCd') + '=' + encodeURI(railCd);
 		queryParams += '&' + encodeURI('lnCd') + '=' + encodeURI(lnCd);
 		queryParams += '&' + encodeURI('stinCd') + '=' + encodeURI(stCd);
-
-		console.log(url + queryParams);
 
 		return request({
 			url: url + queryParams,
@@ -126,13 +138,8 @@ function getLiftPos(stCd, stNm, railCd, lnCd, callback) {
 
 			liftPosInfo = JSON.parse(body).body;
 
-			console.log(liftPosInfo[0]);
-
 			callback(liftPosInfo[0]);
 
-
-			//tNum:
-			//wNum:
 		});
 
 	}
@@ -157,10 +164,6 @@ function getLiftMove(stCd, stNm, railCd, lnCd, callback) {
 		queryParams += '&' + encodeURIComponent('lnCd') + '=' + encodeURIComponent(lnCd);
 		queryParams += '&' + encodeURIComponent('stinCd') + '=' + encodeURIComponent(stCd);
 
-		console.log(url + queryParams);
-
-
-
 		return request({
 			url: url + queryParams,
 			method: 'GET'
@@ -174,6 +177,11 @@ function getLiftMove(stCd, stNm, railCd, lnCd, callback) {
 			for (let i = 0; i < liftMoveParse.length; i++) {
 				if (liftMoveParse[i].mvTpOrdr == 1) {
 					if (liftInfo.length != 0) {
+						const direction = liftInfo[liftInfo.length - 2].mvContDtl.split(' 방면')[0].split(' ');
+						liftInfo.unshift({
+							direction: direction[direction.length - 1]
+						})
+
 						liftMoveInfo.push(liftInfo);
 						liftInfo = [];
 					}
@@ -181,6 +189,10 @@ function getLiftMove(stCd, stNm, railCd, lnCd, callback) {
 				liftInfo.push(liftMoveParse[i]);
 			}
 			if (liftInfo.length != 0) {
+				const direction = liftInfo[liftInfo.length - 2].mvContDtl.split(' 방면')[0].split(' ');
+				liftInfo.unshift({
+					direction: direction[direction.length - 1]
+				})
 				liftMoveInfo.push(liftInfo);
 				liftInfo = [];
 			}
@@ -196,7 +208,8 @@ function getLiftMove(stCd, stNm, railCd, lnCd, callback) {
 
 function getElevatorPos(stCd, stNm, railCd, lnCd, callback) {
 	try {
-		console.log(stNm);
+
+		console.log("ElevatorPos");
 
 		const url = 'https://openapi.kric.go.kr/openapi/convenientInfo/stationElevator';
 
@@ -206,8 +219,6 @@ function getElevatorPos(stCd, stNm, railCd, lnCd, callback) {
 		queryParams += '&' + encodeURIComponent('railOprIsttCd') + '=' + encodeURIComponent(railCd);
 		queryParams += '&' + encodeURIComponent('lnCd') + '=' + encodeURIComponent(lnCd);
 		queryParams += '&' + encodeURIComponent('stinCd') + '=' + encodeURIComponent(stCd);
-
-		console.log(url + queryParams);
 
 		return request({
 			url: url + queryParams,
@@ -227,7 +238,7 @@ function getElevatorPos(stCd, stNm, railCd, lnCd, callback) {
 function getElevatorMove(stCd, stNm, railCd, lnCd, callback) {
 	try {
 
-		console.log(stNm);
+		console.log("ElevatorMove");
 		
 		const url = 'https://openapi.kric.go.kr/openapi/trafficWeekInfo/stinElevatorMovement';
 		let queryParams = '?' + encodeURIComponent('serviceKey');
@@ -237,8 +248,6 @@ function getElevatorMove(stCd, stNm, railCd, lnCd, callback) {
 		queryParams += '&' + encodeURIComponent('lnCd') + '=' + encodeURIComponent(lnCd);
 		queryParams += '&' + encodeURIComponent('stinCd') + '=' + encodeURIComponent(stCd);
 
-		console.log(url + queryParams);
-
 		let elevatorMove = [];
 
 		return request({
@@ -246,32 +255,32 @@ function getElevatorMove(stCd, stNm, railCd, lnCd, callback) {
 			method: 'GET'
 		}, function (error, response, body) {
 
-			let count = 0;
-			let c = 0;
-			let index = 1;
+			let elevatorInfo = [];
 
 			const elevatorMoveParse = JSON.parse(body).body;
 
 			for (let i = 0; i < elevatorMoveParse.length; i++) {
-				let elevatorInfo = [];
 				if (elevatorMoveParse[i].mvTpOrdr == 1) {
-					count++;
-					elevatorInfo.push(elevatorMoveParse[i]);
-					elevatorMove.push(elevatorInfo);
-				}
-				else {
-					if (elevatorMoveParse[i].mvTpOrdr != index) {
-						index = elevatorMoveParse[i].mvTpOrdr;
-						c = 0;
+					if (elevatorInfo.length != 0) {
+						const direction = elevatorInfo[elevatorInfo.length - 2].mvContDtl.split(' 방면')[0].split(' ');
+						elevatorInfo.unshift({
+							direction: direction[direction.length - 1]
+						})
+						elevatorMove.push(elevatorInfo);
+						elevatorInfo = [];
 					}
-					else {
-						c++;
-					}
-					console.log(elevatorMove[c]);
-					elevatorMove[c].push(elevatorMoveParse[i]);
 				}
-				
+				elevatorInfo.push(elevatorMoveParse[i]);
 			}
+			if (elevatorInfo.length != 0) {
+				const direction = elevatorInfo[elevatorInfo.length - 2].mvContDtl.split(' 방면')[0].split(' ');
+				elevatorInfo.unshift({
+					direction: direction[direction.length - 1]
+				})
+				elevatorMove.push(elevatorInfo);
+				elevatorInfo = [];
+			}
+
 			callback(elevatorMove);
 		});
 	}
@@ -337,7 +346,6 @@ function getTransferList(stCd, stNm, railCd, lnCd, callback) {
 				if (results[i].StCd != stCd) {
 					const sql2 = "Select * FROM stationinfotest WHERE (StCd = ? or StCd = ?) and RailCd = ?;";
 					connection.query(sql2, [parseInt(results[i].StCd) + 1, parseInt(results[i].StCd) - 1, results[i].RailCd], function (err, results2, fields) {
-						console.log(results2);
 						let transferStation = [];
 						for (let j = 0; j < results2.length; j++) {
 							transferStation.push({
@@ -374,8 +382,6 @@ function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn , chtnNextSti
 
 		connection.query(sql, [stNm, chthTgtLn], function (err, results, fields) {
 
-			console.log(results);
-
 			if (err) {
 				console.log(err);
 			}
@@ -386,7 +392,6 @@ function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn , chtnNextSti
 				prevStinCd = parseInt(results[0].StCd) - 1;
 			}
 			else {
-				console.log(2);
 				prevStinCd = parseInt(results[0].StCd) + 1;
 			}
 
@@ -401,8 +406,6 @@ function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn , chtnNextSti
 			queryParams += '&' + encodeURIComponent('chthTgtLn') + '=' + encodeURIComponent(chthTgtLn);
 			queryParams += '&' + encodeURIComponent('chtnNextStinCd') + '=' + encodeURIComponent(chtnNextStinCd);
 
-			console.log(url + queryParams);
-
 			//chtnNextStinCd -> 상행선 1,3
 			//chtnNextStinCd -> 하행선 2,4
 
@@ -414,14 +417,14 @@ function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn , chtnNextSti
 				method: 'GET'
 			}, function (error, response, body) {
 				const parse = JSON.parse(body).body;
-				//console.log(parse);
+
 				for (let i = 0; i < parse.length; i++) {
 					//성수가 211 하행
 					//railCd로 비교
 
 					//2호선의 경우 상 하행이 반대
 					if (railCd == "S1" && lnCd == "2") {
-						//console.log("2호선");
+
 						//환승역 방면이 상행선이라면 2, 4만 나옴
 						if (parseInt(prevStinCd) > parseInt(chtnNextStinCd)) {
 							//출발 방면이 상행선이라면
@@ -496,8 +499,6 @@ function getConvenience(stCd, stNm, railCd, lnCd, callback) {
 		queryParams += '&' + encodeURIComponent('lnCd') + '=' + encodeURIComponent(lnCd);
 		queryParams += '&' + encodeURIComponent('stinCd') + '=' + encodeURIComponent(stCd);
 
-		console.log(url + queryParams);
-
 		return request({
 			url: url + queryParams,
 			method: 'GET'
@@ -539,7 +540,6 @@ router.get('/stNm/:stNm', async (req, res) => {
 				})
 			}
 			else {
-				console.log(stationList);
 				return res.json(
 					stationList,
 				)
@@ -563,7 +563,6 @@ router.get('/stationInfo/:stCd/:stNm', async (req, res) => {
 		stNm = req.params.stNm;
 
 		await getSubwayStationInfo(stCd, stNm, stationinfo => {
-			//console.log(stationinfo.tmY);
 			return res.json({
 				stationinfo
 			})
@@ -586,7 +585,6 @@ router.get('/liftPos/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 		lnCd = req.params.lnCd;
 
 		await getLiftPos(stCd, stNm, railCd, lnCd, liftPosInfo => {
-			//console.log(callback);
 
 			return res.json({
 				"railOprIsttCd": liftPosInfo.railOprIsttCd,
@@ -624,7 +622,6 @@ router.get('/liftMove/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 		lnCd = req.params.lnCd;
 
 		await getLiftMove(stCd, stNm, railCd, lnCd, callback => {
-			//console.log(callback);
 			return res.json(callback);
 		});
 	}
@@ -645,7 +642,6 @@ router.get('/ElevatorPos/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 		lnCd = req.params.lnCd;
 
 		await getElevatorPos(stCd, stNm, railCd, lnCd, callback => {
-			console.log(callback);
 			return res.json(callback)
 		});
 	}
@@ -666,7 +662,6 @@ router.get('/ElevatorMove/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 		lnCd = req.params.lnCd;
 
 		await getElevatorMove(stCd, stNm, railCd, lnCd, callback => {
-			console.log(callback);
 			return res.json(callback);
 		});
 	}

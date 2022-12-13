@@ -2,6 +2,7 @@ import styled from "styled-components";
 import SubwayTransferItems from "./SubwayTransferItem";
 import { useSelector } from "react-redux";
 
+
 const StyledTransferDetail = styled.div`
 display:flex;
 flex-direction:column;
@@ -24,6 +25,7 @@ margin-right: 20px;
     font-weight: 600;
     font-family: 'Pretendard-Regular';
 }
+
 @media (max-width:500px) {
     width:98%;
     height:80vw;
@@ -48,6 +50,7 @@ const SubwayTransferDetail = ({ info }) => {
     return (
         <StyledTransferDetail>
             {!transCheck && prev?.sourceStation.map(prev => (
+
                 next?.transferStation.map(next => (
                     <SubwayTransferItems
                         key={prev.stCd + next.stCd}
@@ -58,6 +61,7 @@ const SubwayTransferDetail = ({ info }) => {
             {transCheck && transRoad.map(element => (
                 <p className="path">{element.mvContDtl}</p>
             ))}
+
         </StyledTransferDetail>
     )
 }

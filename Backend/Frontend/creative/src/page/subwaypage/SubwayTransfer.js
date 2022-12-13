@@ -3,6 +3,7 @@ import Header from "../../component/header/Header.js"
 import SubwayBar from "../../component/subway-component/subwaymenubar/SubwayBar.js"
 import SubwayPanel from "../../component/subway-component/subwaypanel/SubwayPanel.js"
 import SubwayTransferDetail from "../../component/subway-component/subwaytransfer/SubwayTrasferDetail.js"
+
 import { useParams } from "react-router-dom"
 import { api } from "../../component/auth/Api.js"
 import axios from "axios"
@@ -16,6 +17,7 @@ const SubwayTransfer = () => {
     const [trans, setTrans] = useState([]);
     const transcheck = useSelector(state => state.subway.transferDetail.transCheck)
     const tranferImage = useSelector(state => state.subway.transferDetail.transferImage)
+
     useEffect(() => {
         const stCd = params.stCd;
         const stNm = params.stNm;
@@ -24,6 +26,7 @@ const SubwayTransfer = () => {
         dispatch(SubwayActions.saveSubway({ stCd, stNm, railCd, lnCd }))
         const getBathChair = async () => {
             await axios.get(`/subway/transferMove/transferList/${stCd}/${stNm}/${railCd}/${lnCd}`)
+
                 .then(res => {
                     const { data } = res;
                     setTrans(data)
@@ -44,6 +47,7 @@ const SubwayTransfer = () => {
                     <div className={classes.subwaylist}>
                         {transcheck && <img className="transfer" src={`${tranferImage}`} />}
                     </div>
+
                 </div>
             </div>
         </div>

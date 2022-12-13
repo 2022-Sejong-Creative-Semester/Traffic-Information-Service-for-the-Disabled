@@ -13,7 +13,7 @@ margin-left:23px;
     font-size:4vw;
     width:100%;
     height:80vw;
-}
+
 `
 
 

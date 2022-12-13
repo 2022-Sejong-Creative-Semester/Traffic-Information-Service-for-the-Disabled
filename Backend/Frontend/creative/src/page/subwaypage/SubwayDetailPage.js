@@ -20,6 +20,7 @@ const SubwayDetailPage = () => {
         const stNm = params.stNm;
         const getDetail = async () => {
             await axios.get(`/subway/stationInfo/${stCd}/${stNm}`)
+
                 .then(res => {
                     const { data } = res;
                     const { stationinfo } = data;
