@@ -16,9 +16,6 @@ const conn = {
 
 let connection = mysql.createConnection(conn);  // DB Connect
 
-
-// select rail_opr_istt_cd, ln_cd, stin_cd, stin_nm,`교통약자도우미 전화번호` from subcode_1 a, 도우미번호 b where a.ln_cd = b.운영노선명 and a.stin_nm = b.역명 and a.stin_nm Like  "%서울%";
-
 //SubwayStation Name List from DB
 function getSubwayStationName(stNm, callback){
 	try {
@@ -103,8 +100,9 @@ function getSubwayStationInfo(stCd, stNm, callback) {
 					roadNm: stationinfo.roadNmAdr,
 					tmX: stationinfo.stinLocLon,
 					tmY: stationinfo.stinLocLat,
-					wNum: results[0].wnum
-					
+					wNum: results[0].wnum,
+					eName: results[0].en_name,
+					fCode: results[0].f_code
 				});
 					
 			});
