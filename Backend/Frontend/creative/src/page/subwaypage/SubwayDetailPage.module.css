@@ -31,8 +31,7 @@
     .subwaymain {
         flex-direction: column;
         margin-top: 0;
-        height: 81.7vh;
-        justify-content: space-between;
+        height: 100%;
     }
 
     .subwaylist {

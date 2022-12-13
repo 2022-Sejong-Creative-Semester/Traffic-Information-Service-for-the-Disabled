@@ -6,8 +6,6 @@ import { api } from "../../component/auth/Api.js"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { SubwayActions } from "../../store/Subway-slice"
-import axios from "axios"
-
 import SubwayBar from "../../component/subway-component/subwaymenubar/SubwayBar.js"
 import SubwayInfo from "../../component/subway-component/subwayinfo/SubwayInfo.js"
 
@@ -15,6 +13,7 @@ import SubwayInfo from "../../component/subway-component/subwayinfo/SubwayInfo.j
 const SubwayBathchair = () => {
     const params = useParams();
     const [bath, setBath] = useState([]);
+    const [image, setimage] = useState("");
     const dispatch = useDispatch()
     useEffect(() => {
         const stCd = params.stCd;
@@ -23,12 +22,16 @@ const SubwayBathchair = () => {
         const lnCd = params.lnCd;
         dispatch(SubwayActions.saveSubway({ stCd, stNm, railCd, lnCd }))
         const getBathChair = async () => {
-            await axios.get(`/subway/liftMove/${stCd}/${stNm}/${railCd}/${lnCd}`)
-
+            await api.get(`/subway/liftMove/${stCd}/${stNm}/${railCd}/${lnCd}`)
                 .then(res => {
                     const { data } = res;
                     console.log(data)
                     setBath(data)
+                })
+            await api.get(`/subway/convenience/${stCd}/${stNm}/${railCd}/${lnCd}`)
+                .then(res => {
+                    const { data } = res;
+                    setimage(data[0].imgPath)
                 })
         }
         getBathChair()
@@ -37,10 +40,11 @@ const SubwayBathchair = () => {
         <div className={classes.subwaypage}>
             <Header />
             <div className={classes.main}>
-                <SubwayPanel text={["휠체어 관련 위치"]} menu={<SubwayBar />} />
+                <SubwayPanel text={["휠체어 관련위치"]} menu={<SubwayBar />} />
                 <div className={classes.subwaymain}>
                     <div className={classes.subwaylist}>
                         <SubwayInfo info={bath} />
+                        <img className={classes.subwayImage} src={`${image}`} />
                     </div>
                 </div>
             </div>

@@ -18,8 +18,8 @@ p{
     margin:0;
 }
 @media (max-width:500px){
-    font-size:5vw;
-    height:28%;
+    font-size:4.5vw;
+    height:20%;
 }
 `
 

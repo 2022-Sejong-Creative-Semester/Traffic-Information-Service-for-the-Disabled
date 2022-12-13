@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { SubwayActions } from "../../../store/Subway-slice";
 import { api } from "../../auth/Api";
-import axios from "axios"
 
 const StyldeSubwayItems = styled.li`
 display:flex;
@@ -43,7 +42,7 @@ const SubwayTransferItems = ({ items }) => {
 
     const ClickSubway = () => {
         const getTransfer = async () => {
-            await axios.get(`/subway/transferMove/transferInfo/${si.stCd}/${si.stNm}/${si.railCd}/${si.lnCd}/${prev.stCd}/${next.lnCd}/${next.stCd}`)
+            await api.get(`/subway/transferMove/transferInfo/${si.stCd}/${si.stNm}/${si.railCd}/${si.lnCd}/${prev.stCd}/${next.lnCd}/${next.stCd}`)
                 .then(res => {
                     const { data } = res;
                     dispatch(SubwayActions.addTransfer(data))

@@ -22,15 +22,17 @@ const StyledForm = styled.form`
 const BusForm = () => {
     const dispatch = useDispatch();
     const SubmitBusStation = (value) => {
-        axios.get(`/bus/stNm/${value}`)
+        api.get(`/bus/stNm/${value}`)
             .then(res => {
                 const { data } = res;
                 dispatch(BusActions.initialState())
                 dispatch(MapActions.makerchacking(data))
                 dispatch(BusActions.addStationInfo(data))
                 dispatch(MapActions.positioning(data[0]))
+                dispatch(MapActions.Onbusmode())
             }).catch(error => {
-                alert("데이터를 받아오지 못했습니다.")
+                console.log(error)
+                alert("해당 정류장이 없습니다.")
             });
 
     }

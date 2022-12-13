@@ -33,7 +33,7 @@ a{
 .RIGHT{
     width:18vw;
     height:5vw;
-    margin-left:70%;
+    margin-left:10%;
 }
 .subtext{
     width:50%;
@@ -41,7 +41,7 @@ a{
 .SUBWAY{
     width:4.5vw;
     height:5vw;
-    margin-left:70%;
+    margin-left:10%;
 }
 
 :hover{
