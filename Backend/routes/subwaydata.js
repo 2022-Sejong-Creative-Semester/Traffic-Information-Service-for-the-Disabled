@@ -16,13 +16,16 @@ const conn = {
 
 let connection = mysql.createConnection(conn);  // DB Connect
 
+
+// select rail_opr_istt_cd, ln_cd, stin_cd, stin_nm,`교통약자도우미 전화번호` from subcode_1 a, 도우미번호 b where a.ln_cd = b.운영노선명 and a.stin_nm = b.역명 and a.stin_nm Like  "%서울%";
+
 //SubwayStation Name List from DB
 function getSubwayStationName(stNm, callback){
 	try {
 
 		console.log("StationName");
 
-		let sql = "Select *  FROM stationinfotest WHERE StNm like ?; ";
+		let sql = "Select *  FROM subcode_1 WHERE STIN_NM like ?; ";
 
 		let NameList = [];
 		connection.query(sql, ["%"+stNm+"%"], function (err, results, fields) {
@@ -30,18 +33,17 @@ function getSubwayStationName(stNm, callback){
 				console.log(err);
 			}
 			for (let i = 0; i < results.length; i++) {
+				/*
 				if (results[i].LnNm[results[i].LnNm.length - 2] == "호") {
 					results[i].LnNm = results[i].LnCd;
 				}
+				*/
 				NameList.push({
-					railCd: results[i].RailCd,
-					lnCd: results[i].LnCd,
-					lnNm: results[i].LnNm,
-					stCd: results[i].StCd,
-					stNm: results[i].StNm,
-					tmX: "0",
-					tmY: "0"
-
+					railCd: results[i].RAIL_OPR_ISTT_CD,
+					lnCd: results[i].LN_CD,
+					lnNm: results[i].LN_CD,
+					stCd: results[i].STIN_CD,
+					stNm: results[i].STIN_NM,
 				})
 			}
 
@@ -58,7 +60,8 @@ function getSubwayStationName(stNm, callback){
 function getSubwayStationInfo(stCd, stNm, callback) {
 	try {
 
-		let sql = "Select * FROM stationinfotest WHERE StCd = ? and StNm = ?;";
+		//let sql = "select * from subcode_1,subcode_2";
+		//let sql = "Select * FROM subcode_1 a, 도우미번호 b WHERE (a.stin_nm = b.역명 and a.stin_nm = c.역명칭 and b.역명 = c.역명칭)";
 
 		connection.query(sql, [stCd, stNm], function (err, results, fields) {
 			if (err) {
