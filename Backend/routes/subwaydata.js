@@ -188,6 +188,7 @@ function getLiftMove(stCd, stNm, railCd, lnCd, callback) {
 			}
 			if (liftInfo.length != 0) {
 				const direction = liftInfo[liftInfo.length - 2].mvContDtl.split('승강장')[0].substr(3);
+
 				liftInfo.unshift({
 					direction: direction
 				})
