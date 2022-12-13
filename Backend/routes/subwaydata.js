@@ -69,7 +69,8 @@ function getSubwayStationInfo(stCd, stNm, callback) {
 			}
 
 			console.log("SubwayStationInfo");
-
+			console.log(results);
+			
 			//NULL error
 			if (results.length == 0) {
 				return callback({
@@ -83,13 +84,13 @@ function getSubwayStationInfo(stCd, stNm, callback) {
 			queryParams += '=' + serviceKey.subwayRailKey;
 			queryParams += '&' + encodeURI('format') + '=' + encodeURI('json');
 			queryParams += '&' + encodeURI('railOprIsttCd');
-			queryParams += '=' + encodeURI(results[0].RailCd);
+			queryParams += '=' + encodeURI(results[0].RAIL_OPR_ISTT_CD);
 			queryParams += '&' + encodeURI('lnCd');
-			queryParams += '=' + encodeURI(results[0].LnCd);
+			queryParams += '=' + encodeURI(results[0].LN_CD);
 			queryParams += '&' + encodeURI('stinCd');
-			queryParams += '=' + encodeURI(results[0].StCd);
+			queryParams += '=' + encodeURI(results[0].STIN_CD);
 			queryParams += '&' + encodeURI('stinNm');
-			queryParams += '=' + encodeURI(results[0].StNm);
+			queryParams += '=' + encodeURI(results[0].STIN_NM);
 			
 			return request({
 				url: url + queryParams,
@@ -106,9 +107,9 @@ function getSubwayStationInfo(stCd, stNm, callback) {
 					roadNm: stationinfo.roadNmAdr,
 					tmX: stationinfo.stinLocLon,
 					tmY: stationinfo.stinLocLat,
-					tNum: "000-0000-0000",
-					wNum: "000-0000-0000"
+					
 				});
+				//wNum: results[0].
 					
 			});
 			
