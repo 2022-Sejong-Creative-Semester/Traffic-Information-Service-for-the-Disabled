@@ -686,8 +686,8 @@ router.get('/transferMove/transferList/:stCd/:stNm/:railCd/:lnCd', async (req, r
 		lnCd = req.params.lnCd;
 
 		await getTransferList(stCd, stNm, railCd, lnCd, callback => {
-			if (callback[0].error != null) {
-				return res.status(500).json(callback[0])
+			if (callback.error != null) {
+				return res.status(500).json(callback)
 			}
 			return res.json(callback)
 		});
