@@ -20,8 +20,10 @@ const SubwayElevator = () => {
         dispatch(SubwayActions.saveSubway({ stCd, stNm, railCd, lnCd }))
         const getBathChair = async () => {
             await axios.get(`/subway/convenience/${stCd}/${stNm}/${railCd}/${lnCd}`)
+
                 .then(res => {
                     const { data } = res;
+
                     setElePos(data)
                 })
         }
@@ -34,6 +36,7 @@ const SubwayElevator = () => {
                 <SubwayPanel text={["엘리베이터 위치"]} menu={<SubwayBar />} />
                 <div className="elevator">
                     <img src={`${ElePos[0]?.imgPath}`} />
+
                 </div>
             </div>
         </div>

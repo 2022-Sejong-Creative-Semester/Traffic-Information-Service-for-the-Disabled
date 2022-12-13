@@ -7,6 +7,7 @@ import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { SubwayActions } from "../../store/Subway-slice"
 import axios from "axios"
+
 import SubwayBar from "../../component/subway-component/subwaymenubar/SubwayBar.js"
 import SubwayInfo from "../../component/subway-component/subwayinfo/SubwayInfo.js"
 
@@ -23,8 +24,10 @@ const SubwayBathchair = () => {
         dispatch(SubwayActions.saveSubway({ stCd, stNm, railCd, lnCd }))
         const getBathChair = async () => {
             await axios.get(`/subway/liftMove/${stCd}/${stNm}/${railCd}/${lnCd}`)
+
                 .then(res => {
                     const { data } = res;
+                    console.log(data)
                     setBath(data)
                 })
         }
