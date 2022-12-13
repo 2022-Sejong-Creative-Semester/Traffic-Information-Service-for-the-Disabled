@@ -334,7 +334,6 @@ function getTransferList(stCd, stNm, railCd, lnCd, callback) {
 		});
 
 		sql = "Select * FROM subcode_1 WHERE STIN_NM = ?;";
-
 		connection.query(sql, [stNm], function (err, results, fields) {
 
 			if (err) {
