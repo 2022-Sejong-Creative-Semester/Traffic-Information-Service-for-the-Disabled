@@ -11,7 +11,9 @@ font-weight: 600;
 margin-left:23px;
 @media (max-width:500px){
     font-size:4vw;
-}
+    width:100%;
+    height:80vw;
+
 `
 
 

@@ -4,6 +4,17 @@
     width: 100vw;
 }
 
+
+.transfer {
+    width: 650px;
+    height: 650px;
+}
+
+.subwaylist {
+    width: 40vw;
+    height: 70vh;
+}
+
 .subwaypage {
     display: flex;
     flex-direction: column;
@@ -20,6 +31,17 @@
 @media (max-width:500px) {
     .main {
         flex-direction: column;
+        height: 100%;
+    }
+
+    .subwaylist {
+        width: 100vw;
+        height: 43vh;
+    }
+
+    .transfer {
+        width: 747px;
+        height: 747px;
     }
 
     .subwaymain {

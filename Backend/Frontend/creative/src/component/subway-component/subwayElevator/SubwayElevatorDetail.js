@@ -12,7 +12,7 @@ overflow:auto;
 
 @media (max-width:500px) {
     width:98%;
-    height:80vw;
+    height:70vw;
 }
 `
 

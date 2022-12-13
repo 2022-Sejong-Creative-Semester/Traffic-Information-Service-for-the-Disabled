@@ -22,14 +22,13 @@ a{
 }
 @media (max-width:500px) {
     width:100%;
-    height:50vw;
+    height:30vh;
 }
 `
 
 const SubwayList = () => {
     const subwayCheck = useSelector(state => state.subway.subwayCheck)
     const subway = useSelector(state => state.subway.subway)
-    console.log(subway)
     return (
         <StyledList>
             {subwayCheck && <SubwayNumber count={subway.length} />}

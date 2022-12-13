@@ -37,14 +37,13 @@ const RefreshButton = () => {
     };
     const Refresh = () => {
         clickCheck.check = true;
-        api.get(`/bus/arsId/${busId}`, {
-
-        }).then(res => {
-            const { data } = res;
-            dispatch(BusActions.addBusInfo(data))
-        }).catch(error => {
-            alert(error)
-        })
+        axios.get(`/bus/arsId/${busId}`)
+            .then(res => {
+                const { data } = res;
+                dispatch(BusActions.addBusInfo(data))
+            }).catch(error => {
+                alert(error)
+            })
     }
     console.log(Node.classList)
     return (

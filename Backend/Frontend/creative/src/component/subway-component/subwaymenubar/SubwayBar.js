@@ -37,7 +37,7 @@ a{
     a{
         display:flex;
         justify-content:center;
-        width:35vw;
+        width:31vw;
         font-size:3.5vw;
     }
 }

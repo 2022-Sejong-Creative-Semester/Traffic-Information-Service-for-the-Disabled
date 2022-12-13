@@ -13,7 +13,7 @@ background: linear-gradient(270deg, #7C34F3 -44.25%, rgba(146, 85, 245, 0) 222.1
 font-size: 2.5vw;
 color: #FFFFFF;
 @media (max-width:500px) {
-    width:100vw;
+    width:100%;
     height:10vh;
     margin:0;
     flex-direction:column;

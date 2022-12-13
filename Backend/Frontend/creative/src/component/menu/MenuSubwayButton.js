@@ -1,29 +1,82 @@
 import styled from 'styled-components'
 import { useDispatch } from 'react-redux'
 import { MapActions } from '../../store/Map-slice'
+import { Link } from "react-router-dom"
 
 const StyledButton = styled.button`
 width: 442.5px;
 height: 537px;
 font-size: 60px;
-color: #FFFFFF;
+border:none;
 font-family: 'Pretendard-Regular';
 background: rgba(146, 85, 245, 0.8);
 box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
 border-radius: 20px 0px 0px 20px;
+opacity:0.8;
+a{ 
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    align-items:center;
+    width: 100%;
+    height: 70%;
+    text-decoration:none;
+    color: #FFFFFF;
+}
+.image{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    width: 25%;
+    height: 25%;
+}
+.RIGHT{
+    width:18vw;
+    height:5vw;
+    margin-left:70%;
+}
+.subtext{
+    width:50%;
+}
+.SUBWAY{
+    width:4.5vw;
+    height:5vw;
+    margin-left:70%;
+}
+
 :hover{
     cursor: pointer;
+    opacity:1;
 }
 @media (max-width:1630px){
-    font-size: 3vw;
-    width: 25vw;
+    font-size: 4vw;
+    width: 26vw;
     height: 60vh;
+    .subtext{
+        width:55%;
+    }
 }
 @media (max-width:500px){
     font-size: 6vw;
     width: 80vw;
     height: 10vh;
-    margin-left:20vw;
+    margin:20vw;
+    .SUBWAY{
+        width:6.5vw;
+        height:7vw;
+    }
+    a{
+        justify-content:space-evenly;
+        flex-direction:row;
+        align-items:center;
+    }
+    .RIGHT{
+        width:30vw;
+        height:5vw;
+    }
+    .image{
+        margin-bottom:4vw;
+    }
 }
 `
 
@@ -35,7 +88,13 @@ const MenuSubwayButton = () => {
     }
     return (
         <StyledButton onClick={initialization}>
-            지하철<br />편의시설
+            <Link to="/subway">
+                <p className='subtext'>지하철 편의시설</p>
+                <div className="image">
+                    <img className="SUBWAY" src="./image/SUBWAY.png" alt="GRASS" />
+                    <img className="RIGHT" src="./image/RIGHT.png" alt="GRASS" />
+                </div>
+            </Link>
         </StyledButton>
     )
 

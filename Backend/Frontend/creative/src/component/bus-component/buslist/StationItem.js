@@ -31,7 +31,7 @@ const StationItem = (props) => {
     }
 
     const SubmitStation = () => {
-        api.get(`/bus/arsId/${arsId}`, {
+        axios.get(`/bus/arsId/${arsId}`, {
 
         }).then(res => {
             const { data } = res;

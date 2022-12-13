@@ -5,7 +5,6 @@ import { SubwayActions } from "../../../store/Subway-slice";
 
 const SubwayElevatorItems = ({ items }) => {
     const { dtlLoc, imgPath } = items
-    console.log(imgPath)
     const dispatch = useDispatch();
     const ClickSubway = () => {
         dispatch(SubwayActions.addelevator({ imgPath }))
@@ -49,7 +48,7 @@ a{
     color:#000000;
 }
 @media (max-width:500px){
-    height:43%;
+    height:25%;
     .name{
         font-size: 5vw;
     }
