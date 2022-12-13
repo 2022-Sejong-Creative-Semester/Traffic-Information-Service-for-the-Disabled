@@ -299,7 +299,9 @@ function getTransferList(stCd, stNm, railCd, lnCd, callback) {
 	try { 
 		let transferList = [];
 
-		let sql = "Select * FROM subcode_1 WHERE (STIN_CD = ? or STIN_CD = ?) and Ln_Cd = ? and RAIL_OPR_ISTT_CD = ?;";
+		console.log("transferList");
+
+		let sql = "Select * FROM subcode_1 WHERE (STIN_CD = ? or STIN_CD = ?) and LN_CD = ? and RAIL_OPR_ISTT_CD = ?;";
 
 		connection.query(sql, [parseInt(stCd) + 1, parseInt(stCd) -1, lnCd, railCd], function (err, results, fields) {
 
@@ -331,7 +333,7 @@ function getTransferList(stCd, stNm, railCd, lnCd, callback) {
 			})
 		});
 
-		sql = "Select * FROM subcode_1 WHERE STIN_CD = ?;";
+		sql = "Select * FROM subcode_1 WHERE STIN_NM = ?;";
 
 		connection.query(sql, [stNm], function (err, results, fields) {
 
@@ -348,9 +350,10 @@ function getTransferList(stCd, stNm, railCd, lnCd, callback) {
 
 			for (let i = 0; i < results.length; i++) {
 				if (results[i].STIN_CD != stCd) {
-					const sql2 = "Select * FROM stationinfotest WHERE (STIN_CD = ? or STIN_CD = ?) and RAIL_OPR_ISTT_CD = ?;";
+					const sql2 = "Select * FROM subcode_1 WHERE (STIN_CD = ? or STIN_CD = ?) and RAIL_OPR_ISTT_CD = ?;";
 					connection.query(sql2, [parseInt(results[i].STIN_CD) + 1, parseInt(results[i].STIN_CD) - 1, results[i].RAIL_OPR_ISTT_CD], function (err, results2, fields) {
 						let transferStation = [];
+						console.log(results2);
 						for (let j = 0; j < results2.length; j++) {
 							transferStation.push({
 								stCd: results2[j].STIN_CD,
