@@ -25,12 +25,13 @@
 @media (max-width:500px) {
     .main {
         flex-direction: column;
+        height: 100%;
     }
 
     .subwaymain {
         flex-direction: column;
         margin-top: 0;
-        height: 100%;
+        height: 81.7vh;
         justify-content: space-between;
     }
 

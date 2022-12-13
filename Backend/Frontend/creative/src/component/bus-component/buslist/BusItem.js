@@ -64,7 +64,6 @@ div{
 
 const BusItem = (props) => {
     const { busrouteid, busrouteAbrv, adirection, arrmsg1 } = props.items;
-    console.log(busrouteid);
     return (
         <StyledBusItem>
             <a href={`https://map.naver.com/v5/search/${busrouteAbrv}번버스/bus-route/${busrouteid}?c=0,0`} target="_blank">

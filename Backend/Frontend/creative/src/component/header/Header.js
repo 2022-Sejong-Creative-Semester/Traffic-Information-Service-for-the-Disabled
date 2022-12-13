@@ -7,6 +7,7 @@ import { MapActions } from "../../store/Map-slice";
 
 const StyledHeader = styled.header`
 display:flex;
+justify-content:space-between;
 align-items:center;
 font-family: 'GmarketSansMedium';
 font-weight: 700;
@@ -19,9 +20,21 @@ a{
     color:#000000;
     text-decoration:none;
 }
+p{
+    font-family: 'Pretendard-Regular';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.8vw;
+    line-height: 48px;
+    text-align: center;
+    color: #5C5454;
+}
 @media (max-width:500px) {
     font-size:8vw;
     height:8vh;
+    p{
+        font-size: 4vw;
+    }
 }
 `
 
@@ -38,6 +51,7 @@ const Header = () => {
             <Link onClick={reduxReset} to="/">
                 타자
             </Link>
+            <p>Sejong University</p>
         </StyledHeader>
     )
 }

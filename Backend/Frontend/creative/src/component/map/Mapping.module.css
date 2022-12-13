@@ -6,7 +6,7 @@
 
 @media (max-width:500px) {
     .map {
-        width: 100vw;
-        height: 80vw;
+        width: 99%;
+        height: 40vh;
     }
 }
