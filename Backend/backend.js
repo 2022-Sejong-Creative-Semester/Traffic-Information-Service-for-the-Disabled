@@ -9,12 +9,14 @@ const subwayRouter = require('./routes/subwaydata');
 const developRouter = require('./routes/develop');
 
 let corsOptions = {
-    origin: ['http://localhost:3000/#/','http://localhost:3000', 'http://localhost:3005', 'http://http://34.82.213.244:3000', 'http://http://34.82.213.244:3005', 'http://172.30.1.35:5000', 'http://localhost:5000'],
+    origin: ['http://localhost:3000/#/','http://localhost:3000', 'http://localhost:3005', 'http://34.82.213.244:3000', 'http://34.82.213.244:3005', 'http://172.30.1.35:5000', 'http://localhost:5000'],
     credentials: true
 }
 
-/*
+
 app.use(cors(corsOptions));
+
+/*
 app.use(express.static(path.join(__dirname, './Frontend/creative/build')))
 */
 

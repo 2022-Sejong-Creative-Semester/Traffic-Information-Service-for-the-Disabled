@@ -24,7 +24,6 @@ const SubwayItems = ({ items }) => {
                 })
         }
         locationRecive()
-
     }, [currentSubway])
     const ClickSubway = () => {
         if (currentSubway === stCd) {
