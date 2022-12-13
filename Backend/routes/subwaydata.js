@@ -299,7 +299,7 @@ function getTransferList(stCd, stNm, railCd, lnCd, callback) {
 	try { 
 		let transferList = [];
 
-		let sql = "Select * FROM stationinfotest WHERE (StCd = ? or StCd = ?) and LnCd = ? and RailCd = ?;";
+		let sql = "Select * FROM subcode_1 WHERE (STIN_CD = ? or STIN_CD = ?) and Ln_Cd = ? and RAIL_OPR_ISTT_CD = ?;";
 
 		connection.query(sql, [parseInt(stCd) + 1, parseInt(stCd) -1, lnCd, railCd], function (err, results, fields) {
 
@@ -318,10 +318,10 @@ function getTransferList(stCd, stNm, railCd, lnCd, callback) {
 			else {
 				for (let i = 0; i < results.length; i++) {
 					sourceStation.push({
-						stCd: results[i].StCd,
-						stNm: results[i].StNm,
-						railCd: results[i].RailCd,
-						lnCd: results[i].LnCd
+						stCd: results[i].STIN_CD,
+						stNm: results[i].STIN_NM,
+						railCd: results[i].RAIL_OPR_ISTT_CD,
+						lnCd: results[i].LN_CD
 					})
 				}
 
@@ -331,7 +331,7 @@ function getTransferList(stCd, stNm, railCd, lnCd, callback) {
 			})
 		});
 
-		sql = "Select * FROM stationinfotest WHERE StNm = ?;";
+		sql = "Select * FROM subcode_1 WHERE STIN_CD = ?;";
 
 		connection.query(sql, [stNm], function (err, results, fields) {
 
@@ -347,16 +347,16 @@ function getTransferList(stCd, stNm, railCd, lnCd, callback) {
 			}
 
 			for (let i = 0; i < results.length; i++) {
-				if (results[i].StCd != stCd) {
-					const sql2 = "Select * FROM stationinfotest WHERE (StCd = ? or StCd = ?) and RailCd = ?;";
-					connection.query(sql2, [parseInt(results[i].StCd) + 1, parseInt(results[i].StCd) - 1, results[i].RailCd], function (err, results2, fields) {
+				if (results[i].STIN_CD != stCd) {
+					const sql2 = "Select * FROM stationinfotest WHERE (STIN_CD = ? or STIN_CD = ?) and RAIL_OPR_ISTT_CD = ?;";
+					connection.query(sql2, [parseInt(results[i].STIN_CD) + 1, parseInt(results[i].STIN_CD) - 1, results[i].RAIL_OPR_ISTT_CD], function (err, results2, fields) {
 						let transferStation = [];
 						for (let j = 0; j < results2.length; j++) {
 							transferStation.push({
-								stCd: results2[j].StCd,
-								stNm: results2[j].StNm,
-								railCd: results2[j].RailCd,
-								lnCd: results2[j].LnCd
+								stCd: results2[j].STIN_CD,
+								stNm: results2[j].STIN_NM,
+								railCd: results2[j].RAIL_OPR_ISTT_CD,
+								lnCd: results2[j].LN_CD
 							})
 						}
 						transferList.push({
@@ -381,7 +381,7 @@ function getTransferList(stCd, stNm, railCd, lnCd, callback) {
 function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn , chtnNextStinCd , callback) {
 	try {
 
-		let sql = "Select * FROM stationinfotest WHERE StNm = ? and LnCd = ?;";
+		let sql = "Select * FROM subcod_1 WHERE STIN_NM = ? and STIN_CD = ?;";
 		let transferInfo = [];
 
 		connection.query(sql, [stNm, chthTgtLn], function (err, results, fields) {
@@ -392,11 +392,11 @@ function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn , chtnNextSti
 
 			let prevStinCd = "";
 
-			if (parseInt(results[0].StCd) + 1 == parseInt(chtnNextStinCd)) {
-				prevStinCd = parseInt(results[0].StCd) - 1;
+			if (parseInt(results[0].STIN_CD) + 1 == parseInt(chtnNextStinCd)) {
+				prevStinCd = parseInt(results[0].STIN_CD) - 1;
 			}
 			else {
-				prevStinCd = parseInt(results[0].StCd) + 1;
+				prevStinCd = parseInt(results[0].STIN_CD) + 1;
 			}
 
 			const url = 'https://openapi.kric.go.kr/openapi/vulnerableUserInfo/transferMovement';
