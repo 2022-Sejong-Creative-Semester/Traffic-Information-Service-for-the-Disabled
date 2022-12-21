@@ -20,7 +20,7 @@ a{
     color:#000000;
     text-decoration:none;
 }
-p{
+.sejong{
     font-family: 'Pretendard-Regular';
     font-style: normal;
     font-weight: 700;
@@ -32,7 +32,7 @@ p{
 @media (max-width:500px) {
     font-size:8vw;
     height:8vh;
-    p{
+    .sejong{
         font-size: 4vw;
     }
 }
@@ -51,7 +51,7 @@ const Header = () => {
             <Link onClick={reduxReset} to="/">
                 타자
             </Link>
-            <p>Sejong University</p>
+            <p className="sejong">Sejong University</p>
         </StyledHeader>
     )
 }

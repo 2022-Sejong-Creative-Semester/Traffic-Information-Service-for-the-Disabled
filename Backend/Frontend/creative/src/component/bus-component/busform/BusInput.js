@@ -7,6 +7,7 @@ padding: 15px;
 font-size: 2.5vw;
 border:0;
 font-family: 'Pretendard-Regular';
+font-weight: 700;
 @media (max-width:500px){
     font-family: 'Pretendard-Regular';
     width: 80%;

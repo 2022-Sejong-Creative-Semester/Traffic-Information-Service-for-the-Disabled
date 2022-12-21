@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import { useEffect } from "react";
 const StyledBusItem = styled.li`
 display:flex;
 justify-content:space-between;
@@ -12,7 +12,7 @@ font-family: 'Pretendard-Regular';
 .mark{
     width:1.5vw;
     height:1.5vw;
-    margin-right:0.3vw;
+    margin-right:0.8vw;
 }
 :hover{
     cursor: pointer;
@@ -39,6 +39,7 @@ div{
     font-weight: 600;
     font-size: 2vw;
     line-height: 60px;
+    margin-right:10px;
 }
 .direction{
     font-family: 'Pretendard-Regular';
@@ -78,6 +79,7 @@ div{
 
 const BusItem = (props) => {
     const { busrouteid, busrouteAbrv, adirection, arrmsg1 } = props.items;
+
     return (
         <StyledBusItem>
             <a href={`https://map.naver.com/v5/search/${busrouteAbrv}번버스/bus-route/${busrouteid}?c=0,0`} target="_blank">

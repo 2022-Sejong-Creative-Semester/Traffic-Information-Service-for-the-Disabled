@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import { useDispatch } from 'react-redux'
 import { MapActions } from '../../store/Map-slice'
+import { BusActions } from '../../store/Bus-slice'
+import { SubwayActions } from '../../store/Subway-slice'
 import { Link } from "react-router-dom"
 
 const StyledButton = styled.button`
@@ -9,6 +11,7 @@ height: 537px;
 font-size: 60px;
 border:none;
 font-family: 'Pretendard-Regular';
+font-weight: 600;
 background: rgba(205, 208, 41, 0.8);
 box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
 border-radius: 0px 20px 20px 0px;
@@ -33,7 +36,7 @@ a{
 .RIGHT{
     width:18vw;
     height:5vw;
-    margin-right:70%;
+    margin-right:80%;
 }
 .BUS{
     width:6vw;
@@ -79,6 +82,8 @@ const MenuBusButton = () => {
 
     const initialization = () => {
         dispatch(MapActions.initialization())
+        dispatch(BusActions.initialState())
+        dispatch(SubwayActions.initialtrans())
         dispatch(MapActions.Onbusmode())
     }
     return (
