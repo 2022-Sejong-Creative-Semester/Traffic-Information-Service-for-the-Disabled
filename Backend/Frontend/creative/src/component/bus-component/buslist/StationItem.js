@@ -16,6 +16,9 @@ const StationItem = (props) => {
         if (station === arsId) {
             setColor(false)
         }
+        else {
+            setColor(true)
+        }
     }, [station])
 
 
@@ -68,7 +71,7 @@ font-family: 'Pretendard-Regular';
     padding-left:20px;
     font-family: 'Pretendard-Regular';
     font-style: normal;
-    font-weight: 400;
+    font-weight: ${props => (props.color ? "400" : "700")};
     font-size: 2vw;
     line-height: 60px;
     color:${props => (props.color ? "#000000" : "#FFFFFF")};
@@ -78,13 +81,13 @@ font-family: 'Pretendard-Regular';
     padding-right:20px;
     font-family: 'Pretendard-Regular';
     font-style: normal;
-    font-weight: 500;
+    font-weight: ${props => (props.color ? "500" : "700")};
     font-size: 1.7vw;
     line-height: 29px;
     display: flex;
     align-items: center;
     text-align: center;
-    color:${props => (props.color ? "#9C9C9C" : "black")};
+    color:${props => (props.color ? "#000000" : "#FFFFFF")};
 }
 @media (max-width:500px){
     height:28%;

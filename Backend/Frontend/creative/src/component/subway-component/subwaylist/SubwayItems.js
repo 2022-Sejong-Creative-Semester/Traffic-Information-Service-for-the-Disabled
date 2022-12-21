@@ -17,6 +17,9 @@ const SubwayItems = ({ items }) => {
         if (currentSubway === stCd) {
             setColor(false)
         }
+        else {
+            setColor(true)
+        }
         const locationRecive = async () => {
             await api.get(`/subway/stationInfo/${stCd}/${stNm}`)
                 .then(res => {
@@ -72,7 +75,7 @@ a{
     padding-left:20px;
     font-family: 'Pretendard-Regular';
     font-style: normal;
-    font-weight: 400;
+    font-weight: ${props => (props.color ? "400" : "700")};
     font-size: 40px;
     line-height: 60px;
     color:${props => (props.color ? "#000000" : "#FFFFFF")};
