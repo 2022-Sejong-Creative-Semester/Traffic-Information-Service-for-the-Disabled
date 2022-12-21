@@ -7,13 +7,14 @@ import { useEffect, useState } from "react";
 
 
 const StationItem = (props) => {
-    const [color, setColor] = useState(false)
+    const [color, setColor] = useState(true)
     const { stNm, arsId, tmX, tmY } = props.items
+
     const dispatch = useDispatch();
     const station = useSelector(state => state.bus.currentStation)
     useEffect(() => {
-        if (station !== arsId) {
-            setColor(true)
+        if (station === arsId) {
+            setColor(false)
         }
     }, [station])
 
@@ -67,7 +68,7 @@ font-family: 'Pretendard-Regular';
     padding-left:20px;
     font-family: 'Pretendard-Regular';
     font-style: normal;
-    font-weight: 600;
+    font-weight: 400;
     font-size: 2vw;
     line-height: 60px;
     color:${props => (props.color ? "#000000" : "#FFFFFF")};
@@ -77,7 +78,7 @@ font-family: 'Pretendard-Regular';
     padding-right:20px;
     font-family: 'Pretendard-Regular';
     font-style: normal;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 1.7vw;
     line-height: 29px;
     display: flex;

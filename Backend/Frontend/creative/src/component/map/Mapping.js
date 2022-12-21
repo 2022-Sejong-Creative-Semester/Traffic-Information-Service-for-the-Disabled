@@ -11,6 +11,7 @@ const Mapping = () => {
     const arsid = useSelector(state => state.bus.currentStation)
     const busmode = useSelector(state => state.map.busmode)
     const subwaymode = useSelector(state => state.map.subwaymode)
+
     useEffect(() => {
         const container = document.getElementById("map");
         const options = {
@@ -23,6 +24,7 @@ const Mapping = () => {
         else if (subwaymode)
             subwaymapcoordinate(marker, map)
     })
+
     const subwaymapcoordinate = (marker, map) => {
         const markerPosition = new window.kakao.maps.LatLng(parseFloat(marker.tmY - 0.0000005).toFixed(6), parseFloat(marker.tmX - 0.0000005).toFixed(6))
         const new_marker = new window.kakao.maps.Marker({
@@ -31,7 +33,9 @@ const Mapping = () => {
         })
         new_marker.setMap(map)
     }
+
     const busmapcoordinate = (marker, map) => {
+
         const currentArsid = marker.filter(id => id.arsId === arsid)
         marker.forEach(element => {
             const imageSrc = './image/busImage.png' // 마커이미지의 주소입니다    

@@ -9,14 +9,17 @@ text-align:center;
 width: 19vw;
 height: 85vh;
 margin-right:30px;
-font-family: 'Pretendard-Regular';
 background: linear-gradient(270.31deg, #999C0D -27.07%, rgba(205, 208, 41, 0) 206.73%);
 .first{
-    font-size: 4vw;
+    font-size: 2.5vw;
     color: #FFFFFF;
+    font-family: 'GmarketSansMedium';
+    font-weight: 500;
 }
 .second{
+    padding:0 1vw;
     font-size: 2vw;
+    font-family: 'Pretendard-Regular';
     color: #FFFFFF;
 }
 

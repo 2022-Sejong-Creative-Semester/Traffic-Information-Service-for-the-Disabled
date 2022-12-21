@@ -32,7 +32,6 @@ font-weight: 600;
 
 
 const SubwayBathchairInfo = ({ mvContDtl, direction }) => {
-    console.log(direction)
     return (
         <StyledBathChair>
             <p className="title">{direction}</p>
