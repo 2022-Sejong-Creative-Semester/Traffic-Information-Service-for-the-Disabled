@@ -16,16 +16,13 @@ const conn = {
 
 let connection = mysql.createConnection(conn);  // DB Connect
 
-
-// select rail_opr_istt_cd, ln_cd, stin_cd, stin_nm,`교통약자도우미 전화번호` from subcode_1 a, 도우미번호 b where a.ln_cd = b.운영노선명 and a.stin_nm = b.역명 and a.stin_nm Like  "%서울%";
-
 //SubwayStation Name List from DB
 function getSubwayStationName(stNm, callback){
 	try {
 
 		console.log("StationName");
 
-		let sql = "Select *  FROM subcode_1 WHERE STIN_NM like ?; ";
+		let sql = "Select *  FROM subcode_1 a, 도우미번호 b WHERE (a.stin_nm = b.역명 and a.ln_cd = b.운영노선명) and a.STIN_NM like ?; ";
 
 		let NameList = [];
 		connection.query(sql, ["%"+stNm+"%"], function (err, results, fields) {
@@ -33,11 +30,7 @@ function getSubwayStationName(stNm, callback){
 				console.log(err);
 			}
 			for (let i = 0; i < results.length; i++) {
-				/*
-				if (results[i].LnNm[results[i].LnNm.length - 2] == "호") {
-					results[i].LnNm = results[i].LnCd;
-				}
-				*/
+				
 				NameList.push({
 					railCd: results[i].RAIL_OPR_ISTT_CD,
 					lnCd: results[i].LN_CD,
@@ -69,7 +62,7 @@ function getSubwayStationInfo(stCd, stNm, callback) {
 			}
 
 			console.log("SubwayStationInfo");
-			console.log(results);
+			//console.log(results);
 			
 			//NULL error
 			if (results.length == 0) {
@@ -107,8 +100,9 @@ function getSubwayStationInfo(stCd, stNm, callback) {
 					roadNm: stationinfo.roadNmAdr,
 					tmX: stationinfo.stinLocLon,
 					tmY: stationinfo.stinLocLat,
-					wNum: results[0].wnum
-					
+					wNum: results[0].wnum,
+					eName: results[0].en_name,
+					fCode: results[0].f_code
 				});
 					
 			});
@@ -181,9 +175,9 @@ function getLiftMove(stCd, stNm, railCd, lnCd, callback) {
 			for (let i = 0; i < liftMoveParse.length; i++) {
 				if (liftMoveParse[i].mvTpOrdr == 1) {
 					if (liftInfo.length != 0) {
-						const direction = liftInfo[liftInfo.length - 2].mvContDtl.split(' 방면')[0].split(' ');
+						const direction = liftInfo[liftInfo.length - 2].mvContDtl.split('승강장')[0].substr(3);
 						liftInfo.unshift({
-							direction: direction[direction.length - 1]
+							direction: direction
 						})
 
 						liftMoveInfo.push(liftInfo);
@@ -193,9 +187,10 @@ function getLiftMove(stCd, stNm, railCd, lnCd, callback) {
 				liftInfo.push(liftMoveParse[i]);
 			}
 			if (liftInfo.length != 0) {
-				const direction = liftInfo[liftInfo.length - 2].mvContDtl.split(' 방면')[0].split(' ');
+				const direction = liftInfo[liftInfo.length - 2].mvContDtl.split('승강장')[0].substr(3);
+
 				liftInfo.unshift({
-					direction: direction[direction.length - 1]
+					direction: direction
 				})
 				liftMoveInfo.push(liftInfo);
 				liftInfo = [];
@@ -266,9 +261,9 @@ function getElevatorMove(stCd, stNm, railCd, lnCd, callback) {
 			for (let i = 0; i < elevatorMoveParse.length; i++) {
 				if (elevatorMoveParse[i].mvTpOrdr == 1) {
 					if (elevatorInfo.length != 0) {
-						const direction = elevatorInfo[elevatorInfo.length - 2].mvContDtl.split(' 방면')[0].split(' ');
+						const direction = elevatorInfo[elevatorInfo.length - 2].mvContDtl.split('승강장')[0].substr(3);
 						elevatorInfo.unshift({
-							direction: direction[direction.length - 1]
+							direction: direction
 						})
 						elevatorMove.push(elevatorInfo);
 						elevatorInfo = [];
@@ -277,9 +272,9 @@ function getElevatorMove(stCd, stNm, railCd, lnCd, callback) {
 				elevatorInfo.push(elevatorMoveParse[i]);
 			}
 			if (elevatorInfo.length != 0) {
-				const direction = elevatorInfo[elevatorInfo.length - 2].mvContDtl.split(' 방면')[0].split(' ');
+				const direction = elevatorInfo[elevatorInfo.length - 2].mvContDtl.split('승강장')[0].substr(3);
 				elevatorInfo.unshift({
-					direction: direction[direction.length - 1]
+					direction: direction
 				})
 				elevatorMove.push(elevatorInfo);
 				elevatorInfo = [];
@@ -299,7 +294,9 @@ function getTransferList(stCd, stNm, railCd, lnCd, callback) {
 	try { 
 		let transferList = [];
 
-		let sql = "Select * FROM subcode_1 WHERE (STIN_CD = ? or STIN_CD = ?) and Ln_Cd = ? and RAIL_OPR_ISTT_CD = ?;";
+		console.log("transferList");
+
+		let sql = "Select * FROM subcode_1 WHERE (STIN_CD = ? or STIN_CD = ?) and LN_CD = ? and RAIL_OPR_ISTT_CD = ?;";
 
 		connection.query(sql, [parseInt(stCd) + 1, parseInt(stCd) -1, lnCd, railCd], function (err, results, fields) {
 
@@ -331,8 +328,7 @@ function getTransferList(stCd, stNm, railCd, lnCd, callback) {
 			})
 		});
 
-		sql = "Select * FROM subcode_1 WHERE STIN_CD = ?;";
-
+		sql = "Select * FROM subcode_1 WHERE STIN_NM = ?;";
 		connection.query(sql, [stNm], function (err, results, fields) {
 
 			if (err) {
@@ -348,9 +344,10 @@ function getTransferList(stCd, stNm, railCd, lnCd, callback) {
 
 			for (let i = 0; i < results.length; i++) {
 				if (results[i].STIN_CD != stCd) {
-					const sql2 = "Select * FROM stationinfotest WHERE (STIN_CD = ? or STIN_CD = ?) and RAIL_OPR_ISTT_CD = ?;";
+					const sql2 = "Select * FROM subcode_1 WHERE (STIN_CD = ? or STIN_CD = ?) and RAIL_OPR_ISTT_CD = ?;";
 					connection.query(sql2, [parseInt(results[i].STIN_CD) + 1, parseInt(results[i].STIN_CD) - 1, results[i].RAIL_OPR_ISTT_CD], function (err, results2, fields) {
 						let transferStation = [];
+
 						for (let j = 0; j < results2.length; j++) {
 							transferStation.push({
 								stCd: results2[j].STIN_CD,
@@ -381,7 +378,7 @@ function getTransferList(stCd, stNm, railCd, lnCd, callback) {
 function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn , chtnNextStinCd , callback) {
 	try {
 
-		let sql = "Select * FROM subcod_1 WHERE STIN_NM = ? and STIN_CD = ?;";
+		let sql = "Select * FROM subcode_1 WHERE STIN_NM = ? and LN_CD = ?;";
 		let transferInfo = [];
 
 		connection.query(sql, [stNm, chthTgtLn], function (err, results, fields) {
@@ -688,8 +685,8 @@ router.get('/transferMove/transferList/:stCd/:stNm/:railCd/:lnCd', async (req, r
 		lnCd = req.params.lnCd;
 
 		await getTransferList(stCd, stNm, railCd, lnCd, callback => {
-			if (callback[0].error != null) {
-				return res.status(500).json(callback[0])
+			if (callback.error != null) {
+				return res.status(500).json(callback)
 			}
 			return res.json(callback)
 		});
@@ -738,10 +735,10 @@ router.get('/convenience/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 		lnCd = req.params.lnCd;
 
 		await getConvenience(stCd, stNm, railCd, lnCd, callback => {
-			if (callback[0].error != null) {
+			if (callback.error != null) {
 				return res.status(500).json(callback[0]);
 			}
-			return res.json(callback);
+			else return res.json(callback);
 		});
 
 		
