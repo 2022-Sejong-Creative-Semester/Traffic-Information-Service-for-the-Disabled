@@ -14,6 +14,7 @@ const SubwayDetailPage = () => {
     const params = useParams()
     const dispatch = useDispatch()
     const [info, setInfo] = useState({})
+
     useEffect(() => {
         const stCd = params.stCd;
         const stNm = params.stNm;
@@ -33,7 +34,7 @@ const SubwayDetailPage = () => {
         <div className={classes.subwaypage}>
             <Header />
             <div className={classes.main}>
-                <SubwayPanel text={["지하철 편의시설"]} menu={<SubwayBar />} />
+                <SubwayPanel text={["지하철편의시설"]} menu={<SubwayBar />} />
                 <div className={classes.subwaymain}>
                     <div className={classes.subwaylist}>
                         <SubwayDetail info={info} />

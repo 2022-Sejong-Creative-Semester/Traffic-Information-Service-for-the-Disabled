@@ -53,6 +53,10 @@ const SubwaySlice = createSlice({
             state.transprevnext.prev = action.payload.prev;
         },
         initialtrans(state) {
+            state.subway = [];
+            state.subwayCheck = false;
+            state.subwayInfo = {};
+            state.currentSubway = "";
             state.transferDetail = {
                 transCheck: false,
                 transRoad: [],

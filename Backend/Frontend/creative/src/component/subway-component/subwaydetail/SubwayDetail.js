@@ -1,10 +1,31 @@
 import styled from "styled-components";
 
+
+const SubwayDetail = ({ info }) => {
+    console.log(info)
+    const idColor = ["#0052A4", "#00A84D", "#EF7C1C", "#00A5DE", "#996CAC", "#CD7C2F", "#747F00", "#E6186C"];
+    //<img className="info-image" src="./image/Call.png" />
+    return (
+        <StyledDetail idColor={idColor} line={info.lnCd}>
+            <div className="name">
+                <p className="line">{info.lnCd}</p>
+                <p>{info.stNm}</p>
+            </div>
+            <div className="info">
+                <p><img className="info-image" src="./image/phone.png" />{info.roadNm}</p>
+                <p> 교통약자 도우미 전화번호<br />{info.wNum}</p>
+                <p>지하철역 영문명: {info.eName}</p>
+                <p>지하철역 FR_CODE: {info.fCode}</p>
+            </div>
+        </StyledDetail>
+    )
+}
+
 const StyledDetail = styled.div`
 display:flex;
 flex-direction:column;
-width: 749px;
-height: 747px;
+width: 35vw;
+height: 80vh;
 background-color:white;
 margin:0;
 border: 4px solid #9255F5;
@@ -19,7 +40,7 @@ border: 4px solid #9255F5;
     width:100%;
     height:auto;
     font-weight: 600;
-    font-size: 40px;
+    font-size: 2.1vw;
     border-bottom: 4px solid #9255F5;
 }
 .name p{
@@ -32,10 +53,10 @@ border: 4px solid #9255F5;
     color:#FFFFFF;
     font-style: normal;
     font-weight: 600;
-    font-size: 70%;
+    font-size: 1.5vw;
     width: 48px;
     height: 48px;
-    background-color:#A76E00;
+    background-color:${props => (props.idColor[props.line - 1])};
     border-radius:200px;   
 }
 .info{
@@ -44,7 +65,7 @@ border: 4px solid #9255F5;
     display:flex;
     flex-direction:column;
     font-weight: 600;
-    font-size: 30px;
+    font-size: 1.5vw;
     padding-left:1vw;
 }
 p{
@@ -82,24 +103,5 @@ p{
 }
 `
 
-
-const SubwayDetail = ({ info }) => {
-    console.log(info)
-    //<img className="info-image" src="./image/Call.png" />
-    return (
-        <StyledDetail>
-            <div className="name">
-                <p className="line">{info.lnCd}</p>
-                <p>{info.stNm}</p>
-            </div>
-            <div className="info">
-                <p><img className="info-image" src="./image/phone.png" />{info.roadNm}</p>
-                <p> 교통약자 도우미 전화번호<br />{info.wNum}</p>
-                <p>지하철역 영문명: {info.eName}</p>
-                <p>지하철역 FR_CODE: {info.fCode}</p>
-            </div>
-        </StyledDetail>
-    )
-}
 
 export default SubwayDetail;
