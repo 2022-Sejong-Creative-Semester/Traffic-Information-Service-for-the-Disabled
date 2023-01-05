@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 
 const StationItem = (props) => {
-    const [color, setColor] = useState(true)
+    const [color, setColor] = useState(false)
     const { stNm, arsId, tmX, tmY } = props.items
 
     const dispatch = useDispatch();

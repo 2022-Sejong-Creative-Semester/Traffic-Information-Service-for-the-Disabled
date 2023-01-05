@@ -9,7 +9,7 @@ import { api } from "../../auth/Api";
 const SubwayItems = ({ items }) => {
     const { stNm, lnNm, stCd } = items
     const [position, setPosition] = useState("");
-    const [color, setColor] = useState(true);
+    const [color, setColor] = useState(false);
     const dispatch = useDispatch()
     const currentSubway = useSelector(state => state.subway.currentSubway)
     const idColor = ["#0052A4", "#00A84D", "#EF7C1C", "#00A5DE", "#996CAC", "#CD7C2F", "#747F00", "#E6186C"];
