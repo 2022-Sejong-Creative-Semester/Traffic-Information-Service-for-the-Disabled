@@ -90,7 +90,7 @@ font-family: 'Pretendard-Regular';
     color:${props => (props.color ? "#000000" : "#FFFFFF")};
 }
 @media (max-width:500px){
-    height:28%;
+    height:35%;
     .Name{
         font-family: 'Pretendard-Regular';
         font-size: 5vw;
