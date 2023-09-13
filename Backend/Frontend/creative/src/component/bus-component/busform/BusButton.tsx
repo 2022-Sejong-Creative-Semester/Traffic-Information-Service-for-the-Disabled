@@ -1,3 +1,4 @@
+import React from "react"
 import styled from "styled-components"
 
 const StyledButton = styled.button`
@@ -17,7 +18,7 @@ padding:0;
 }
 `
 
-const BusButton = () => {
+const BusButton:React.FC = () => {
     return (
         <StyledButton > <img className="GRASS" src="./image/GRASS.png" alt="GRASS" /> </StyledButton>
     )

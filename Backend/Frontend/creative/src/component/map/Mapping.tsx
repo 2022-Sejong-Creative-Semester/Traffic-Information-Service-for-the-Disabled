@@ -1,7 +1,8 @@
+import React from "react";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import classes from "./Mapping.module.css"
-import { api } from "../auth/Api";
+import { api } from "../auth/Api.";
 import { BusActions } from "../../store/Bus-slice";
 
 const Mapping = () => {
