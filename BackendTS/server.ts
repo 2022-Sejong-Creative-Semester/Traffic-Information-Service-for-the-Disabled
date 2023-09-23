@@ -1,8 +1,10 @@
 const express = require('express');
-const app = express();
-const port = 3005;
 const path = require('path');
-const cors = require('cors')
+const cors = require('cors');
+
+const app = express();
+const port:number = 3000;
+
 const busRouter = require('./routes/busdata');
 const subwayRouter = require('./routes/subwaydata');
 
@@ -11,7 +13,6 @@ let corsOptions = {
     credentials: true
 }
 
-
 app.use(cors(corsOptions));
 
 app.use(express.static(path.join(__dirname, './Frontend/creative/build')))
@@ -19,11 +20,9 @@ app.use(express.static(path.join(__dirname, './Frontend/creative/build')))
 app.use('/bus', busRouter);
 app.use('/subway', subwayRouter);
 
-/*
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname, './Frontend/creative/build/index.html'));
 })
-*/
 
 app.get('/', (req, res) => {
     res.json({
