@@ -19,4 +19,4 @@ jobs:
             cd ${{ secrets.PWD }}
             git pull https://${{ secrets.GIT_TOKEN }}:x-oauth-basic@github.com/Mooboong/backend.git Develop
             npm install
-            pm2 restart 1
+            pm2 restart Traffic
