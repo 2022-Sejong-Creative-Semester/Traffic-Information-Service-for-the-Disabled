@@ -3,7 +3,7 @@ const request = require('request');
 const convert = require('xml-js');
 const serviceKey = require('../Key/serviceKey.json');
 
-const SQL_info = require('../Key/SQL_info.json')
+const SQL_info = require('../KEY/SQL_info.json')
 const mysql = require('mysql');
 
 const conn = {
