@@ -17,10 +17,10 @@
 
 ## 서비스 예시
 <div align="left">
-  <a href="http://34.168.80.42:3000/#/">
+  <a href="http://34.168.80.42:3005/#/">
     <img src="./image/main.png">
   </a><p>
-  <a href="http://34.168.80.42:3000/#/">
+  <a href="http://34.168.80.42:3005/#/">
     <img src="./image/mobile.png" width="800">
   </a><br>
 </div>
