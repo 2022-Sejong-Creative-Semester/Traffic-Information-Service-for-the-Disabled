@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+      "target": "es6",
+      "module": "commonjs",
+      "strict": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "moduleResolution": "node",
+      "forceConsistentCasingInFileNames": true,
+      "jsx": "react",
+      "allowImportingTsExtensions": true,
+      "paths":["**/*"],
+    }
+}
+  
