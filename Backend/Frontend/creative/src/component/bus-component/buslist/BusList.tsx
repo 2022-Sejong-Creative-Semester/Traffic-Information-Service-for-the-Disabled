@@ -1,9 +1,10 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import BusItem from "./BusItem";
 import StationItem from "./StationItem"
-import { useSelector } from "react-redux";
 import BusNumber from "../busnumber/BusNumber";
+import { RootState } from "../../../store/index";
 
 const StyledList = styled.ul`
 display:flex;
@@ -24,21 +25,22 @@ overflow:auto;
 }
 `
 
+
 const BusList = () => {
-    const stationInfo = useSelector(state => state.bus.station)
-    const stationCheck = useSelector(state => state.bus.stationCheck)
-    const busInfo = useSelector(state => state.bus.buslist)
-    const busCheck = useSelector(state => state.bus.busCheck)
+    const stationInfo = useSelector((state:RootState )=> state.bus.station)
+    const stationCheck = useSelector((state:RootState) => state.bus.stationCheck)
+    const busInfo = useSelector((state:RootState) => state.bus.buslist)
+    const busCheck = useSelector((state:RootState) => state.bus.busCheck)
     return (
         <StyledList>
             {(busCheck || stationCheck) && <BusNumber text={stationCheck ? "검색결과" : "버스"} count={stationCheck ? stationInfo.length : busInfo.length} />}
-            {stationCheck && stationInfo.map(element => (
+            {stationCheck && stationInfo.map((element:any) => (
                 <StationItem
                     key={element.stId}
                     items={element}
                 />
             ))}
-            {busCheck && busInfo.map(element => (
+            {busCheck && busInfo.map((element:any) => (
                 <BusItem
                     key={element.busrouteAbrv}
                     items={element}

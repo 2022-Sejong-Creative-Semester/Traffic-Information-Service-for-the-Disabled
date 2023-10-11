@@ -2,16 +2,23 @@ import React from "react";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import classes from "./Mapping.module.css"
-import { api } from "../auth/Api.";
+import { api } from "../auth/Api";
 import { BusActions } from "../../store/Bus-slice";
+import { RootState } from "../../store/index";
+
+declare global {
+    interface Window {
+      kakao: any;
+    }
+  }
 
 const Mapping = () => {
     const dispatch = useDispatch()
-    const marker = useSelector(state => state.map.marker)
-    const position = useSelector(state => state.map.position)
-    const arsid = useSelector(state => state.bus.currentStation)
-    const busmode = useSelector(state => state.map.busmode)
-    const subwaymode = useSelector(state => state.map.subwaymode)
+    const marker = useSelector((state:RootState) => state.map.marker)
+    const position = useSelector((state:RootState) => state.map.position)
+    const arsid = useSelector((state:RootState) => state.bus.currentStation)
+    const busmode = useSelector((state:RootState) => state.map.busmode)
+    const subwaymode = useSelector((state:RootState) => state.map.subwaymode)
 
     useEffect(() => {
         const container = document.getElementById("map");
@@ -26,8 +33,8 @@ const Mapping = () => {
             subwaymapcoordinate(marker, map)
     })
 
-    const subwaymapcoordinate = (marker, map) => {
-        const markerPosition = new window.kakao.maps.LatLng(parseFloat(marker.tmY - 0.0000005).toFixed(6), parseFloat(marker.tmX - 0.0000005).toFixed(6))
+    const subwaymapcoordinate = (marker:any, map:any) => {
+        const markerPosition = new window.kakao.maps.LatLng(parseFloat(String(marker.tmY - 0.0000005)).toFixed(6), parseFloat(String(marker.tmX - 0.0000005)).toFixed(6))
         const new_marker = new window.kakao.maps.Marker({
             position: markerPosition,
             clickable: true,
@@ -35,17 +42,17 @@ const Mapping = () => {
         new_marker.setMap(map)
     }
 
-    const busmapcoordinate = (marker, map) => {
+    const busmapcoordinate = (marker:any, map:any) => {
 
-        const currentArsid = marker.filter(id => id.arsId === arsid)
-        marker.forEach(element => {
+        const currentArsid = marker.filter((id:any) => id.arsId === arsid)
+        marker.forEach((element:any) => {
             const imageSrc = './image/busImage.png' // 마커이미지의 주소입니다    
             const imageSize = new window.kakao.maps.Size(64, 69)
             const imageOption = { offset: new window.kakao.maps.Point(27, 69) };
             let markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
 
-            const markerPosition = new window.kakao.maps.LatLng(parseFloat(element.tmY - 0.0000005).toFixed(6), parseFloat(element.tmX - 0.0000005).toFixed(6))
-            if (element.arsId !== currentArsid[0]?.arsId) {
+            const markerPosition = new window.kakao.maps.LatLng(parseFloat(String(element.tmY - 0.0000005)).toFixed(6), parseFloat(String(element.tmX - 0.0000005)).toFixed(6))
+            if (element.arsId !== currentArsid[0].arsId) {
                 markerImage = undefined;
             }
             const new_marker = new window.kakao.maps.Marker({
@@ -61,7 +68,7 @@ const Mapping = () => {
         });
     }
 
-    const submitStationId = async (id) => {
+    const submitStationId = async (id:string) => {
         await api.get(`/bus/arsId/${id}`)
             .then(res => {
                 const { data } = res;

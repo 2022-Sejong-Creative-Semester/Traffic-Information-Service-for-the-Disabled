@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { api } from "../../auth/Api..js";
+import { api } from "../../auth/Api.js";
 import { useSelector, useDispatch } from "react-redux";
 import { BusActions } from "../../../store/Bus-slice.js";
+import { RootState } from "../../../store/index";
 
 const StyledRefreshButton = styled.button`
   width: 3vw;
@@ -30,7 +31,7 @@ const StyledRefreshButton = styled.button`
 
 const RefreshButton = () => {
   const dispatch = useDispatch();
-  const busId = useSelector((state) => state.bus.busId);
+  const busId = useSelector((state:RootState) => state.bus.busId);
   const clickCheck = {
     check: false,
   };
@@ -46,7 +47,6 @@ const RefreshButton = () => {
         alert(error);
       });
   };
-  console.log(Node.classList);
   return (
     <StyledRefreshButton className="fresh" onClick={Refresh}>
       <img src="./image/refresh.png" alt="새로고침" />

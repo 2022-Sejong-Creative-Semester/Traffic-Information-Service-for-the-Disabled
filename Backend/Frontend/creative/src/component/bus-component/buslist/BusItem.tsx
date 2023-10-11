@@ -78,7 +78,7 @@ const StyledBusItem = styled.li`
   }
 `;
 
-const BusItem = (props) => {
+const BusItem = (props:any) => {
   const { busrouteid, busrouteAbrv, adirection, arrmsg1 } = props.items;
 
   return (
@@ -86,10 +86,11 @@ const BusItem = (props) => {
       <a
         href={`https://map.naver.com/v5/search/${busrouteAbrv}번버스/bus-route/${busrouteid}?c=0,0`}
         target="_blank"
+        rel="noreferrer"
       >
         <div>
           <p className="Name">
-            <img prop="mark" className="mark" src="./image/MARK.png" />
+            <img alt="mark" className="mark" src="./image/MARK.png" />
             {busrouteAbrv}
           </p>
           <p className="direction">{adirection}방면</p>

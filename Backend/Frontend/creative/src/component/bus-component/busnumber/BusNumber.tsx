@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import RefreshButton from "../buslist/RefreshButton";
 import { useSelector } from "react-redux";
+import { RootState } from "../../../store/index";
 
 const StyledBusNumber = styled.header`
 display:flex;
@@ -24,8 +25,8 @@ p{
 }
 `
 
-const BusNumber = (props) => {
-    const busCheck = useSelector(state => state.bus.busCheck)
+const BusNumber = (props:any) => {
+    const busCheck = useSelector((state:RootState) => state.bus.busCheck)
     return (
         <StyledBusNumber>
             <p>{props.text}{props.count}</p>

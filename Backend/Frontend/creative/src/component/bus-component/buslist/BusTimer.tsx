@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 const StyledBusTimer = styled.div``;
 
-const BusTimer = (props) => {
+const BusTimer = (props:any) => {
   const [Timer] = useState(props.timer);
   setInterval(() => {}, 1000);
   return <StyledBusTimer>{Timer}</StyledBusTimer>;
