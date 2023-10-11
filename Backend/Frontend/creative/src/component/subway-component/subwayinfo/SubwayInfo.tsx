@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import SubwayBathchairInfo from "../subwaybath/SubwayBathChairInfo";
+import SubwayBathchairInfo from "../subwaybath/SubwayBathChairInfo.tsx";
 
 const StyledInfo = styled.div`
 display:flex;

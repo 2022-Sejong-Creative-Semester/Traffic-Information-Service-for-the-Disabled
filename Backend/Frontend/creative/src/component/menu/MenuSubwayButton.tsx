@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useDispatch } from 'react-redux'
-import { MapActions } from '../../store/Map-slice'
+import { MapActions } from '../../store/Map-slice.ts'
 import { Link } from "react-router-dom"
-import { BusActions } from '../../store/Bus-slice'
-import { SubwayActions } from '../../store/Subway-slice'
+import { BusActions } from '../../store/Bus-slice.ts'
+import { SubwayActions } from '../../store/Subway-slice.ts'
 
 const StyledButton = styled.button`
 width: 442.5px;

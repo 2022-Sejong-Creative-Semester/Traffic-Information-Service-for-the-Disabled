@@ -1,4 +1,4 @@
-import React,{ useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import Mapping from "../../component/map/Mapping.tsx"
 import classes from "./SubwayDetailPage.module.css"
 import Header from "../../component/header/Header.tsx"
@@ -6,8 +6,8 @@ import SubwayPanel from "../../component/subway-component/subwaypanel/SubwayPane
 import SubwayDetail from "../../component/subway-component/subwaydetail/SubwayDetail.tsx"
 import SubwayBar from "../../component/subway-component/subwaymenubar/SubwayBar.tsx"
 import { useDispatch } from "react-redux"
-import { SubwayActions } from "../../store/Subway-slice.tsx"
-import { api } from "../../component/auth/Api.tsx"
+import { SubwayActions } from "../../store/Subway-slice.ts"
+import { api } from "../../component/auth/Api.ts"
 import { useParams } from "react-router-dom"
 
 const SubwayDetailPage = () => {
@@ -29,7 +29,7 @@ const SubwayDetailPage = () => {
                 })
         }
         getDetail()
-    }, [])
+    }, [dispatch,params.stCd,params.stNm])
     return (
         <div className={classes.subwaypage}>
             <Header />

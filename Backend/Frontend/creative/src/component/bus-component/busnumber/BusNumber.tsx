@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import RefreshButton from "../buslist/RefreshButton";
+import RefreshButton from "../buslist/RefreshButton.tsx";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/index";
 

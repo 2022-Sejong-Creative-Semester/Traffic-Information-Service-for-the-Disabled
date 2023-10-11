@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import SubwayItems from "./SubwayItems.js";
-import SubwayNumber from "../subwaynumber/SubwayNumber.js";
+import SubwayItems from "./SubwayItems.tsx";
+import SubwayNumber from "../subwaynumber/SubwayNumber.tsx";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/index";
 

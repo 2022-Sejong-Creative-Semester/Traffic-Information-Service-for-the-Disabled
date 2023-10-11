@@ -1,9 +1,11 @@
-import React from "react";
-import { useEffect } from "react";
+import React,{ useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
+
+import usePosition from "../../hook/usePosition.tsx";
+
 import classes from "./Mapping.module.css"
-import { api } from "../auth/Api";
-import { BusActions } from "../../store/Bus-slice";
+import { api } from "../auth/Api.ts";
+import { BusActions } from "../../store/Bus-slice.ts";
 import { RootState } from "../../store/index";
 
 declare global {
@@ -19,11 +21,14 @@ const Mapping = () => {
     const arsid = useSelector((state:RootState) => state.bus.currentStation)
     const busmode = useSelector((state:RootState) => state.map.busmode)
     const subwaymode = useSelector((state:RootState) => state.map.subwaymode)
+    const {curPosition} = usePosition();
 
     useEffect(() => {
+        const tmY = curPosition ? curPosition.tmY: position.tmY;
+        const tmX = curPosition ? curPosition.tmX: position.tmX;
         const container = document.getElementById("map");
         const options = {
-            center: new window.kakao.maps.LatLng(position.tmY, position.tmX),
+            center: new window.kakao.maps.LatLng(tmY, tmX),
             level: 3,
         };
         const map = new window.kakao.maps.Map(container, options);
@@ -31,7 +36,7 @@ const Mapping = () => {
             busmapcoordinate(marker, map)
         else if (subwaymode)
             subwaymapcoordinate(marker, map)
-    })
+    },[])
 
     const subwaymapcoordinate = (marker:any, map:any) => {
         const markerPosition = new window.kakao.maps.LatLng(parseFloat(String(marker.tmY - 0.0000005)).toFixed(6), parseFloat(String(marker.tmX - 0.0000005)).toFixed(6))

@@ -3,7 +3,6 @@ import { HashRouter, Routes, Route } from "react-router-dom";
 import MainPage from "./page/MainPage.tsx"
 import BusPage from "./page/BusPage.tsx"
 import SubwayPage from "./page/subwaypage/SubwayPage.tsx"
-import SubwayTransferPage from "./page/subwaypage/SubwayTransfer.tsx";
 import SubwayDetailPage from "./page/subwaypage/SubwayDetailPage.tsx"
 import SubwayElevatorPage from "./page/subwaypage/SubwayElevator.tsx";
 import SubwayBathChairPage from "./page/subwaypage/SubwayBathchair.tsx";
@@ -18,7 +17,6 @@ function App() {
         <Route path="/subway" element={<SubwayPage />} />
         <Route path="/subway/detail/:stCd/:stNm" element={<SubwayDetailPage />} />
         <Route path="/subway/elevator/:stCd/:stNm/:railCd/:lnCd" element={<SubwayElevatorPage />} />
-        <Route path="/subway/transfer/:stCd/:stNm/:railCd/:lnCd" element={<SubwayTransferPage />} />
         <Route path="/subway/bathchair/:stCd/:stNm/:railCd/:lnCd" element={<SubwayBathChairPage />} />
       </Routes>
     </HashRouter>

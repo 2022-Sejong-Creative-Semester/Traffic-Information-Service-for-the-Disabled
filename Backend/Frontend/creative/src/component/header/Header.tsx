@@ -2,9 +2,9 @@ import React from "react"
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { BusActions } from "../../store/Bus-slice";
-import { SubwayActions } from "../../store/Subway-slice";
-import { MapActions } from "../../store/Map-slice";
+import { BusActions } from "../../store/Bus-slice.ts";
+import { SubwayActions } from "../../store/Subway-slice.ts";
+import { MapActions } from "../../store/Map-slice.ts";
 
 const StyledHeader = styled.header`
 display:flex;

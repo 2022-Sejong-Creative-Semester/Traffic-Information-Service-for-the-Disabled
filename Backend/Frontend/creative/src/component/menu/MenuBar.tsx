@@ -1,8 +1,8 @@
 import React from "react"
-import MenuBusButton from "./MenuBusButton"
-import MenuSubwayButton from "./MenuSubwayButton"
+import MenuBusButton from "./MenuBusButton.tsx"
+import MenuSubwayButton from "./MenuSubwayButton.tsx"
 import styled from "styled-components"
-import MenuExplan from "./MenuExplan"
+import MenuExplan from "./MenuExplan.tsx"
 
 const StyleMenuBar = styled.div`
 display:flex;

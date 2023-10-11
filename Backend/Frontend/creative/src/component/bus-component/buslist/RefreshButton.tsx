@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { api } from "../../auth/Api.js";
+import { api } from "../../auth/Api.ts";
 import { useSelector, useDispatch } from "react-redux";
-import { BusActions } from "../../../store/Bus-slice.js";
-import { RootState } from "../../../store/index";
+import { BusActions } from "../../../store/Bus-slice.ts";
+import { RootState } from "../../../store/index.ts";
 
 const StyledRefreshButton = styled.button`
   width: 3vw;

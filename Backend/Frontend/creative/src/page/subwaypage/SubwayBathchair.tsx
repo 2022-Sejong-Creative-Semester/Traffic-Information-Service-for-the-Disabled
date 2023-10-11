@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom"
 import { api } from "../../component/auth/Api.ts"
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
-import { SubwayActions } from "../../store/Subway-slice"
+import { SubwayActions } from "../../store/Subway-slice.ts"
 import SubwayBar from "../../component/subway-component/subwaymenubar/SubwayBar.tsx"
 import SubwayInfo from "../../component/subway-component/subwayinfo/SubwayInfo.tsx"
 
@@ -36,7 +36,7 @@ const SubwayBathchair = () => {
                 })
         }
         getBathChair()
-    }, [])
+    }, [dispatch,params.lnCd,params.railCd,params.stCd,params.stNm])
     return (
         <div className={classes.subwaypage}>
             <Header />

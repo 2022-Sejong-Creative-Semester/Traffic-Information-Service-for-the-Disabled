@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { api } from "../../auth/Api";
+import { api } from "../../auth/Api.ts";
 import { useDispatch, useSelector } from "react-redux";
-import { BusActions } from "../../../store/Bus-slice";
-import { MapActions } from "../../../store/Map-slice";
+import { BusActions } from "../../../store/Bus-slice.ts";
+import { MapActions } from "../../../store/Map-slice.ts";
 import { useEffect, useState } from "react";
-import { RootState } from "../../../store/index";
+import { RootState } from "../../../store/index.ts";
 
 interface stItem {
   color:any;

@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react"
 
-
+interface position {
+    tmX:number;
+    tmY:number;
+}
 
 const usePosition = (options = {}) => {
-    const [position, setPosition] = useState<object|null>(null);
+    const [curPosition, setCurPosition] = useState<position|null>(null);
     const [error, setError] = useState<String|null>(null);
 
     const positionSuccess = (position:any) => {
         const { latitude, longitude } = position.coords
         const tmX = longitude;
         const tmY = latitude;
-        setPosition({ tmX, tmY })
+        setCurPosition({ tmX, tmY })
     }
 
     const positionError = (errorMsg:any) => {
@@ -26,7 +29,7 @@ const usePosition = (options = {}) => {
         geolocation.getCurrentPosition(positionSuccess, positionError, options);
     }, [options])
 
-    return { position, error }
+    return { curPosition, error }
 }
 
 export default usePosition

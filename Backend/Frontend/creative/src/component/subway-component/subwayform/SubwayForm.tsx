@@ -1,11 +1,11 @@
 import React from "react";
-import SubwayButton from "./SubwayButton.js";
-import SubwayInput from "./SubwayInput.js";
+import SubwayButton from "./SubwayButton.tsx";
+import SubwayInput from "./SubwayInput.tsx";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { SubwayActions } from "../../../store/Subway-slice.js";
-import { api } from "../../auth/Api";
-import { MapActions } from "../../../store/Map-slice.js";
+import { SubwayActions } from "../../../store/Subway-slice.ts";
+import { api } from "../../auth/Api.ts";
+import { MapActions } from "../../../store/Map-slice.ts";
 
 const StyledForm = styled.form`
     display:flex;

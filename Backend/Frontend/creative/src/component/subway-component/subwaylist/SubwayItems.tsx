@@ -3,9 +3,9 @@ import styled from "styled-components";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { SubwayActions } from "../../../store/Subway-slice";
-import { MapActions } from "../../../store/Map-slice";
-import { api } from "../../auth/Api";
+import { SubwayActions } from "../../../store/Subway-slice.ts";
+import { MapActions } from "../../../store/Map-slice.ts";
+import { api } from "../../auth/Api.ts";
 import { RootState } from "../../../store/index";
 
 interface sbitem {
@@ -37,7 +37,7 @@ const SubwayItems = (props:any) => {
                 })
         }
         locationRecive()
-    }, [currentSubway])
+    }, [currentSubway,stCd,stNm])
 
     const ClickSubway = () => {
         if (currentSubway === stCd) {
