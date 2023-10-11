@@ -5,7 +5,6 @@ import { MapActions } from '../../store/Map-slice.ts'
 import { Link } from "react-router-dom"
 import { BusActions } from '../../store/Bus-slice.ts'
 import { SubwayActions } from '../../store/Subway-slice.ts'
-
 const StyledButton = styled.button`
 width: 442.5px;
 height: 537px;
