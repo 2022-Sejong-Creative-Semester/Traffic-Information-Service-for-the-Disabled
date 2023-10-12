@@ -1,9 +1,11 @@
 ﻿const serviceKey = require('../Key/serviceKey.json');
 const router = require('express').Router();
+const db = require('../db');
 const request = require('request');
 const convert = require('xml-js');
 
-const SQL_info = require('../Key/SQL_info.json')
+/*
+const SQL_info = require('../KEY/SQL_info.json')
 const mysql = require('mysql');
 
 const conn = {
@@ -13,8 +15,9 @@ const conn = {
 	password: SQL_info.password,
 	database: SQL_info.database
 };
+*/
 
-let connection = mysql.createConnection(conn);  // DB Connect
+let connection = db.return_connection();  // DB Connect
 
 //SubwayStation Name List from DB
 function getSubwayStationName(stNm, callback){
@@ -531,6 +534,8 @@ function getConvenience(stCd, stNm, railCd, lnCd, callback) {
 
 router.get('/stNm/:stNm', async (req, res) => {
 	try {
+
+		console.log("stNm");
 
 		stNm = req.params.stNm;
 

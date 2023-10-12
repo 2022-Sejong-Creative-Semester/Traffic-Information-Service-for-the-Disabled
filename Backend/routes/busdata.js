@@ -200,8 +200,11 @@ router.get('/arsId/:arsId', async (req, res) => {
 					error: 'No Bus In Station'
 				})
 			}
-			else
+			else{
+				console.log(new Date());
 				return res.json(stationinfo);
+			}
+
 		});
 	}
 	catch (e) {
