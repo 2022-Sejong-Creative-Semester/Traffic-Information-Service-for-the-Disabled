@@ -16,7 +16,7 @@ jobs:
         #passphrase: ${{ secrets.PASSPHRASE }} 
         port: 22
         run: |
-          #Frontend에서 보낸 PR의 경우
+
           if [[ $PR_BRANCH == "Frontend"* ]]; then
             echo "This is a Frontend PR."
           elif [[ $PR_BRANCH == "Backend"* ]]; then
