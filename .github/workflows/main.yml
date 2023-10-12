@@ -18,7 +18,7 @@ jobs:
         script: |
 
             cd ${{ secrets.PWD }}
-            git pull https://${{ secrets.GIT_TOKEN }}:x-oauth-basic@github.com/Mooboong/backend.git Develop
+            git pull https://${{ secrets.GIT_TOKEN }}:x-oauth-basic@github.com/2022-Sejong-Creative-Semester/Traffic-Information-Service-for-the-Disabled.git main
 
             PR_BRANCH="${{ github.head_ref }}"
 
