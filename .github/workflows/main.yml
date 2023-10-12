@@ -25,9 +25,10 @@ jobs:
 
       #script: |
 
-            #cd ${{ secrets.PWD }}
+            #cd ${{ secrets.PWD }
             
             #git pull origin main
+
 
             #PR_BRANCH="${{ github.head_ref }}"
 
