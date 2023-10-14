@@ -1,7 +1,7 @@
 name: GCP CI/CD
 on:
   push:
-      branches: [ main, Backend ]
+      branches: [ main ]
 
 jobs:
   build:
@@ -15,29 +15,24 @@ jobs:
         key: ${{ secrets.SSH_KEY }} 
         #passphrase: ${{ secrets.PASSPHRASE }} 
         port: 22
-          script: |
-            cd ${{ secrets.PWD }
+        script: |
+          cd ${{ secrets.PWD }
 
-            git pull origin main
+          git pull origin main
 
+          cd ${{ secrets.PWD }}/Backend/Frontend/creative
 
-            PR_BRANCH="${{ github.head_ref }}"
+          #메모리 오버 방지를 위해 기존 서버 동작 중지
+          pm2 stop Traffic
 
+          #의존성 설치
+          npm install
+
+          #npm run build 까지 추가로 진행
+          npm run build
                 
+          cd ${{ secrets.PWD }}/Backend
 
-            cd ${{ secrets.PWD }}/Backend/Frontend/creative
+          npm install
 
-                  #메모리 오버 방지를 위해 기존 서버 동작 중지
-                  #pm2 stop Traffic
-
-                  #의존성 설치
-                  #npm install
-
-                  #npm run build 까지 추가로 진행
-                  #npm run build
-                
-                #cd ${{ secrets.PWD }}/Backend
-
-                #npm install
-
-                #pm2 restart Traffic
+          pm2 restart Traffic
