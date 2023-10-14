@@ -1,7 +1,7 @@
 ﻿const router = require('express').Router();
 const request = require('request');
 const convert = require('xml-js');
-const serviceKey = require('../Key/serviceKey.json');
+const serviceKey = require('../KEY/serviceKey.json');
 
 function getStation(stNm, callback) {
 	try {

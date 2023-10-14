@@ -1,4 +1,4 @@
-﻿const serviceKey = require('../Key/serviceKey.json');
+﻿const serviceKey = require('../KEY/serviceKey.json');
 const router = require('express').Router();
 const db = require('../db');
 const request = require('request');
