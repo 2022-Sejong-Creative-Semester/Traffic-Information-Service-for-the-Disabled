@@ -11,6 +11,7 @@ const conn = {
 	port: SQL_info.port,
 	user: SQL_info.user,
 	password: SQL_info.password,
+	
 	database: SQL_info.database
 };
 
