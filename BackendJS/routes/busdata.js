@@ -1,7 +1,7 @@
 ﻿const router = require('express').Router();
 const request = require('request');
 const convert = require('xml-js');
-const serviceKey = require('../Key/serviceKey.json');
+const serviceKey = require('../KEY/serviceKey.json');
 
 function getStation(stNm, callback) {
 	try {
@@ -19,6 +19,7 @@ function getStation(stNm, callback) {
 			const parseJson = convert.xml2json(body);
 			const stationinfo = JSON.parse(parseJson).elements[0].elements[2];
 
+			console.log(stationinfo.elements);
 			if (stationinfo.elements == null) {
 				callback(0);
 			}
@@ -159,8 +160,6 @@ function getStationInfo(arsId, callback) {
 
 }
 
-
-
 router.get('/stNm/:stNm', async (req, res) => {
 
 	console.log('stationName');
@@ -202,8 +201,11 @@ router.get('/arsId/:arsId', async (req, res) => {
 					error: 'No Bus In Station'
 				})
 			}
-			else
+			else{
+				console.log(new Date());
 				return res.json(stationinfo);
+			}
+
 		});
 	}
 	catch (e) {

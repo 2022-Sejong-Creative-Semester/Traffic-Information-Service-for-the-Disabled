@@ -4,5 +4,8 @@
         "module": "commonjs",
         "outDir": "./BackendJS",
         "esModuleInterop": true,
-    }
+        "resolveJsonModule": true
+    },
+    "include": ["BackendTS/**/*"],
+    
 }

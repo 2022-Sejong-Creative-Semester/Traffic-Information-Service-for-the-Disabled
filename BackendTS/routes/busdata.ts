@@ -1,43 +1,42 @@
-﻿const router = require('express').Router();
-const request = require('request');
-const convert = require('xml-js');
-const serviceKey = require('../KEY/serviceKey.json');
+﻿import express, {Request, Response, Router} from 'express'
+import request from 'request'
+import convert from 'xml-js'
+import serviceKey from '../Key/serviceKey.json'
+import {BusInfo, BusStationInfo, BusStationList} from '../../interfaces/Bus/bus.interface'
 
-function getStation(stNm, callback) {
+const router:Router = express.Router();
+
+function getStation(stNm:string, callback:(stationinfo: Array<BusStationInfo>)=>void) {
 	try {
-		const url = 'http://ws.bus.go.kr/api/rest/stationinfo/getLowStationByName';
-		let queryParams = '?' + encodeURIComponent('serviceKey') + '=' + serviceKey.serviceKey;
+		const url:string = 'http://ws.bus.go.kr/api/rest/stationinfo/getLowStationByName';
+		let queryParams:string = '?' + encodeURIComponent('serviceKey') + '=' + serviceKey.serviceKey;
 		queryParams += '&' + encodeURIComponent('stSrch') + '=' + encodeURIComponent(stNm);
-		//console.log(url+queryParams);
-		//let StationList = [];
 
 		return request({
 			url: url + queryParams,
 			method: 'GET'
-		}, function (error, response, body) {
+		}, function (error:Error, response:any, body:string) {
 			//console.log('Reponse received', body);
-			const parseJson = convert.xml2json(body);
-			const stationinfo = JSON.parse(parseJson).elements[0].elements[2];
-			//이 라인과 아래만 삭제하면 됨
-			console.log(stationinfo);
-			console.log(stationinfo.elements);
+			const parseJson:string = convert.xml2json(body);
+			const stationinfo:BusStationList = JSON.parse(parseJson).elements[0].elements[2];
 
+			//빈 배열 선언
+			const stationRes:Array<BusStationInfo> = [];
+
+			//정류장이 없는 경우 빈 배열 반환
 			if (stationinfo.elements === undefined) {
-				callback(0);
+				callback(stationRes);
 			}
-
 			else {
-				const stationlength = stationinfo.elements.length;
-				//console.log(stationinfo.elements[0]);
-				let stationRes = [];
+				const stationlength:number = stationinfo.elements.length;				
 
 				for (let i = 0; i < stationlength; i++) {
 					//arsId가 0인 경우 처리
-					const arsId = stationinfo.elements[i].elements[0].elements[0].text;
-					const stId = stationinfo.elements[i].elements[3].elements[0].text;
-					const stNm = stationinfo.elements[i].elements[4].elements[0].text;
-					const tmX = stationinfo.elements[i].elements[5].elements[0].text;
-					const tmY = stationinfo.elements[i].elements[6].elements[0].text;
+					const arsId:string = stationinfo.elements[i].elements[0].elements[0].text;
+					const stId:string = stationinfo.elements[i].elements[3].elements[0].text;
+					const stNm:string = stationinfo.elements[i].elements[4].elements[0].text;
+					const tmX:string = stationinfo.elements[i].elements[5].elements[0].text;
+					const tmY:string = stationinfo.elements[i].elements[6].elements[0].text;
 					stationRes.push({
 						arsId: arsId,
 						stId: stId,
@@ -47,8 +46,6 @@ function getStation(stNm, callback) {
 					})
 				}
 
-				//console.log('Json', stationinfo);
-				//console.log(stationinfo.elements[0].elements[2]);
 				callback(stationRes);
 			}
 
@@ -56,10 +53,12 @@ function getStation(stNm, callback) {
 	}
 	catch (e) {
 		console.error(e);
+		/*
 		return res.status(500).json({
 			error: e,
 			errorString: e.toString(),
 		});
+		*/
 	}
 
 
@@ -68,7 +67,7 @@ function getStation(stNm, callback) {
 function getStationInfo(arsId, callback) {
 
 	try {
-		const url = 'http://ws.bus.go.kr/api/rest/stationinfo/getLowStationByUid';
+		const url:string = 'http://ws.bus.go.kr/api/rest/stationinfo/getLowStationByUid';
 		let queryParams = '?' + encodeURIComponent('serviceKey') + '=' + serviceKey.serviceKey;
 		queryParams += '&' + encodeURIComponent('arsId') + '=' + arsId;
 
@@ -154,24 +153,25 @@ function getStationInfo(arsId, callback) {
 	}
 	catch (e) {
 		console.error(e);
+		/*
 		return res.status(500).json({
 			error: e,
 			errorString: e.toString(),
 		});
+		*/
 	}
 
 }
 
-router.get('/stNm/:stNm', async (req, res) => {
-
-	console.log('stationName');
+//버스 정류장 이름으로 검색하기
+router.get('/stNm/:stNm', async (req:Request, res:Response) => {
 
 	try {
-		const stNm = req.params.stNm;
-		//console.log("station");
+		const stNm:string = req.params.stNm;
+
 		await getStation(stNm, station => {
-			//console.log(station);
-			if (station == 0) {
+
+			if (station.length === 0) {
 				return res.status(404).json({
 					error: 'No stops with that name'
 				})
@@ -189,25 +189,23 @@ router.get('/stNm/:stNm', async (req, res) => {
 
 })
 
-router.get('/arsId/:arsId', async (req, res) => {
+//정류소 아이디로 정보 제공
+router.get('/arsId/:arsId', async (req:Request, res:Response) => {
 
 	console.log('arsId');
 
-	const arsId = req.params.arsId;
-	//console.log("station");
+	const arsId:string = req.params.arsId;
+
 	try {
 		await getStationInfo(arsId, stationinfo => {
-			//console.log(station);
-			if (stationinfo == 0) {
+			
+			if (stationinfo === 0) {
 				return res.status(404).json({
 					error: 'No Bus In Station'
 				})
 			}
-			else{
-				console.log(new Date());
+			else
 				return res.json(stationinfo);
-			}
-
 		});
 	}
 	catch (e) {
@@ -220,4 +218,4 @@ router.get('/arsId/:arsId', async (req, res) => {
 
 })
 
-module.exports = router;
+export = router;
