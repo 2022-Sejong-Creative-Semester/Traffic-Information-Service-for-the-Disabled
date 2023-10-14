@@ -16,7 +16,7 @@ jobs:
         #passphrase: ${{ secrets.PASSPHRASE }} 
         port: 22
         script: |
-          cd ${{ secrets.PWD }
+          cd ${{ secrets.PWD }}
 
           git pull origin main
 
