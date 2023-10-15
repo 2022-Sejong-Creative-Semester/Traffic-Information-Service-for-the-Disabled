@@ -25,7 +25,6 @@ function getStation(stNm, callback) {
             url: url + queryParams,
             method: 'GET'
         }, function (error, response, body) {
-            //console.log('Reponse received', body);
             const parseJson = xml_js_1.default.xml2json(body);
             const stationinfo = JSON.parse(parseJson).elements[0].elements[2];
             //빈 배열 선언
@@ -57,12 +56,6 @@ function getStation(stNm, callback) {
     }
     catch (e) {
         console.error(e);
-        /*
-        return res.status(500).json({
-            error: e,
-            errorString: e.toString(),
-        });
-        */
     }
 }
 function getStationInfo(arsId, callback) {
@@ -76,15 +69,13 @@ function getStationInfo(arsId, callback) {
         }, function (error, response, body) {
             const parseJson = xml_js_1.default.xml2json(body);
             const stationinfo = JSON.parse(parseJson).elements[0].elements[2];
-            //console.log(stationinfo);
-            if (stationinfo.elements == null) {
-                callback(0);
+            const busInfo = [];
+            if (stationinfo.elements === undefined) {
+                callback(busInfo);
             }
             else {
                 const buslength = stationinfo.elements.length;
-                let busInfo = [];
                 for (let i = 0; i < buslength; i++) {
-                    //console.log(stationinfo.elements[i]);
                     const adirection = stationinfo.elements[i].elements[0].elements[0].text;
                     const arrmsg1 = stationinfo.elements[i].elements[1].elements[0].text;
                     const busrouteAbrv = stationinfo.elements[i].elements[4].elements[0].text;
@@ -94,19 +85,20 @@ function getStationInfo(arsId, callback) {
                     let min = "";
                     let sec = "";
                     let subtime = arrmsg1;
+                    /*
                     //[첫차] or [막차] 인 경우
                     if (subtime[0] == "[") {
-                        subtime = subtime.substr(6);
+                        subtime = subtime.substr(6,);
                     }
+                    */
                     //분 없는 경우
                     //초 없는 경우
                     if (subtime != "운행종료" && subtime != "곧 도착") {
-                        //console.log(subtime.split("분"));
                         let msgSplit = [];
-                        if (subtime.indexOf("분") != -1) {
+                        if (subtime.indexOf("분") !== -1) {
                             msgSplit = subtime.split("분");
                             min = msgSplit[0];
-                            if (subtime.indexOf("초") != -1) {
+                            if (subtime.indexOf("초") !== -1) {
                                 sec = msgSplit[1].split("초")[0];
                             }
                         }
@@ -125,20 +117,12 @@ function getStationInfo(arsId, callback) {
                         sec: sec,
                     });
                 }
-                //console.log(stationinfo);
                 callback(busInfo);
             }
-            //callback(stationinfo);
         });
     }
     catch (e) {
         console.error(e);
-        /*
-        return res.status(500).json({
-            error: e,
-            errorString: e.toString(),
-        });
-        */
     }
 }
 //버스 정류장 이름으로 검색하기
@@ -164,11 +148,10 @@ router.get('/stNm/:stNm', (req, res) => __awaiter(void 0, void 0, void 0, functi
 }));
 //정류소 아이디로 정보 제공
 router.get('/arsId/:arsId', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('arsId');
     const arsId = req.params.arsId;
     try {
         yield getStationInfo(arsId, stationinfo => {
-            if (stationinfo === 0) {
+            if (stationinfo.length === 0) {
                 return res.status(404).json({
                     error: 'No Bus In Station'
                 });
