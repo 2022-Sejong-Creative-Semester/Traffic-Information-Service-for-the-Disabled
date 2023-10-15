@@ -1,3 +1,12 @@
+interface Element {
+    type: string,
+    name: string,
+    elements: {
+        type: string,
+        text: string
+    }
+}
+
 export interface BusStationInfo {
     arsId: string,
     stId: string,
@@ -7,10 +16,23 @@ export interface BusStationInfo {
 }
 
 export interface BusStationList {
+
     type: string,
     name: string,
-    elements?: Array<any>
+    elements?: Array<Element>
 }
+
+export interface BusInfoList {
+    type: string,
+    name: string,
+    elements: Array<Element>
+}
+
+export interface BusItemList {
+    type: string,
+    name: string,
+    elements?: Array<BusInfoList>
+} 
 
 export interface BusInfo {
     busrouteid: string,

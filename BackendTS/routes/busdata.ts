@@ -2,7 +2,7 @@
 import request from 'request'
 import convert from 'xml-js'
 import serviceKey from '../Key/serviceKey.json'
-import {BusInfo, BusStationInfo, BusStationList} from '../../interfaces/Bus/bus.interface'
+import {BusInfo, BusInfoList, BusItemList, BusStationInfo, BusStationList} from '../../interfaces/Bus/bus.interface'
 
 const router:Router = express.Router();
 
@@ -16,7 +16,7 @@ function getStation(stNm:string, callback:(stationinfo: Array<BusStationInfo>)=>
 			url: url + queryParams,
 			method: 'GET'
 		}, function (error:Error, response:any, body:string) {
-			//console.log('Reponse received', body);
+
 			const parseJson:string = convert.xml2json(body);
 			const stationinfo:BusStationList = JSON.parse(parseJson).elements[0].elements[2];
 
@@ -53,76 +53,66 @@ function getStation(stNm:string, callback:(stationinfo: Array<BusStationInfo>)=>
 	}
 	catch (e) {
 		console.error(e);
-		/*
-		return res.status(500).json({
-			error: e,
-			errorString: e.toString(),
-		});
-		*/
 	}
 
 
 }
 
-function getStationInfo(arsId, callback) {
+function getStationInfo(arsId:string, callback:(busInfo: Array<BusInfo>)=>void) {
 
 	try {
 		const url:string = 'http://ws.bus.go.kr/api/rest/stationinfo/getLowStationByUid';
-		let queryParams = '?' + encodeURIComponent('serviceKey') + '=' + serviceKey.serviceKey;
+		let queryParams:string = '?' + encodeURIComponent('serviceKey') + '=' + serviceKey.serviceKey;
 		queryParams += '&' + encodeURIComponent('arsId') + '=' + arsId;
 
 		return request({
 			url: url + queryParams,
 			method: 'GET'
-		}, function (error, response, body) {
+		}, function (error:Error, response:any, body:string) {
 
-			const parseJson = convert.xml2json(body);
-			const stationinfo = JSON.parse(parseJson).elements[0].elements[2];
+			const parseJson:string = convert.xml2json(body);
+			const stationinfo:BusItemList = JSON.parse(parseJson).elements[0].elements[2];
 
-			//console.log(stationinfo);
+			const busInfo:Array<BusInfo> = [];
 
-			if (stationinfo.elements == null) {
-				callback(0);
+			if (stationinfo.elements === undefined) {
+				callback(busInfo);
 			}
 
 			else {
-				const buslength = stationinfo.elements.length;
-
-				
-
-				let busInfo = [];
+				const buslength:number = stationinfo.elements.length;
 
 				for (let i = 0; i < buslength; i++) {
-					//console.log(stationinfo.elements[i]);
-					const adirection = stationinfo.elements[i].elements[0].elements[0].text;
-					const arrmsg1 = stationinfo.elements[i].elements[1].elements[0].text;
-					const busrouteAbrv = stationinfo.elements[i].elements[4].elements[0].text;
-					const busrouteid = stationinfo.elements[i].elements[5].elements[0].text;
-					const bustype = stationinfo.elements[i].elements[6].elements[0].text;
-					const nxtStn = stationinfo.elements[i].elements[22].elements[0].text;
+					const adirection:string = stationinfo.elements[i].elements[0].elements[0].text;
+					const arrmsg1:string = stationinfo.elements[i].elements[1].elements[0].text;
+					const busrouteAbrv:string = stationinfo.elements[i].elements[4].elements[0].text;
+					const busrouteid:string = stationinfo.elements[i].elements[5].elements[0].text;
+					const bustype:string = stationinfo.elements[i].elements[6].elements[0].text;
+					const nxtStn:string = stationinfo.elements[i].elements[22].elements[0].text;
 					
 					
-					let min = "";
-					let sec = "";
+					let min:string = "";
+					let sec:string = "";
 
-					let subtime = arrmsg1;
+					let subtime:string = arrmsg1;
+
+					/*
 					//[첫차] or [막차] 인 경우
 					if (subtime[0] == "[") {
 						subtime = subtime.substr(6,);
 					}
-					
+					*/
+
 					//분 없는 경우
 					//초 없는 경우
 
 					if (subtime != "운행종료" && subtime != "곧 도착") {
-						//console.log(subtime.split("분"));
-
-						let msgSplit = [];
+						let msgSplit:Array<string> = [];
 						
-						if (subtime.indexOf("분") != -1) {
+						if (subtime.indexOf("분") !== -1) {
 							msgSplit = subtime.split("분");
 							min = msgSplit[0];
-							if (subtime.indexOf("초") != -1) {
+							if (subtime.indexOf("초") !== -1) {
 								sec = msgSplit[1].split("초")[0];
 							}
 						}
@@ -143,22 +133,12 @@ function getStationInfo(arsId, callback) {
 					})
 				}
 
-				//console.log(stationinfo);
-
 				callback(busInfo);
 			}
-			//callback(stationinfo);
-
 		});
 	}
 	catch (e) {
 		console.error(e);
-		/*
-		return res.status(500).json({
-			error: e,
-			errorString: e.toString(),
-		});
-		*/
 	}
 
 }
@@ -192,14 +172,12 @@ router.get('/stNm/:stNm', async (req:Request, res:Response) => {
 //정류소 아이디로 정보 제공
 router.get('/arsId/:arsId', async (req:Request, res:Response) => {
 
-	console.log('arsId');
-
 	const arsId:string = req.params.arsId;
 
 	try {
 		await getStationInfo(arsId, stationinfo => {
 			
-			if (stationinfo === 0) {
+			if (stationinfo.length === 0) {
 				return res.status(404).json({
 					error: 'No Bus In Station'
 				})
