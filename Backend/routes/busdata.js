@@ -15,12 +15,15 @@ function getStation(stNm, callback) {
 			url: url + queryParams,
 			method: 'GET'
 		}, function (error, response, body) {
+
 			//console.log('Reponse received', body);
+
 			const parseJson = convert.xml2json(body);
 			const stationinfo = JSON.parse(parseJson).elements[0].elements[2];
+
 			//이 라인과 아래만 삭제하면 됨
-			console.log(stationinfo);
-			console.log(stationinfo.elements);
+			//console.log(stationinfo);
+			console.log(stationinfo.elements[0].elements[0]);
 
 			if (stationinfo.elements === undefined) {
 				callback(0);
@@ -80,7 +83,7 @@ function getStationInfo(arsId, callback) {
 			const parseJson = convert.xml2json(body);
 			const stationinfo = JSON.parse(parseJson).elements[0].elements[2];
 
-			//console.log(stationinfo);
+			console.log(stationinfo.elements[0]);
 
 			if (stationinfo.elements == null) {
 				callback(0);
@@ -204,7 +207,7 @@ router.get('/arsId/:arsId', async (req, res) => {
 				})
 			}
 			else{
-				console.log(new Date());
+				//console.log(new Date());
 				return res.json(stationinfo);
 			}
 
