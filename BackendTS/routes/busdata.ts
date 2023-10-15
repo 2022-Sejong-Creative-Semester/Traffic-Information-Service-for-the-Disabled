@@ -2,7 +2,7 @@
 import request from 'request'
 import convert from 'xml-js'
 import serviceKey from '../Key/serviceKey.json'
-import {BusInfo, BusInfoList, BusItemList, BusStationInfo, BusStationList} from '../../interfaces/Bus/bus.interface'
+import {BusInfo, BusItemList, BusStationInfo, BusStationList} from '../../interfaces/Bus/bus.interface'
 
 const router:Router = express.Router();
 

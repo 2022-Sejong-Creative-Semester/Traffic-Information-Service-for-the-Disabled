@@ -1,36 +1,32 @@
-﻿const serviceKey = require('../Key/serviceKey.json');
-const router = require('express').Router();
-const request = require('request');
+﻿import serviceKey from '../Key/serviceKey.json'
+import express, {Request, Response, Router} from 'express'
+import request from 'request'
+import * as db from '../db'
+import mysql from 'mysql'
 
-const SQL_info = require('../Key/SQL_info.json')
-const mysql = require('mysql');
+import {SubwayStationNameList, SubwayStationInfo, SubwayStationInfoRequest, SubwayStationLiftPos, SubwayStationLiftMove, SubwayStationLiftInfo, SubwayStationElevatorPosInfo, SubwayStationElevatorMove, SubwayStationElevatorMoveInfo, SubwayStationConvenience, SubwayStationConvenienceInfo, SubwayStationTransferStationInfo, SubwayStationTransferInfo, SubwayStationTransferMoveList} from '../../interfaces/Subway/subway.interface'
 
-const conn = {
-	host: SQL_info.host,
-	port: SQL_info.port,
-	user: SQL_info.user,
-	password: SQL_info.password,
-	database: SQL_info.database
-};
 
-let connection = mysql.createConnection(conn);  // DB Connect
+const router:Router = express.Router();
 
 //SubwayStation Name List from DB
-function getSubwayStationName(stNm, callback){
+function getSubwayStationName(stNm:string, callback:(nameList:Array<SubwayStationNameList>)=>void){
 	try {
 
-		console.log("StationName");
+		const connection:mysql.connection = db.return_connection();
 
-		let sql = "Select *  FROM subcode_1 a, 도우미번호 b WHERE (a.stin_nm = b.역명 and a.ln_cd = b.운영노선명) and a.STIN_NM like ?; ";
+		let SQL:string = "Select *  FROM subcode_1 a, 도우미번호 b WHERE (a.stin_nm = b.역명 and a.ln_cd = b.운영노선명) and a.STIN_NM like ?; ";
 
-		let NameList = [];
-		connection.query(sql, ["%"+stNm+"%"], function (err, results, fields) {
+		let nameList:Array<SubwayStationNameList> = [];
+
+		connection.query(SQL, ["%"+stNm+"%"], function (err:Error, results:any, fields:any) {
 			if (err) {
 				console.log(err);
 			}
+
 			for (let i = 0; i < results.length; i++) {
 				
-				NameList.push({
+				nameList.push({
 					railCd: results[i].RAIL_OPR_ISTT_CD,
 					lnCd: results[i].LN_CD,
 					lnNm: results[i].LN_CD,
@@ -39,7 +35,7 @@ function getSubwayStationName(stNm, callback){
 				})
 			}
 
-			callback(NameList);
+			callback(nameList);
 		});
 		
 	}
@@ -49,30 +45,27 @@ function getSubwayStationName(stNm, callback){
 	}
 }
 
-function getSubwayStationInfo(stCd, stNm, callback) {
+function getSubwayStationInfo(stCd:string, stNm:string, callback:(stationInfo:SubwayStationInfo)=>void) {
 	try {
 
-		//let sql = "select * from subcode_1,subcode_2";
-		let sql = "Select * FROM subcode_1 a, 도우미번호 b WHERE (a.stin_nm = b.역명 and a.ln_cd = b.운영노선명) and a.stin_cd = ? and a.stin_nm = ?";
+		const connection:mysql.connection = db.return_connection();
 
-		connection.query(sql, [stCd, stNm], function (err, results, fields) {
+		let sql:string = "Select * FROM subcode_1 a, 도우미번호 b WHERE (a.stin_nm = b.역명 and a.ln_cd = b.운영노선명) and a.stin_cd = ? and a.stin_nm = ?";
+
+		connection.query(sql, [stCd, stNm], function (err:Error, results:any, fields:any) {
 			if (err) {
 				console.log(err);
 			}
-
-			console.log("SubwayStationInfo");
-			//console.log(results);
 			
+			/*
 			//NULL error
-			if (results.length == 0) {
-				return callback({
-					error: 500,
-					errorString: "No Such Station"
-				})
+			if (results.length !== 0) {
+				return callback();
 			}
-
-			const url = 'https://openapi.kric.go.kr/openapi/convenientInfo/stationInfo';
-			let queryParams = '?' + encodeURI('serviceKey');
+			*/
+			
+			const url:string = 'https://openapi.kric.go.kr/openapi/convenientInfo/stationInfo';
+			let queryParams:string = '?' + encodeURI('serviceKey');
 			queryParams += '=' + serviceKey.subwayRailKey;
 			queryParams += '&' + encodeURI('format') + '=' + encodeURI('json');
 			queryParams += '&' + encodeURI('railOprIsttCd');
@@ -87,9 +80,9 @@ function getSubwayStationInfo(stCd, stNm, callback) {
 			return request({
 				url: url + queryParams,
 				method: 'GET'
-			}, function (error, response, body) {
+			}, function (error:Error, response:any, body:string) {
 
-				const stationinfo = JSON.parse(body).body[0];
+				const stationinfo:SubwayStationInfoRequest = JSON.parse(body).body[0];
 
 				callback({
 					railCd: stationinfo.railOprIsttCd,
@@ -103,9 +96,8 @@ function getSubwayStationInfo(stCd, stNm, callback) {
 					eName: results[0].en_name,
 					fCode: results[0].f_code
 				});
-					
+
 			});
-			
 
 		});
 
@@ -116,13 +108,11 @@ function getSubwayStationInfo(stCd, stNm, callback) {
 	}
 }
 
-function getLiftPos(stCd, stNm, railCd, lnCd, callback) {
+function getLiftPos(stCd:string, stNm:string, railCd:string, lnCd:string, callback:(liftPosInfo:SubwayStationLiftPos)=>void) {
 	try {
 
-		console.log("LiftPos");
-
-		const url = 'https://openapi.kric.go.kr/openapi/vulnerableUserInfo/stationWheelchairLiftLocation';
-		let queryParams = '?' + encodeURI('serviceKey') + '=' + serviceKey.subwayRailKey;
+		const url:string = 'https://openapi.kric.go.kr/openapi/vulnerableUserInfo/stationWheelchairLiftLocation';
+		let queryParams:string = '?' + encodeURI('serviceKey') + '=' + serviceKey.subwayRailKey;
 		queryParams += '&' + encodeURI('format') + '=' + encodeURI('json');
 		queryParams += '&' + encodeURI('railOprIsttCd') + '=' + encodeURI(railCd);
 		queryParams += '&' + encodeURI('lnCd') + '=' + encodeURI(lnCd);
@@ -131,30 +121,27 @@ function getLiftPos(stCd, stNm, railCd, lnCd, callback) {
 		return request({
 			url: url + queryParams,
 			method: 'GET'
-		}, function (error, response, body) {
+		}, function (error:Error, response:any, body:any) {
 
-			liftPosInfo = JSON.parse(body).body;
-
+			const liftPosInfo:Array<SubwayStationLiftPos> = JSON.parse(body).body;
 			callback(liftPosInfo[0]);
 
 		});
 
 	}
-	catch {
+	catch (e) {
 		console.error(e);
 		callback(e);
 	}
 }
 
-function getLiftMove(stCd, stNm, railCd, lnCd, callback) {
+function getLiftMove(stCd:string, stNm:string, railCd:string, lnCd:string, callback:(liftMoveInfo:Array<SubwayStationLiftInfo>)=>void) {
 	try {
 
-		console.log("LiftMove");
+		const liftMoveInfo:Array<SubwayStationLiftInfo> = [];
 
-		let liftMoveInfo = [];
-
-		const url = 'https://openapi.kric.go.kr/openapi/vulnerableUserInfo/stationWheelchairLiftMovement';
-		let queryParams = '?' + encodeURIComponent('serviceKey');
+		const url:string = 'https://openapi.kric.go.kr/openapi/vulnerableUserInfo/stationWheelchairLiftMovement';
+		let queryParams:string = '?' + encodeURIComponent('serviceKey');
 		queryParams += '=' + serviceKey.subwayRailKey;
 		queryParams += '&' + encodeURIComponent('format') + '=' + encodeURIComponent('json');
 		queryParams += '&' + encodeURIComponent('railOprIsttCd') + '=' + encodeURIComponent(railCd);
@@ -164,36 +151,36 @@ function getLiftMove(stCd, stNm, railCd, lnCd, callback) {
 		return request({
 			url: url + queryParams,
 			method: 'GET'
-		}, function (error, response, body) {
+		}, async function (error:Error, response:any, body:any) {
 
 			//목적지 별로 구분하여 제공
-			const liftMoveParse = JSON.parse(body).body;
+			const liftMoveParse:Array<SubwayStationLiftMove> = JSON.parse(body).body;
 
-			let liftInfo = [];
-
+			let liftInfo:SubwayStationLiftInfo = {
+				direction: "",
+				info: []
+			};
+			
+			//비동기 처리
 			for (let i = 0; i < liftMoveParse.length; i++) {
-				if (liftMoveParse[i].mvTpOrdr == 1) {
-					if (liftInfo.length != 0) {
-						const direction = liftInfo[liftInfo.length - 2].mvContDtl.split('승강장')[0].substr(3);
-						liftInfo.unshift({
-							direction: direction
-						})
+
+					
+				if (liftMoveParse[i].mvTpOrdr === 1) {
+					if (liftInfo.info.length !== 0) {
+						const direction:string = liftInfo.info[liftInfo.info.length - 2].mvContDtl.split('승강장')[0].substr(3);
+						liftInfo.direction = direction;
 
 						liftMoveInfo.push(liftInfo);
-						liftInfo = [];
+						liftInfo.direction = "";
+						liftInfo.info = [];
 					}
 				}
-				liftInfo.push(liftMoveParse[i]);
+				liftInfo.info.push(liftMoveParse[i]);
 			}
-			if (liftInfo.length != 0) {
-				const direction = liftInfo[liftInfo.length - 2].mvContDtl.split('승강장')[0].substr(3);
 
-				liftInfo.unshift({
-					direction: direction
-				})
-				liftMoveInfo.push(liftInfo);
-				liftInfo = [];
-			}
+			const direction:string = liftInfo.info[liftInfo.info.length - 2].mvContDtl.split('승강장')[0].substr(3);
+			liftInfo.direction = direction;
+			liftMoveInfo.push(liftInfo);
 
 			callback(liftMoveInfo);
 		});
@@ -204,14 +191,11 @@ function getLiftMove(stCd, stNm, railCd, lnCd, callback) {
 	}
 }
 
-function getElevatorPos(stCd, stNm, railCd, lnCd, callback) {
+function getElevatorPos(stCd:string, stNm:string, railCd:string, lnCd:string, callback:(ElevatorPosInfo:SubwayStationElevatorPosInfo)=>void) {
 	try {
+		const url:string = 'https://openapi.kric.go.kr/openapi/convenientInfo/stationElevator';
 
-		console.log("ElevatorPos");
-
-		const url = 'https://openapi.kric.go.kr/openapi/convenientInfo/stationElevator';
-
-		let queryParams = '?' + encodeURIComponent('serviceKey');
+		let queryParams:string = '?' + encodeURIComponent('serviceKey');
 		queryParams += '=' + serviceKey.subwayRailKey;
 		queryParams += '&' + encodeURIComponent('format') + '=' + encodeURIComponent('json');
 		queryParams += '&' + encodeURIComponent('railOprIsttCd') + '=' + encodeURIComponent(railCd);
@@ -221,8 +205,8 @@ function getElevatorPos(stCd, stNm, railCd, lnCd, callback) {
 		return request({
 			url: url + queryParams,
 			method: 'GET'
-		}, function (error, response, body) {
-			ElevatorPosInfo = JSON.parse(body).body;
+		}, function (error:Error, response:any, body:any) {
+			const ElevatorPosInfo:SubwayStationElevatorPosInfo = JSON.parse(body).body;
 			callback(ElevatorPosInfo);
 		});
 	}
@@ -233,51 +217,49 @@ function getElevatorPos(stCd, stNm, railCd, lnCd, callback) {
 }
 
 
-function getElevatorMove(stCd, stNm, railCd, lnCd, callback) {
+function getElevatorMove(stCd:string, stNm:string, railCd:string, lnCd:string, callback:(elevatorMove:Array<SubwayStationElevatorMoveInfo>)=>void) {
 	try {
-
-		console.log("ElevatorMove");
 		
-		const url = 'https://openapi.kric.go.kr/openapi/trafficWeekInfo/stinElevatorMovement';
-		let queryParams = '?' + encodeURIComponent('serviceKey');
+		const url:string = 'https://openapi.kric.go.kr/openapi/trafficWeekInfo/stinElevatorMovement';
+		let queryParams:string = '?' + encodeURIComponent('serviceKey');
 		queryParams += '=' + serviceKey.subwayRailKey;
 		queryParams += '&' + encodeURIComponent('format') + '=' + encodeURIComponent('json');
 		queryParams += '&' + encodeURIComponent('railOprIsttCd') + '=' + encodeURIComponent(railCd);
 		queryParams += '&' + encodeURIComponent('lnCd') + '=' + encodeURIComponent(lnCd);
 		queryParams += '&' + encodeURIComponent('stinCd') + '=' + encodeURIComponent(stCd);
 
-		let elevatorMove = [];
+		let elevatorMove:Array<SubwayStationElevatorMoveInfo> = [];
 
 		return request({
 			url: url + queryParams,
 			method: 'GET'
-		}, function (error, response, body) {
+		}, function (error:Error, response:any, body:any) {
 
-			let elevatorInfo = [];
+			let elevatorInfo:SubwayStationElevatorMoveInfo = {
+				direction: "",
+				info: []
+			};
 
-			const elevatorMoveParse = JSON.parse(body).body;
+			const elevatorMoveParse:Array<SubwayStationElevatorMove> = JSON.parse(body).body;
 
 			for (let i = 0; i < elevatorMoveParse.length; i++) {
-				if (elevatorMoveParse[i].mvTpOrdr == 1) {
-					if (elevatorInfo.length != 0) {
-						const direction = elevatorInfo[elevatorInfo.length - 2].mvContDtl.split('승강장')[0].substr(3);
-						elevatorInfo.unshift({
-							direction: direction
-						})
+				if (elevatorMoveParse[i].mvTpOrdr === 1) {
+					if (elevatorInfo.info.length !== 0) {
+						const direction:string = elevatorInfo.info[elevatorInfo.info.length - 2].mvContDtl.split('승강장')[0].substr(3);
+						elevatorInfo.direction = direction;
+
 						elevatorMove.push(elevatorInfo);
-						elevatorInfo = [];
+						elevatorInfo.direction = "";
+						elevatorInfo.info = [];
 					}
 				}
-				elevatorInfo.push(elevatorMoveParse[i]);
+				elevatorInfo.info.push(elevatorMoveParse[i]);
 			}
-			if (elevatorInfo.length != 0) {
-				const direction = elevatorInfo[elevatorInfo.length - 2].mvContDtl.split('승강장')[0].substr(3);
-				elevatorInfo.unshift({
-					direction: direction
-				})
-				elevatorMove.push(elevatorInfo);
-				elevatorInfo = [];
-			}
+			
+			const direction:string = elevatorInfo.info[elevatorInfo.info.length - 2].mvContDtl.split('승강장')[0].substr(3);
+			elevatorInfo.direction = direction;
+			
+			elevatorMove.push(elevatorInfo);
 
 			callback(elevatorMove);
 		});
@@ -288,30 +270,36 @@ function getElevatorMove(stCd, stNm, railCd, lnCd, callback) {
 	}
 }
 
-
-function getTransferList(stCd, stNm, railCd, lnCd, callback) {
+function getTransferList(stCd:string, stNm:string, railCd:string, lnCd:string, callback:(transferList:SubwayStationTransferInfo)=>void) {
 	try { 
-		let transferList = [];
+		
+		const connection:mysql.connection = db.return_connection();
 
-		console.log("transferList");
+		let transferList:SubwayStationTransferInfo = {
+			sourceStation: [],
+			transferStation: []
+		};
 
-		let sql = "Select * FROM subcode_1 WHERE (STIN_CD = ? or STIN_CD = ?) and LN_CD = ? and RAIL_OPR_ISTT_CD = ?;";
 
-		connection.query(sql, [parseInt(stCd) + 1, parseInt(stCd) -1, lnCd, railCd], function (err, results, fields) {
+		let sql:string = "Select * FROM subcode_1 WHERE (STIN_CD = ? or STIN_CD = ?) and LN_CD = ? and RAIL_OPR_ISTT_CD = ?;";
+
+		connection.query(sql, [parseInt(stCd) + 1, parseInt(stCd) -1, lnCd, railCd], function (err:Error, results:any, fields:any) {
 
 			if (err) {
 				console.log(err);
 			}
 
-			let sourceStation = [];
+			let sourceStation:Array<SubwayStationTransferStationInfo> = [];
 
+			/*
 			if (results.length == 0) {
 				return callback({
 					error: 404,
 					errorString: "Not Transfer Station"
 				});
 			}
-			else {
+			*/
+			/*else*/ {
 				for (let i = 0; i < results.length; i++) {
 					sourceStation.push({
 						stCd: results[i].STIN_CD,
@@ -322,30 +310,30 @@ function getTransferList(stCd, stNm, railCd, lnCd, callback) {
 				}
 
 			}
-			transferList.push({
-				sourceStation: sourceStation
-			})
+			transferList.sourceStation = sourceStation;
 		});
 
 		sql = "Select * FROM subcode_1 WHERE STIN_NM = ?;";
-		connection.query(sql, [stNm], function (err, results, fields) {
+		connection.query(sql, [stNm], function (err:Error, results:any, fields:any) {
 
 			if (err) {
 				console.log(err);
 			}
 
-			if (results.length == 1) {
+			if (results.length === 1) {
+				/*
 				return callback({
 					error: 404,
 					errorString: "Not Transfer Station"
 				});
+				*/
 			}
 
 			for (let i = 0; i < results.length; i++) {
 				if (results[i].STIN_CD != stCd) {
-					const sql2 = "Select * FROM subcode_1 WHERE (STIN_CD = ? or STIN_CD = ?) and RAIL_OPR_ISTT_CD = ?;";
-					connection.query(sql2, [parseInt(results[i].STIN_CD) + 1, parseInt(results[i].STIN_CD) - 1, results[i].RAIL_OPR_ISTT_CD], function (err, results2, fields) {
-						let transferStation = [];
+					const sql2:string = "Select * FROM subcode_1 WHERE (STIN_CD = ? or STIN_CD = ?) and RAIL_OPR_ISTT_CD = ?;";
+					connection.query(sql2, [parseInt(results[i].STIN_CD) + 1, parseInt(results[i].STIN_CD) - 1, results[i].RAIL_OPR_ISTT_CD], function (err:Error, results2:any, fields:any) {
+						let transferStation:Array<SubwayStationTransferStationInfo> = [];
 
 						for (let j = 0; j < results2.length; j++) {
 							transferStation.push({
@@ -355,9 +343,8 @@ function getTransferList(stCd, stNm, railCd, lnCd, callback) {
 								lnCd: results2[j].LN_CD
 							})
 						}
-						transferList.push({
-							transferStation: transferStation
-						})
+						transferList.transferStation = transferStation;
+						
 						callback(transferList);
 					});
 					
@@ -374,29 +361,31 @@ function getTransferList(stCd, stNm, railCd, lnCd, callback) {
 	}
 }
 
-function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn , chtnNextStinCd , callback) {
+function getTransferInfo(stCd:string, stNm:string, railCd:string, lnCd:string, prev:string, chthTgtLn:string, chtnNextStinCd:string , callback:(transferInfo:Array<SubwayStationTransferMoveList>)=>void) {
 	try {
 
-		let sql = "Select * FROM subcode_1 WHERE STIN_NM = ? and LN_CD = ?;";
-		let transferInfo = [];
+		const connection:mysql.connection = db.return_connection();
+		
+		let sql:string = "Select * FROM subcode_1 WHERE STIN_NM = ? and LN_CD = ?;";
+		let transferInfo:Array<SubwayStationTransferMoveList> = [];
 
-		connection.query(sql, [stNm, chthTgtLn], function (err, results, fields) {
+		connection.query(sql, [stNm, chthTgtLn], function (err:Error, results:any, fields:any) {
 
 			if (err) {
 				console.log(err);
 			}
 
-			let prevStinCd = "";
+			let prevStinCd:number;
 
-			if (parseInt(results[0].STIN_CD) + 1 == parseInt(chtnNextStinCd)) {
+			if (parseInt(results[0].STIN_CD) + 1 === parseInt(chtnNextStinCd)) {
 				prevStinCd = parseInt(results[0].STIN_CD) - 1;
 			}
 			else {
 				prevStinCd = parseInt(results[0].STIN_CD) + 1;
 			}
 
-			const url = 'https://openapi.kric.go.kr/openapi/vulnerableUserInfo/transferMovement';
-			let queryParams = '?' + encodeURIComponent('serviceKey');
+			const url:string = 'https://openapi.kric.go.kr/openapi/vulnerableUserInfo/transferMovement';
+			let queryParams:string = '?' + encodeURIComponent('serviceKey');
 			queryParams += '=' + serviceKey.subwayRailKey;
 			queryParams += '&' + encodeURIComponent('format') + '=' + encodeURIComponent('json');
 			queryParams += '&' + encodeURIComponent('railOprIsttCd') + '=' + encodeURIComponent(railCd);
@@ -415,59 +404,59 @@ function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn , chtnNextSti
 			return request({
 				url: url + queryParams,
 				method: 'GET'
-			}, function (error, response, body) {
-				const parse = JSON.parse(body).body;
+			}, function (error:Error, response:any, body:any) {
+				const parse:Array<SubwayStationTransferMoveList> = JSON.parse(body).body;
 
 				for (let i = 0; i < parse.length; i++) {
 					//성수가 211 하행
 					//railCd로 비교
 
 					//2호선의 경우 상 하행이 반대
-					if (railCd == "S1" && lnCd == "2") {
+					if (railCd === "S1" && lnCd === "2") {
 
 						//환승역 방면이 상행선이라면 2, 4만 나옴
-						if (parseInt(prevStinCd) > parseInt(chtnNextStinCd)) {
+						if (prevStinCd > parseInt(chtnNextStinCd)) {
 							//출발 방면이 상행선이라면
-							if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo == 2) {
+							if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo === "2") {
 								transferInfo.push(parse[i]);
 							}
 							//출발 방면이 하행선이라면
-							else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo == 1) {
+							else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo === "1") {
 								transferInfo.push(parse[i]);
 							}
 						}
 						//하행선인 경우
 						else {
 							//출발 방면이 상행선이라면
-							if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo == 4) {
+							if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo === "4") {
 								transferInfo.push(parse[i]);
 							}
 							//출발 방면이 하행선이라면
-							else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo == 3) {
+							else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo === "3") {
 								transferInfo.push(parse[i]);
 							}
 						}
 					}
 					else {
 						//환승역 방면이 상행선이라면 1,3만 나옴
-						if (parseInt(prevStinCd) > parseInt(chtnNextStinCd)) {
+						if (prevStinCd > parseInt(chtnNextStinCd)) {
 							//출발 방면이 상행선이라면
-							if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo == 1) {
+							if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo === "1") {
 								transferInfo.push(parse[i]);
 							}
 							//출발 방면이 하행선이라면
-							else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo == 3) {
+							else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo === "3") {
 								transferInfo.push(parse[i]);
 							}
 						}
 						//하행선인 경우
 						else {
 							//출발 방면이 상행선이라면
-							if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo == 2) {
+							if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo === "2") {
 								transferInfo.push(parse[i]);
 							}
 							//출발 방면이 하행선이라면
-							else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo == 4) {
+							else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo === "4") {
 								transferInfo.push(parse[i]);
 							}
 						}
@@ -486,13 +475,13 @@ function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn , chtnNextSti
 	}
 }
 
-function getConvenience(stCd, stNm, railCd, lnCd, callback) {
+function getConvenience(stCd:string, stNm:string, railCd:string, lnCd:string, callback:(conveneinceInfo:Array<SubwayStationConvenience>)=>void) {
 	try {
 
-		let conveneinceInfo = [];
+		const conveneinceInfo:Array<SubwayStationConvenience> = [];
 
-		const url = 'https://openapi.kric.go.kr/openapi/handicapped/stationCnvFacl';
-		let queryParams = '?' + encodeURIComponent('serviceKey');
+		const url:string = 'https://openapi.kric.go.kr/openapi/handicapped/stationCnvFacl';
+		let queryParams:string = '?' + encodeURIComponent('serviceKey');
 		queryParams += '=' + serviceKey.subwayRailKey;
 		queryParams += '&' + encodeURIComponent('format') + '=' + encodeURIComponent('json');
 		queryParams += '&' + encodeURIComponent('railOprIsttCd') + '=' + encodeURIComponent(railCd);
@@ -502,21 +491,13 @@ function getConvenience(stCd, stNm, railCd, lnCd, callback) {
 		return request({
 			url: url + queryParams,
 			method: 'GET'
-		}, function (error, response, body) {
-			const parse = JSON.parse(body).body;
+		}, function (error:Error, response:any, body:any) {
+			const parse:Array<SubwayStationConvenience> = JSON.parse(body).body;
 
 			for (let i = 0; i < parse.length; i++) {
-				if (parse[i].gubun == "EV" || parse[i].gubun == "WCLF") {
+				if (parse[i].gubun === "EV" || parse[i].gubun === "WCLF") {
 					conveneinceInfo.push(parse[i]);
 				}
-			}
-
-			//No Data
-			if (conveneinceInfo.length == 0) {
-				conveneinceInfo.push({
-					error: 404,
-					errorString: "No conveneince"
-				})
 			}
 
 			callback(conveneinceInfo);
@@ -528,20 +509,20 @@ function getConvenience(stCd, stNm, railCd, lnCd, callback) {
 	}
 }
 
-router.get('/stNm/:stNm', async (req, res) => {
+router.get('/stNm/:stNm', async (req:Request, res:Response) => {
 	try {
 
-		stNm = req.params.stNm;
+		const stNm = req.params.stNm;
 
 		await getSubwayStationName(stNm, stationList => {
-			if (stationList == 0) {
+			if (stationList.length === 0) {
 				return res.status(500).json({
 					error: "No Station"
 				})
 			}
 			else {
-				return res.json(
-					stationList,
+				return res.status(200).json(
+					stationList
 				)
 			}
 
@@ -556,14 +537,14 @@ router.get('/stNm/:stNm', async (req, res) => {
 	}
 })
 
-router.get('/stationInfo/:stCd/:stNm', async (req, res) => {
+router.get('/stationInfo/:stCd/:stNm', async (req:Request, res:Response) => {
 	try {
 
-		stCd = req.params.stCd;
-		stNm = req.params.stNm;
+		const stCd = req.params.stCd;
+		const stNm = req.params.stNm;
 
 		await getSubwayStationInfo(stCd, stNm, stationinfo => {
-			return res.json({
+			return res.status(200).json({
 				stationinfo
 			})
 		})
@@ -577,16 +558,16 @@ router.get('/stationInfo/:stCd/:stNm', async (req, res) => {
 	}
 })
 
-router.get('/liftPos/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
+router.get('/liftPos/:stCd/:stNm/:railCd/:lnCd', async (req:Request, res:Response) => {
 	try {
-		stCd = req.params.stCd;
-		stNm = req.params.stNm;
-		railCd = req.params.railCd;
-		lnCd = req.params.lnCd;
+		const stCd = req.params.stCd;
+		const stNm = req.params.stNm;
+		const railCd = req.params.railCd;
+		const lnCd = req.params.lnCd;
 
 		await getLiftPos(stCd, stNm, railCd, lnCd, liftPosInfo => {
 
-			return res.json({
+			return res.status(200).json({
 				"railOprIsttCd": liftPosInfo.railOprIsttCd,
 				"lnCd": liftPosInfo.lnCd,
 				"stinCd": liftPosInfo.stinCd,
@@ -613,16 +594,15 @@ router.get('/liftPos/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 	}
 })
 
-router.get('/liftMove/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
-	console.log("liftMove");
+router.get('/liftMove/:stCd/:stNm/:railCd/:lnCd', async (req:Request, res:Response) => {
 	try {
-		stCd = req.params.stCd;
-		stNm = req.params.stNm;
-		railCd = req.params.railCd;
-		lnCd = req.params.lnCd;
+		const stCd = req.params.stCd;
+		const stNm = req.params.stNm;
+		const railCd = req.params.railCd;
+		const lnCd = req.params.lnCd;
 
-		await getLiftMove(stCd, stNm, railCd, lnCd, callback => {
-			return res.json(callback);
+		await getLiftMove(stCd, stNm, railCd, lnCd, callback=> {
+			return res.status(200).json(callback);
 		});
 	}
 	catch (e) {
@@ -634,15 +614,15 @@ router.get('/liftMove/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 	}
 })
 
-router.get('/ElevatorPos/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
+router.get('/ElevatorPos/:stCd/:stNm/:railCd/:lnCd', async (req:Request, res:Response) => {
 	try {
-		stCd = req.params.stCd;
-		stNm = req.params.stNm;
-		railCd = req.params.railCd;
-		lnCd = req.params.lnCd;
+		const stCd = req.params.stCd;
+		const stNm = req.params.stNm;
+		const railCd = req.params.railCd;
+		const lnCd = req.params.lnCd;
 
 		await getElevatorPos(stCd, stNm, railCd, lnCd, callback => {
-			return res.json(callback)
+			return res.status(200).json(callback)
 		});
 	}
 	catch (e) {
@@ -654,15 +634,15 @@ router.get('/ElevatorPos/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 	}
 })
 
-router.get('/ElevatorMove/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
+router.get('/ElevatorMove/:stCd/:stNm/:railCd/:lnCd', async (req:Request, res:Response) => {
 	try {
-		stCd = req.params.stCd;
-		stNm = req.params.stNm;
-		railCd = req.params.railCd;
-		lnCd = req.params.lnCd;
+		const stCd = req.params.stCd;
+		const stNm = req.params.stNm;
+		const railCd = req.params.railCd;
+		const lnCd = req.params.lnCd;
 
 		await getElevatorMove(stCd, stNm, railCd, lnCd, callback => {
-			return res.json(callback);
+			return res.status(200).json(callback);
 		});
 	}
 	catch (e) {
@@ -675,19 +655,22 @@ router.get('/ElevatorMove/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 })
 
 
-router.get('/transferMove/transferList/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
+router.get('/transferMove/transferList/:stCd/:stNm/:railCd/:lnCd', async (req:Request, res:Response) => {
 	try {
 
-		stCd = req.params.stCd;
-		stNm = req.params.stNm;
-		railCd = req.params.railCd;
-		lnCd = req.params.lnCd;
+		const stCd = req.params.stCd;
+		const stNm = req.params.stNm;
+		const railCd = req.params.railCd;
+		const lnCd = req.params.lnCd;
 
-		await getTransferList(stCd, stNm, railCd, lnCd, callback => {
-			if (callback.error != null) {
-				return res.status(500).json(callback)
+		await getTransferList(stCd, stNm, railCd, lnCd, transferInfo => {
+			if (transferInfo.sourceStation.length === 0 || transferInfo.transferStation.length === 0) {
+				return res.status(500).json({
+					error: 404,
+					errorString: "Not Transfer Station"
+				})
 			}
-			return res.json(callback)
+			return res.status(200).json(transferInfo)
 		});
 		
 	}
@@ -700,16 +683,16 @@ router.get('/transferMove/transferList/:stCd/:stNm/:railCd/:lnCd', async (req, r
 	}
 });
 
-router.get('/transferMove/transferInfo/:stCd/:stNm/:railCd/:lnCd/:prevStinCd/:chthTgtLn/:chtnNextStinCd', async (req, res) => {
+router.get('/transferMove/transferInfo/:stCd/:stNm/:railCd/:lnCd/:prevStinCd/:chthTgtLn/:chtnNextStinCd', async (req:Request, res:Response) => {
 	try {
 
-		stCd = req.params.stCd;
-		stNm = req.params.stNm;
-		railCd = req.params.railCd;
-		lnCd = req.params.lnCd;
-		prevStinCd = req.params.prevStinCd;
-		chthTgtLn = req.params.chthTgtLn;
-		chtnNextStinCd = req.params.chtnNextStinCd;
+		const stCd = req.params.stCd;
+		const stNm = req.params.stNm;
+		const railCd = req.params.railCd;
+		const lnCd = req.params.lnCd;
+		const prevStinCd = req.params.prevStinCd;
+		const chthTgtLn = req.params.chthTgtLn;
+		const chtnNextStinCd = req.params.chtnNextStinCd;
 
 		await getTransferInfo(stCd, stNm, railCd, lnCd, prevStinCd, chthTgtLn, chtnNextStinCd, callback => {
 			
@@ -726,18 +709,25 @@ router.get('/transferMove/transferInfo/:stCd/:stNm/:railCd/:lnCd/:prevStinCd/:ch
 	}
 });
 
-router.get('/convenience/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
+router.get('/convenience/:stCd/:stNm/:railCd/:lnCd', async (req:Request, res:Response) => {
 	try {
-		stCd = req.params.stCd;
-		stNm = req.params.stNm;
-		railCd = req.params.railCd;
-		lnCd = req.params.lnCd;
+		const stCd:string = req.params.stCd;
+		const stNm:string = req.params.stNm;
+		const railCd:string = req.params.railCd;
+		const lnCd:string = req.params.lnCd;
 
-		await getConvenience(stCd, stNm, railCd, lnCd, callback => {
-			if (callback.error != null) {
-				return res.status(500).json(callback[0]);
+		await getConvenience(stCd, stNm, railCd, lnCd, conveneinceInfo => {
+			
+			//No Data
+			if (conveneinceInfo.length === 0) {
+				return res.status(500).json({
+					error: 404,
+					errorString: "No conveneince"
+				})
 			}
-			else return res.json(callback);
+			else {
+				return res.status(200).json(conveneinceInfo);
+			}
 		});
 
 		
@@ -751,7 +741,7 @@ router.get('/convenience/:stCd/:stNm/:railCd/:lnCd', async (req, res) => {
 	}
 });
 
-router.get('/nevigation', async (req, res) => {
+router.get('/nevigation', async (req:Request, res:Response) => {
 	try {
 		return res.json({
 

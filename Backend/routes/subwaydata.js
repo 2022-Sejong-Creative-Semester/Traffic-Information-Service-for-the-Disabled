@@ -25,13 +25,14 @@ function getSubwayStationName(stNm, callback){
 
 		console.log("StationName");
 
-		let sql = "Select *  FROM subcode_1 a, 도우미번호 b WHERE (a.stin_nm = b.역명 and a.ln_cd = b.운영노선명) and a.STIN_NM like ?; ";
+		let sql = "Select RAIL_OPR_ISTT_CD, LN_CD, STIN_CD, STIN_NM FROM subcode_1 a, 도우미번호 b WHERE (a.stin_nm = b.역명 and a.ln_cd = b.운영노선명) and a.STIN_NM like ?; ";
 
 		let NameList = [];
 		connection.query(sql, ["%"+stNm+"%"], function (err, results, fields) {
 			if (err) {
 				console.log(err);
 			}
+			console.log(results);
 			for (let i = 0; i < results.length; i++) {
 				
 				NameList.push({
@@ -93,7 +94,9 @@ function getSubwayStationInfo(stCd, stNm, callback) {
 				method: 'GET'
 			}, function (error, response, body) {
 
+				console.log(body);
 				const stationinfo = JSON.parse(body).body[0];
+				
 
 				callback({
 					railCd: stationinfo.railOprIsttCd,

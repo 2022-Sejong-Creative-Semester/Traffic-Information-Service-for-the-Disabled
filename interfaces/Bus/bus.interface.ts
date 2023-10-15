@@ -22,7 +22,7 @@ export interface BusStationList {
     elements?: Array<Element>
 }
 
-export interface BusInfoList {
+interface BusInfoList {
     type: string,
     name: string,
     elements: Array<Element>
