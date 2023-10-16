@@ -40,11 +40,11 @@ let corsOptions = {
     credentials: true
 };
 app.use((0, cors_1.default)(corsOptions));
-app.use(express_1.default.static(path_1.default.join(__dirname, './Frontend/creative/build')));
+app.use(express_1.default.static(path_1.default.join(__dirname, '../../Backend/Frontend/creative/build')));
 app.use('/bus', busdata_1.default);
 app.use('/subway', subwaydata_1.default);
 app.get('/', (req, res) => {
-    res.sendFile(path_1.default.join(__dirname, './Frontend/creative/build/index.html'));
+    res.sendFile(path_1.default.join(__dirname, '../../Backend/Frontend/creative/build/index.html'));
 });
 app.get('/', (req, res) => {
     res.json({

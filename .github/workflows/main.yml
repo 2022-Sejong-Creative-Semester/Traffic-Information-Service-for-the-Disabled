@@ -36,7 +36,7 @@ jobs:
           #npm run build 까지 추가로 진행
           npm run build
             
-          cd ${{ secrets.PWD }}/Backend
+          cd ${{ secrets.PWD }}/BackendJS/BackendTS
 
           npm install
 
