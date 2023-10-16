@@ -17,13 +17,13 @@ let corsOptions: cors.CorsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use(express.static(path.join(__dirname, './Frontend/creative/build')))
+app.use(express.static(path.join(__dirname, '../../Backend/Frontend/creative/build')))
 
 app.use('/bus', busRouter);
 app.use('/subway', subwayRouter);
 
 app.get('/', (req:Request, res:Response) => {
-    res.sendFile(path.join(__dirname, './Frontend/creative/build/index.html'));
+    res.sendFile(path.join(__dirname, '../../Backend/Frontend/creative/build/index.html'));
 })
 
 app.get('/', (req:Request, res:Response) => {
