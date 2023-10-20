@@ -1,7 +1,7 @@
 ﻿import express, {Request, Response, Router} from 'express'
 import request from 'request'
 import convert from 'xml-js'
-import serviceKey from '../Key/serviceKey.json'
+import serviceKey from '../KEY/serviceKey.json'
 import {BusInfo, BusItemList, BusStationInfo, BusStationList} from '../../interfaces/Bus/bus.interface'
 
 const router:Router = express.Router();
