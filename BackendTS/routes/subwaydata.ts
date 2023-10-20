@@ -1,4 +1,4 @@
-﻿import serviceKey from '../Key/serviceKey.json'
+﻿import serviceKey from '../KEY/serviceKey.json'
 import express, {Request, Response, Router} from 'express'
 import request from 'request'
 import * as db from '../db'
@@ -731,21 +731,6 @@ router.get('/convenience/:stCd/:stNm/:railCd/:lnCd', async (req:Request, res:Res
 		});
 
 		
-	}
-	catch (e) {
-		console.error(e);
-		return res.status(500).json({
-			error: e,
-			errorString: e.toString(),
-		})
-	}
-});
-
-router.get('/nevigation', async (req:Request, res:Response) => {
-	try {
-		return res.json({
-
-		})
 	}
 	catch (e) {
 		console.error(e);

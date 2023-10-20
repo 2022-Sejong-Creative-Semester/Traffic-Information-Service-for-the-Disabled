@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 const express_1 = __importDefault(require("express"));
 const request_1 = __importDefault(require("request"));
 const xml_js_1 = __importDefault(require("xml-js"));
-const serviceKey_json_1 = __importDefault(require("../Key/serviceKey.json"));
+const serviceKey_json_1 = __importDefault(require("../KEY/serviceKey.json"));
 const router = express_1.default.Router();
 function getStation(stNm, callback) {
     try {

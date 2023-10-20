@@ -34,7 +34,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-const serviceKey_json_1 = __importDefault(require("../Key/serviceKey.json"));
+const serviceKey_json_1 = __importDefault(require("../KEY/serviceKey.json"));
 const express_1 = __importDefault(require("express"));
 const request_1 = __importDefault(require("request"));
 const db = __importStar(require("../db"));
@@ -632,18 +632,6 @@ router.get('/convenience/:stCd/:stNm/:railCd/:lnCd', (req, res) => __awaiter(voi
                 return res.status(200).json(conveneinceInfo);
             }
         });
-    }
-    catch (e) {
-        console.error(e);
-        return res.status(500).json({
-            error: e,
-            errorString: e.toString(),
-        });
-    }
-}));
-router.get('/nevigation', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        return res.json({});
     }
     catch (e) {
         console.error(e);

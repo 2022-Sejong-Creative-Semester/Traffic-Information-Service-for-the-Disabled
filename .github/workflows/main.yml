@@ -1,43 +1,22 @@
-name: GCP CI/CD
-on:
-  push:
-      branches: [ main ]
+name: GCP CI/CD 
+yon:
+  pull_request:
+    types:
+      - closed
 
 jobs:
-  build:
+  if_merged:
+    if: github.event.pull_request.merged == true && github.head_ref == 'Backend'
     runs-on: ubuntu-latest
     steps:
-    - name: executing remote ssh commands using ssh key
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }} 
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.SSH_KEY }} 
-        #passphrase: ${{ secrets.PASSPHRASE }} 
-        port: 22
-        script: |
-          cd ${{ secrets.PWD }}
-
-          git pull origin main
-
-
-          #PR_BRANCH="${{ github.head_ref }}"
-
-            
-
-          cd ${{ secrets.PWD }}/Backend/Frontend/creative
-
-          #메모리 오버 방지를 위해 기존 서버 동작 중지
-          pm2 stop Traffic
-
-          #의존성 설치
-          npm install
-
-          #npm run build 까지 추가로 진행
-          npm run build
-            
-          cd ${{ secrets.PWD }}/BackendJS/BackendTS
-
-          npm install
-
-          pm2 restart Traffic
+    - name: Backend PR Merge
+      run: |
+        PR_BRANCH="${{ github.head_ref }}"
+        echo $PR_BRANCH
+    if: github.event.pull_request.merged == true && github.head_ref == 'Frontend'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Frontend PR Merge
+      run: |
+        PR_BRANCH="${{ github.head_ref }}"
+        echo $PR_BRANCH
