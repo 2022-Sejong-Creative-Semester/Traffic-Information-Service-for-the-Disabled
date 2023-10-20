@@ -1,4 +1,4 @@
-name: GCP CI/CD TEST
+name: GCP CI/CD
 on:
   pull_request:
     types:
@@ -15,7 +15,7 @@ jobs:
         host: ${{ secrets.HOST }} 
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_KEY }} 
-        passphrase: ${{ secrets.PASSPHRASE }} 
+        #passphrase: ${{ secrets.PASSPHRASE }} 
         port: 22
 
     # npm 의존성 설치
