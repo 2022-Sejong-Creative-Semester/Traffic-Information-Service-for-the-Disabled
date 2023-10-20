@@ -13,11 +13,7 @@ jobs:
       run: |
         PR_BRANCH="${{ github.head_ref }}"
         echo $PR_BRANCH
-<<<<<<< HEAD
     elif: github.event.pull_request.merged == true && github.head_ref == 'Frontend'
-=======
-    if: github.event.pull_request.merged == true && github.head_ref == 'Frontend'
->>>>>>> 8fa36d4ee0b955bb9bff49e1458bb9ce52143c44
     runs-on: ubuntu-latest
     steps:
     - name: Frontend PR Merge
