@@ -5,6 +5,7 @@ on:
       - closed
 
 jobs:
+  name: Backend Merge
   if_merged:
     if: github.event.pull_request.merged == true && github.head_ref == 'Backend'
     runs-on: ubuntu-latest
@@ -17,5 +18,8 @@ jobs:
         #passphrase: ${{ secrets.PASSPHRASE }} 
         port: 22
         script: |
-          pwd
-          
+          cd ${{ secrets.PWD }}
+          git pull origin main
+          cd ${{ secrets.PWD }}/BackendJS/BackendTS
+          npm install
+          pm2 restart Traffic
