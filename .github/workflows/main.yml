@@ -7,9 +7,9 @@ on:
 jobs:
   if_merged:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true && github.head_ref == 'Backend'
     steps:
-    - uses: appleboy/ssh-action@master
+    - if: github.event.pull_request.merged == true && github.head_ref == 'Backend'
+      uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }} 
         username: ${{ secrets.USERNAME }}
