@@ -16,7 +16,6 @@ jobs:
         key: ${{ secrets.SSH_KEY }} 
         #passphrase: ${{ secrets.PASSPHRASE }} 
         port: 22
-        script: pwd
 
     - name: npm install
       run: |
@@ -26,13 +25,6 @@ jobs:
 
     # Frontend Merge 시 React 빌드
     - name: React build
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }} 
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.SSH_KEY }} 
-        #passphrase: ${{ secrets.PASSPHRASE }} 
-        port: 22
       if: github.head_ref == 'Frontend'
       run: |
         cd ${{ secrets.PWD }}/Backend/Frontend/creative
@@ -42,13 +34,6 @@ jobs:
 
     # Merge 하는 경우 서버 재시작
     - name: server restart
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }} 
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.SSH_KEY }} 
-        #passphrase: ${{ secrets.PASSPHRASE }} 
-        port: 22
       run: |
         cd ${{ secrets.PWD }}/BackendJS/BackendTS
         npm install
