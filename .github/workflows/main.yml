@@ -23,7 +23,7 @@ jobs:
           npm install
           pm2 restart Traffic
     elif: github.event.pull_request.merged == true && github.head_ref == 'Frontend'
-    runs-on: ubuntu-latest
+    #runs-on: ubuntu-latest
     steps:
     - uses: appleboy/ssh-action@master
       with:
