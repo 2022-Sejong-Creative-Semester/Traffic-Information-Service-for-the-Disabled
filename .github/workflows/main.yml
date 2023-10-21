@@ -5,7 +5,6 @@ on:
       - closed
 
 jobs:
-  name: Backend Merge
   if_merged:
     if: github.event.pull_request.merged == true && github.head_ref == 'Backend'
     runs-on: ubuntu-latest
