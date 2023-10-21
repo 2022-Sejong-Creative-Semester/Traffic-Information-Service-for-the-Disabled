@@ -17,5 +17,8 @@ jobs:
         #passphrase: ${{ secrets.PASSPHRASE }} 
         port: 22
         script: |
-          pwd
-          
+          cd ${{ secrets.PWD }}
+          git pull origin main
+          cd ${{ secrets.PWD }}/BackendJS/BackendTS
+          npm install
+          pm2 restart Traffic
