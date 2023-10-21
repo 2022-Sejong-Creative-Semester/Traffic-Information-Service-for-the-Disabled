@@ -6,10 +6,10 @@ on:
 
 jobs:
   if_merged:
-    if: github.event.pull_request.merged == true && github.head_ref == 'Backend'
     runs-on: ubuntu-latest
     steps:
-    - uses: appleboy/ssh-action@master
+    - if: github.event.pull_request.merged == true && github.head_ref == 'Backend'
+      uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }} 
         username: ${{ secrets.USERNAME }}
@@ -19,6 +19,24 @@ jobs:
         script: |
           cd ${{ secrets.PWD }}
           git pull origin main
+          cd ${{ secrets.PWD }}/BackendJS/BackendTS
+          npm install
+          pm2 restart Traffic
+    - if: github.event.pull_request.merged == true && github.head_ref == 'Frontend'
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }} 
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_KEY }} 
+        #passphrase: ${{ secrets.PASSPHRASE }} 
+        port: 22
+        script: |
+          cd ${{ secrets.PWD }}
+          git pull origin main
+          cd ${{ secrets.PWD }}/Backend/Frontend/creative
+          pm2 stop Traffic
+          npm install
+          npm run build
           cd ${{ secrets.PWD }}/BackendJS/BackendTS
           npm install
           pm2 restart Traffic
