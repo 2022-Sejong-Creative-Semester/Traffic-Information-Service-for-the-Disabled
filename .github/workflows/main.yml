@@ -33,6 +33,10 @@ jobs:
         script: |
           cd ${{ secrets.PWD }}
           git pull origin main
+          cd ${{ secrets.PWD }}/Backend/Frontend/creative
+          pm2 stop Traffic
+          npm install
+          npm run build
           cd ${{ secrets.PWD }}/BackendJS/BackendTS
           npm install
           pm2 restart Traffic
