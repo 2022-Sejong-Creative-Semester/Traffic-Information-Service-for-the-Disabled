@@ -22,7 +22,7 @@ jobs:
           cd ${{ secrets.PWD }}/BackendJS/BackendTS
           npm install
           pm2 restart Traffic
-    if: github.event.pull_request.merged == true && github.head_ref == 'Frontend'
+    elif: github.event.pull_request.merged == true && github.head_ref == 'Frontend'
     runs-on: ubuntu-latest
     steps:
     - uses: appleboy/ssh-action@master
