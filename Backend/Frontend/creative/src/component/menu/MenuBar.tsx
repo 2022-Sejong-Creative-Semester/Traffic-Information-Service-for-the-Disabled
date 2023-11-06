@@ -2,17 +2,17 @@ import React from "react"
 import MenuBusButton from "./MenuBusButton.tsx"
 import MenuSubwayButton from "./MenuSubwayButton.tsx"
 import styled from "styled-components"
-import MenuExplan from "./MenuExplan.tsx"
 
 const StyleMenuBar = styled.div`
 display:flex;
+position: fixed;
+bottom: 0;
 justify-content: space-between;
 width: 100%;
-padding-top:5vw;
-height: 633px;
+background-color: #FFD12D;
+height: 10vh;
 text-decoration:none;
 @media (max-width:500px){
-    flex-direction: column; 
     justify-content:  space-evenly;
 }
 `
@@ -21,9 +21,7 @@ text-decoration:none;
 const MenuBar = () => {
     return (
         <StyleMenuBar>
-            <MenuBusButton />
-            <MenuExplan />
-            <MenuSubwayButton />
+            
         </StyleMenuBar>
     )
 }
