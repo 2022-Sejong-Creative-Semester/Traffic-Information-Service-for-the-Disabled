@@ -10,32 +10,25 @@ const StyledHeader = styled.header`
 display:flex;
 justify-content:space-between;
 align-items:center;
+position:fixed;
+top: 0;
 font-family: 'GmarketSansMedium';
-font-weight: 700;
-font-size: 4vw;
-background-color:#FFFFFF;
 border-bottom: 2px solid #EBEBEB;
-width:95%;
-height:15vh;
-a{  
+width:100vw;
+min-height:8vh;
+.header_home{  
+    font-size:5vw;
     color:#000000;
     text-decoration:none;
+    padding-left: 5vw;
 }
-.sejong{
+.header_sejong{
     font-family: 'Pretendard-Regular';
     font-style: normal;
-    font-weight: 700;
-    font-size: 1.8vw;
+    font-size: 2vw;
+    padding-right: 5vw;
     line-height: 48px;
-    text-align: center;
     color: #5C5454;
-}
-@media (max-width:500px) {
-    font-size:8vw;
-    height:8vh;
-    .sejong{
-        font-size: 4vw;
-    }
 }
 `
 
@@ -49,10 +42,10 @@ const Header = () => {
     }
     return (
         <StyledHeader>
-            <Link onClick={reduxReset} to="/">
+            <Link className="header_home" onClick={reduxReset} to="/">
                 타자
             </Link>
-            <p className="sejong">Sejong University</p>
+            <p className="header_sejong">Sejong University</p>
         </StyledHeader>
     )
 }

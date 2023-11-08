@@ -1,29 +1,46 @@
 import React from "react"
-import MenuBusButton from "./MenuBusButton.tsx"
-import MenuSubwayButton from "./MenuSubwayButton.tsx"
 import styled from "styled-components"
-import MenuExplan from "./MenuExplan.tsx"
+
+import {ReactComponent as HOME} from "./menuSvg/HOME.svg";
+import {ReactComponent as BUS} from "./menuSvg/BUS.svg";
+import {ReactComponent as SUBWAY} from "./menuSvg/SUBWAY.svg";
+import {ReactComponent as SIGN} from "./menuSvg/SIGN.svg";
+
+
+
 
 const StyleMenuBar = styled.div`
 display:flex;
-justify-content: space-between;
+position: fixed;
+bottom: 0;
+justify-content: space-evenly;
+align-items: center;
 width: 100%;
-padding-top:5vw;
-height: 633px;
+height: 8vh;
+background-color: #FFD12D;
 text-decoration:none;
 @media (max-width:500px){
-    flex-direction: column; 
     justify-content:  space-evenly;
 }
+`
+
+const StyleButton = styled.button`
+    background-color: transparent;
+    border: 0;
+    .menu_img{
+        fill: white;
+        min-height: 4vh;
+    }
 `
 
 
 const MenuBar = () => {
     return (
         <StyleMenuBar>
-            <MenuBusButton />
-            <MenuExplan />
-            <MenuSubwayButton />
+            <StyleButton><HOME fill="white"  height="4vh"/></StyleButton>
+            <StyleButton><BUS fill="white"  height="4vh"/></StyleButton>
+            <StyleButton><SUBWAY fill="white"  height="4vh"/></StyleButton>
+            <StyleButton><SIGN fill="white"  height="4vh"/></StyleButton>
         </StyleMenuBar>
     )
 }

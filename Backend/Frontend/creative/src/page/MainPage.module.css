@@ -3,20 +3,17 @@ body {
     margin: 0px;
     padding: 0px;
 }
+.bottom {
+    width: 100%;
+    height: 100vh;
+}
 
 .main {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.bottom {
-    width: 100%;
+    justify-content: center;
     height: 100vh;
-    background: rgba(40, 40, 40, 0.8);
-}
-
-.main {
     animation: fadein 2s;
     -moz-animation: fadein 2s;
     /* Firefox */
@@ -24,6 +21,23 @@ body {
     /* Safari and Chrome */
     -o-animation: fadein 2s;
     /* Opera */
+}
+.main_detail{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 30vh;
+}
+.main_title{
+    font-family: 'GmarketSansMedium';
+    font-weight: 700;
+    font-size: 2em;
+}
+.main_explan{
+    display:flex;
+    text-align:center;
+    font-family: 'Pretendard-Regular';
+    font-size: 1em;
 }
 
 @keyframes fadein {
