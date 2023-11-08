@@ -7,9 +7,10 @@
       "skipLibCheck": true,
       "moduleResolution": "node",
       "forceConsistentCasingInFileNames": true,
-      "jsx": "react",
       "allowImportingTsExtensions": true,
       "paths":["**/*"],
+      "jsx": "react",
+      "include": ["src/custom.d.ts" ]
     }
 }
   

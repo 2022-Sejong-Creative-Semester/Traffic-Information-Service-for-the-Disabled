@@ -80,7 +80,6 @@ a{
 
 const MenuBusButton = () => {
     const dispatch = useDispatch();
-
     const initialization = () => {
         dispatch(MapActions.initialization())
         dispatch(BusActions.initialState())
