@@ -50,7 +50,7 @@ router.get('/bybus/:startX/:startY/:endX/:endY', (req, res) => __awaiter(void 0,
                   return a.elements.pathList.elements.length - b.elements.pathList.elements.length
                 })
                 */
-                console.log(navigationInfo);
+                console.log(navigationInfo.length);
                 return res.status(200).json({
                     body: navigationInfo
                 });
