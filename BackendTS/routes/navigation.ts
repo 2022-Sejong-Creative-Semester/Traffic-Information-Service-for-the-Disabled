@@ -72,7 +72,7 @@ router.get('/bybus/:startX/:startY/:endX/:endY', async(req:Request, res:Response
 			error: e,
 			errorString: e.toString(),
 		});
-    }
+  }
 })
 
 router.get('/bysubway', async(req:Request,res:Response)=>{
