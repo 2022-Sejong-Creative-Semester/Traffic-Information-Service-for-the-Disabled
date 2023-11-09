@@ -63,7 +63,7 @@ const StyledStationItem = styled.li<stItem>`
   width: 100%;
   list-style: none;
   border-bottom: 1px solid #d2d2d2;
-  background-color: ${props => (props.color ? "#FFFFFF" : "#CDD029")};
+  background-color: ${props => (props.color ? "#FFFFFF" : "#FFD12D")};
   font-family: "Pretendard-Regular";
   :hover {
     cursor: pointer;
@@ -74,7 +74,7 @@ const StyledStationItem = styled.li<stItem>`
     font-family: "Pretendard-Regular";
     font-style: normal;
     font-weight: ${props => (props.color ? "400" : "700")};
-    font-size: 2vw;
+    font-size: 1em;
     line-height: 60px;
     color: ${props => (props.color ? "#000000" : "#FFFFFF")};
   }
@@ -84,23 +84,12 @@ const StyledStationItem = styled.li<stItem>`
     font-family: "Pretendard-Regular";
     font-style: normal;
     font-weight: ${props => (props.color ? "500" : "700")};
-    font-size: 1.7vw;
+    font-size: 1em;
     line-height: 29px;
     display: flex;
     align-items: center;
     text-align: center;
     color: ${props => (props.color ? "#000000" : "#FFFFFF")};
-  }
-  @media (max-width: 500px) {
-    height: 35%;
-    .Name {
-      font-family: "Pretendard-Regular";
-      font-size: 5vw;
-    }
-    .id {
-      font-family: "Pretendard-Regular";
-      font-size: 3vw;
-    }
   }
 `;
 

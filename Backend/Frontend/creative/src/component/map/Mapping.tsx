@@ -25,7 +25,6 @@ const Mapping = () => {
     const tmY = curPosition ? curPosition.tmY: position.tmY;
     const tmX = curPosition ? curPosition.tmX: position.tmX;
     useEffect(() => {
-        console.log(tmX,tmY);
         const container = document.getElementById("map");
         const options = {
             center: new window.kakao.maps.LatLng(tmY, tmX),
@@ -36,7 +35,7 @@ const Mapping = () => {
             busmapcoordinate(marker, map)
         else if (subwaymode)
             subwaymapcoordinate(marker, map)
-    },[tmX,tmY])
+    },[tmX, tmY])
 
     const subwaymapcoordinate = (marker:any, map:any) => {
         const markerPosition = new window.kakao.maps.LatLng(parseFloat(String(marker.tmY - 0.0000005)).toFixed(6), parseFloat(String(marker.tmX - 0.0000005)).toFixed(6))

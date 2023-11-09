@@ -1,4 +1,4 @@
-import React, {useRef} from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { api } from "../../auth/Api.ts";
@@ -7,42 +7,37 @@ import { BusActions } from "../../../store/Bus-slice.ts";
 
 const StyledForm = styled.form`
     display:flex;
-    width: 100%;
-    height: 140px;
-    border: 4px solid #CDD029;
+    position: fixed;
+    z-index: 100;
+    top: 15vh;
+    width: 80vw;
+    height: 1vh;
+    border-radius: 30px;
     .busFormInput{
-      width: 80%;
-      height: 80%;
+      width: 100%;
       padding: 15px;
-      font-size: 2.5vw;
-      border:0;
+      font-size: 80%;
       font-family: 'Pretendard-Regular';
       font-weight: 700;
+      border: 0;
+      border-radius: 30px;
     }
     .busFormBtn{
       width: 20%;
       height: 100%;
-      background: #CDD029;
       border: 1px solid #CDD029;
       padding:0;
     }
-    @media (max-width:500px){
-        width: 98vw;
-        height: 15vw;
-        .busFormInput{
-          font-family: 'Pretendard-Regular';
-          width: 80%;
-          height: 15vw;
-          font-size: 6vw;
-          padding: 1%;
-        }
+    .GRASS{
+      width: 100%;
+      height: 100%;
     }
 `
 
 
 const BusForm:React.FC = () => {
   const dispatch = useDispatch();
-  const inputRef = useRef<HTMLInputElement>(null);
+
   const SubmitBusStation = (value: string|null) => {
     api
       .get(`/bus/stNm/${value}`)
@@ -59,14 +54,16 @@ const BusForm:React.FC = () => {
         alert("해당 정류장이 없습니다.");
       });
   };
+
   const BusStationData = (event:React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    SubmitBusStation(inputRef.current!.value);
+    let [station]:any  = (event.target as HTMLInputElement);
+    SubmitBusStation(station.value);
   };
+  
   return (
     <StyledForm  onSubmit={BusStationData}>
-      <input className="busFormInput" ref={inputRef} placeholder="정류장을 입력해주세요." />
-      <button className="busFormBtn"><img className="GRASS" src="./image/GRASS.png" alt="GRASS" /></button>
+      <input className="busFormInput" name="station" placeholder="정류장을 입력해주세요." />
     </StyledForm>
   );
 };

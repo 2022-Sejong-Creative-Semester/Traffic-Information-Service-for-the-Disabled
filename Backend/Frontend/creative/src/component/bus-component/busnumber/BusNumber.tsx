@@ -12,16 +12,12 @@ align-items:center;
 height:50px;
 width:90%;
 height:auto;
-font-size:1.9vw;
+font-size:1em;
 font-family: 'Pretendard-Regular';
 padding:0;
 p{
     font-weight:bold;
     margin:0;
-}
-@media (max-width:500px){
-    font-size:4.5vw;
-    height:20%;
 }
 `
 

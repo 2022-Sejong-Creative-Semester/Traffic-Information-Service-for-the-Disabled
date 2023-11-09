@@ -1,14 +1,9 @@
-.main {
-    display: flex;
-    justify-content: start;
-    width: 100vw;
-}
-
 .subwaypage {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+    height: 100vh;
 }
 
 .subwaylist {

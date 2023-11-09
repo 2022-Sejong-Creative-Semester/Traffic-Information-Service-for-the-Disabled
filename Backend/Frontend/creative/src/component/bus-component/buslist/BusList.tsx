@@ -12,17 +12,10 @@ flex-direction:column;
 align-items: center;
 box-sizing: border-box;
 width: 100%;
-height: 640px;
-background: #FFFFFF;
-border: 4px solid #CDD029 ;
+height: 30%;
 padding:0;
 margin:0;
 overflow:auto;
-@media (max-width:500px) {
-    border: 4px solid #CDD029 ;
-    width:100%;
-    height:30vh;
-}
 `
 
 
