@@ -32,7 +32,21 @@ router.get('/bybus/:startX/:startY/:endX/:endY', async(req:Request, res:Response
           
         })
 
-        const navigationInfo:Array<NavigationInfo> = JSON.parse(parseJSON).elements[0].elements[2].elements;
+        const navigationList:any = JSON.parse(parseJSON).elements[0].elements[2].elements;
+
+        const navigationInfo = [];
+        navigationList.forEach(info => {
+          const tempInfo = {
+            distance: "",
+            pathList: [],
+            time: ""
+          };
+          tempInfo.distance = info.elements[0].elements[0].text;
+          tempInfo.time = info.elements[info.elements.length-1].elements[0].text;
+          info.elements.forEach(pathInfo=>{
+            //list parsing
+          })
+        });
 
         /*
         //정렬 기준 (1. 환승 경로 개수 / 2. 이동 시간)
@@ -45,10 +59,10 @@ router.get('/bybus/:startX/:startY/:endX/:endY', async(req:Request, res:Response
           return a.elements.pathList.elements.length - b.elements.pathList.elements.length
         })
         */
-        console.log(navigationInfo);
+        console.log(navigationList.length);
 
         return res.status(200).json({
-          body: navigationInfo
+          body: navigationList
         })
       });
     }
@@ -58,7 +72,7 @@ router.get('/bybus/:startX/:startY/:endX/:endY', async(req:Request, res:Response
 			error: e,
 			errorString: e.toString(),
 		});
-    }
+  }
 })
 
 router.get('/bysubway', async(req:Request,res:Response)=>{
