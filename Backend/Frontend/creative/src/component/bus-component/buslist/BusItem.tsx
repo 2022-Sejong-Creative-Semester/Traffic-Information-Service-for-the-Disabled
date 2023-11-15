@@ -6,7 +6,7 @@ const StyledBusItem = styled.li`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 30%;
+  min-height: 10%;
   list-style: none;
   text-align: center;
   border-bottom: 1px solid #d2d2d2;
@@ -14,6 +14,7 @@ const StyledBusItem = styled.li`
   .mark {
     width: 1em;
     height: 1em;
+    margin-right: 0.5rem;
   }
   :hover {
     cursor: pointer;

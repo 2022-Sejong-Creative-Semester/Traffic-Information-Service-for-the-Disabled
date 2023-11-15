@@ -6,12 +6,13 @@ import {ReactComponent as BUS} from "./menuSvg/BUS.svg";
 import {ReactComponent as SUBWAY} from "./menuSvg/SUBWAY.svg";
 import {ReactComponent as SIGN} from "./menuSvg/SIGN.svg";
 
+
 const StyleMenuBar = styled.div`
 display:flex;
 justify-content: space-evenly;
 align-items: center;
 width: 100%;
-height: 10%;
+min-height: 10%;
 background-color: #FFD12D;
 text-decoration:none;
 `
