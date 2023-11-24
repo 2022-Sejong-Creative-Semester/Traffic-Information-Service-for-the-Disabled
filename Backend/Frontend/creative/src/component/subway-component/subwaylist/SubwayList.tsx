@@ -10,19 +10,14 @@ display:flex;
 flex-direction:column;
 align-items: center;
 box-sizing: border-box;
-width: 35vw;
-height: 68vh;
-background: #FFFFFF;
-border: 4px solid #9255F5;
+width: 100%;
+max-height:40%;
+min-height:40%;
 padding:0;
 margin:0;
 overflow:auto;
 a{ 
     text-decoration:none; 
-}
-@media (max-width:500px) {
-    width:100%;
-    height:30vh;
 }
 `
 

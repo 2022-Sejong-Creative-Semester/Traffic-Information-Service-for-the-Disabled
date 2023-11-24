@@ -6,34 +6,22 @@ import { MapActions } from "../../../store/Map-slice.ts";
 import { BusActions } from "../../../store/Bus-slice.ts";
 
 const StyledForm = styled.form`
-    display:flex;
+    display: flex;
     position: fixed;
     z-index: 100;
     top: 15vh;
-    width: 80vw;
     height: 1vh;
-    border-radius: 30px;
+    width: 80vw;
     .busFormInput{
       width: 100%;
-      padding: 15px;
+      padding: 1em;
       font-size: 80%;
       font-family: 'Pretendard-Regular';
       font-weight: 700;
       border: 0;
       border-radius: 30px;
     }
-    .busFormBtn{
-      width: 20%;
-      height: 100%;
-      border: 1px solid #CDD029;
-      padding:0;
-    }
-    .GRASS{
-      width: 100%;
-      height: 100%;
-    }
 `
-
 
 const BusForm:React.FC = () => {
   const dispatch = useDispatch();

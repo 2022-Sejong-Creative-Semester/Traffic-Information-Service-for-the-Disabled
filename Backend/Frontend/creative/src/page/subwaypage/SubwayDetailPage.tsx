@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react"
-import Mapping from "../../component/map/Mapping.tsx"
+
 import classes from "./SubwayDetailPage.module.css"
 import Header from "../../component/header/Header.tsx"
 import SubwayPanel from "../../component/subway-component/subwaypanel/SubwayPanel.tsx"
 import SubwayDetail from "../../component/subway-component/subwaydetail/SubwayDetail.tsx"
 import SubwayBar from "../../component/subway-component/subwaymenubar/SubwayBar.tsx"
+import MenuBar from "../../component/menu/MenuBar.tsx"
+
 import { useDispatch } from "react-redux"
 import { SubwayActions } from "../../store/Subway-slice.ts"
 import { api } from "../../component/auth/Api.ts"
@@ -23,13 +25,13 @@ const SubwayDetailPage = () => {
                 .then(res => {
                     const { data } = res;
                     const { stationinfo } = data;
-                    console.log(data)
                     setInfo(stationinfo);
                     dispatch(SubwayActions.saveSubway(stationinfo))
                 })
         }
         getDetail()
     }, [dispatch,params.stCd,params.stNm])
+
     return (
         <div className={classes.subwaypage}>
             <Header />
@@ -39,9 +41,9 @@ const SubwayDetailPage = () => {
                     <div className={classes.subwaylist}>
                         <SubwayDetail info={info} />
                     </div>
-                    <Mapping />
                 </div>
             </div>
+            <MenuBar/>
         </div>
     )
 }

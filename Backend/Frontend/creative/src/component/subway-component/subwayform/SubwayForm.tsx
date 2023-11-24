@@ -1,5 +1,4 @@
 import React from "react";
-import SubwayButton from "./SubwayButton.tsx";
 import SubwayInput from "./SubwayInput.tsx";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
@@ -9,18 +8,17 @@ import { MapActions } from "../../../store/Map-slice.ts";
 
 const StyledForm = styled.form`
     display:flex;
-    width: 34.6vw;
-    height: 11vh;
-    border: 4px solid #9255F5;
-    @media (max-width:500px){
-        width: 98vw;
-        height: 15vw;
-    }
+    position: fixed;
+    z-index: 100;
+    top: 15vh;
+    width: 80vw;
+    height: 1vh;
 `
 
 
 const SubwayForm = () => {
     const dispatch = useDispatch();
+
     const SubmitSubwayStation = async (value:any) => {
         await api.get(`/subway/stNm/${value}`)
             .then(res => {
@@ -44,7 +42,6 @@ const SubwayForm = () => {
     return (
         <StyledForm onSubmit={SubwayStationData}>
             <SubwayInput />
-            <SubwayButton />
         </StyledForm>
     )
 }

@@ -12,7 +12,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     height: 100vh;
 }
 .main_detail{
@@ -22,11 +22,8 @@ body {
     height: 30vh;
     animation: fadein 2s;
     -moz-animation: fadein 2s;
-    /* Firefox */
     -webkit-animation: fadein 2s;
-    /* Safari and Chrome */
     -o-animation: fadein 2s;
-    /* Opera */
 }
 .main_title{
     font-family: 'GmarketSansMedium';

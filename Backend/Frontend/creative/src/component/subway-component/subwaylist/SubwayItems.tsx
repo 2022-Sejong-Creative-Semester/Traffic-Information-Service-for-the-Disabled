@@ -15,19 +15,21 @@ interface sbitem {
 }
 
 const SubwayItems = (props:any) => {
-    const {items} = props;
-    const { stNm, lnNm, stCd } = items
     const [position, setPosition] = useState("");
-    const [color, setColor] = useState<boolean>(false);
+    const [color, setColor] = useState<string>("false");
     const dispatch = useDispatch()
     const currentSubway = useSelector((state:RootState) => state.subway.currentSubway)
+
+    const {items} = props;
+    const { stNm, lnNm, stCd } = items
     const idColor = ["#0052A4", "#00A84D", "#EF7C1C", "#00A5DE", "#996CAC", "#CD7C2F", "#747F00", "#E6186C"];
+    
     useEffect(() => {
         if (currentSubway === stCd) {
-            setColor(false)
+            setColor("false")
         }
         else {
-            setColor(true)
+            setColor("true")
         }
         const locationRecive = async () => {
             await api.get(`/subway/stationInfo/${stCd}/${stNm}`)
@@ -44,7 +46,8 @@ const SubwayItems = (props:any) => {
             window.location.href = `/#/subway/detail/${stCd}/${stNm}`;
         }
         else if (currentSubway !== stCd) {
-            setColor(false)
+            setColor("false")
+            console.log(position)
             dispatch(MapActions.positioning(position))
             dispatch(MapActions.makerchacking(position))
             dispatch(SubwayActions.clickSubway(stCd))
@@ -66,7 +69,7 @@ width:100%;
 align-items:center;
 list-style:none;
 border-bottom: 1px solid #D2D2D2;
-background-color:${props => (props.color ? "#FFFFFF" : "#9255F5")};
+background-color:${props => (props.color==="true" ? "#FFFFFF" : "#FFD12D")};
 color:black;
 font-family: 'Pretendard-Regular';
 :hover{
@@ -84,10 +87,10 @@ a{
     padding-left:20px;
     font-family: 'Pretendard-Regular';
     font-style: normal;
-    font-weight: ${props => (props.color ? "400" : "700")};
-    font-size: 40px;
+    font-weight: ${props => (props.color==="true" ? "400" : "700")};
+    font-size: 1em;
     line-height: 60px;
-    color:${props => (props.color ? "#000000" : "#FFFFFF")};
+    color:${props => (props.color==="true" ? "#000000" : "#FFFFFF")};
 }
 .line{
     color:#FFFFFF;
@@ -98,23 +101,12 @@ a{
     font-family: 'Pretendard-Regular';
     font-style: normal;
     font-weight: 600;
-    font-size: 1.5vw;
-    width: 48px;
-    height: 48px;
+    font-size: 1em;
+    width: 2em;
+    height: 2em;
     background-color:${(props:any) => (props.idColor[props.lnNm - 1])};
     border-radius:200px;
     
-}
-@media (max-width:500px){
-    height:25%;
-    .name{
-        font-size: 5vw;
-    }
-    .line{
-        font-size: 3vw;
-        width: 10vw;
-        height: 10vw;
-    }
 }
 `
 

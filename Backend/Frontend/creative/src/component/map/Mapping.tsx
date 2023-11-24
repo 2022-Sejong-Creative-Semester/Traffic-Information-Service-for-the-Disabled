@@ -13,17 +13,13 @@ declare global {
       kakao: any;
     }
   }
-/*
-37.55068403524657
-127.07411251036736
-*/
 const Mapping = () => {
     const dispatch = useDispatch()
     const marker = useSelector((state:RootState) => state.map.marker)
     const position = useSelector((state:RootState) => state.map.position)
     const arsid = useSelector((state:RootState)=> state.bus.currentStation);
-    const busmode = useSelector((state:RootState) => state.map.busmode)
-    const subwaymode = useSelector((state:RootState) => state.map.subwaymode)
+    const busmode = useSelector((state:RootState) => state.map.busmode);
+    const subwaymode = useSelector((state:RootState) => state.map.subwaymode);
     const {curPosition} = usePosition(geolocationOptions);
     const tmY = curPosition ? curPosition.tmY: position.tmY;
     const tmX = curPosition ? curPosition.tmX: position.tmX;

@@ -8,6 +8,9 @@ import { MapActions } from "../../store/Map-slice.ts";
 
 const StyledHeader = styled.header`
 display:flex;
+position: fixed;
+top: 0;
+z-index: 100;
 justify-content:space-between;
 background-color: #FFFFFF;
 align-items:center;

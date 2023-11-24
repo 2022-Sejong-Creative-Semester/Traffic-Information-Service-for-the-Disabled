@@ -10,6 +10,8 @@ import {ReactComponent as SIGN} from "./menuSvg/SIGN.svg";
 const StyleMenuBar = styled.div`
 display:flex;
 justify-content: space-evenly;
+position: fixed;
+bottom: 0;
 align-items: center;
 width: 100%;
 min-height: 10%;

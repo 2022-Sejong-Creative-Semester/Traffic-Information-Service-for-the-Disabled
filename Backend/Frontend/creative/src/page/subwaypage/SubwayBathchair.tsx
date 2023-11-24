@@ -37,6 +37,7 @@ const SubwayBathchair = () => {
         }
         getBathChair()
     }, [dispatch,params.lnCd,params.railCd,params.stCd,params.stNm])
+    
     return (
         <div className={classes.subwaypage}>
             <Header />
