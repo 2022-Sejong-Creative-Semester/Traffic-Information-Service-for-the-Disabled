@@ -58,6 +58,7 @@ router.get('/bybus/:startX/:startY/:endX/:endY', async(req:Request, res:Response
         const navigationList:any = JSON.parse(parseJSON).elements[0].elements[2].elements;
 
         const navigationInfo:Array<NavigationList> = [];
+        console.log(parseJSON);
         navigationList.forEach((info:any) => {
           const tempInfo:NavigationList = {
             distance: "",   //총 이동 거리
@@ -170,6 +171,8 @@ router.get('/bysubway/:startX/:startY/:endX/:endY', async(req:Request,res:Respon
 
       const parseJSON:string = convert.xml2json(body);
 
+      console.log(parseJSON);
+      
       const navigationList:any = JSON.parse(parseJSON).elements[0].elements[2].elements;
 
       const navigationInfo:Array<NavigationList> = [];
@@ -197,9 +200,9 @@ router.get('/bysubway/:startX/:startY/:endX/:endY', async(req:Request,res:Respon
         for(let i:number=0;i<info.elements[1].elements.length/10;i++){
           
           const railLinkList:Array<string> = [];
-          console.log(JSON.stringify(info.elements[1].elements));
-          for(let j:number = 0;j<info.elements[1].elements[i%10+4].elements.length;j++){
-            railLinkList.push(info.elements[1].elements[i%10+4].elements[j].text);
+
+          for(let j:number = 0;j<info.elements[1].elements[i%10+4].elements[0].elements.length;j++){
+            railLinkList.push(info.elements[1].elements[i%10+4].elements[0].elements[j].text);
           }
 
           tempInfo.pathList.push({
@@ -291,6 +294,8 @@ router.get('/bybusNsubway/:startX/:startY/:endX/:endY', async(req:Request,res:Re
     }, async function (error:Error, response:any, body:string) {
 
       const parseJSON:string = convert.xml2json(body);
+
+      console.log(parseJSON);
 
       const navigationList:any = JSON.parse(parseJSON).elements[0].elements[2].elements;
 
