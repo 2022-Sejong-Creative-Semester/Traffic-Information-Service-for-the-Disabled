@@ -36,8 +36,8 @@ const Mapping = () => {
             busmapcoordinate(marker, map)
         else if (subwaymode)
             subwaymapcoordinate(marker, map)
-    },[tmX,tmY,busmode,subwaymode,arsid])
-
+    },[tmX,tmY,busmode,subwaymode,arsid,position])
+    
     const subwaymapcoordinate = (marker:any, map:any) => {
         const markerPosition = new window.kakao.maps.LatLng(parseFloat(String(marker.tmY - 0.0000005)).toFixed(6), parseFloat(String(marker.tmX - 0.0000005)).toFixed(6))
         const new_marker = new window.kakao.maps.Marker({

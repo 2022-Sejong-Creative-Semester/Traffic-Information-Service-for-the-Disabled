@@ -29,7 +29,7 @@ a{
 
 @media (max-width:500px){
     flex-direction: row;
-    justify-content:space-even;
+    justify-content:space-evenly;
     font-size:4vw;
     margin:0;
     li{

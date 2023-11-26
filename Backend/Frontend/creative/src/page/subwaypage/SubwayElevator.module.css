@@ -1,7 +1,6 @@
 .main {
-    display: flex;
-    justify-content: start;
     width: 100vw;
+    margin: 10vh;
 }
 
 .elevator {
@@ -12,8 +11,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    height: 100vh;
 }
 
 .subwaylist {

@@ -17,7 +17,7 @@ align-items:center;
 font-family: 'GmarketSansMedium';
 border-bottom: 2px solid #EBEBEB;
 width:100vw;
-min-height:10%;
+height:10vh;
 .header_home{  
     font-size:5vw;
     color:#000000;
