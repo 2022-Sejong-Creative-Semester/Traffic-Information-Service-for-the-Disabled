@@ -12,7 +12,7 @@ export interface BusPathList {
 }
 
 export interface SubwayPathList {
-    routeNm: string,
+    routeNm: string,        //호선
     fid: string,
     fname: string,
     fx: string,

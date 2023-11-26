@@ -58,6 +58,7 @@ router.get('/bybus/:startX/:startY/:endX/:endY', (req, res) => __awaiter(void 0,
                 const parseJSON = xml_js_1.default.xml2json(body);
                 const navigationList = JSON.parse(parseJSON).elements[0].elements[2].elements;
                 const navigationInfo = [];
+                console.log(parseJSON);
                 navigationList.forEach((info) => {
                     const tempInfo = {
                         distance: "",
@@ -148,6 +149,7 @@ router.get('/bysubway/:startX/:startY/:endX/:endY', (req, res) => __awaiter(void
         }, function (error, response, body) {
             return __awaiter(this, void 0, void 0, function* () {
                 const parseJSON = xml_js_1.default.xml2json(body);
+                console.log(parseJSON);
                 const navigationList = JSON.parse(parseJSON).elements[0].elements[2].elements;
                 const navigationInfo = [];
                 navigationList.forEach((info) => {
@@ -170,9 +172,8 @@ router.get('/bysubway/:startX/:startY/:endX/:endY', (req, res) => __awaiter(void
                     tempInfo.walkTime += Math.floor(dist / velocity);
                     for (let i = 0; i < info.elements[1].elements.length / 10; i++) {
                         const railLinkList = [];
-                        console.log(JSON.stringify(info.elements[1].elements));
-                        for (let j = 0; j < info.elements[1].elements[i % 10 + 4].elements.length; j++) {
-                            railLinkList.push(info.elements[1].elements[i % 10 + 4].elements[j].text);
+                        for (let j = 0; j < info.elements[1].elements[i % 10 + 4].elements[0].elements.length; j++) {
+                            railLinkList.push(info.elements[1].elements[i % 10 + 4].elements[0].elements[j].text);
                         }
                         tempInfo.pathList.push({
                             fid: info.elements[1].elements[i % 10].elements[0].text,
@@ -246,6 +247,7 @@ router.get('/bybusNsubway/:startX/:startY/:endX/:endY', (req, res) => __awaiter(
         }, function (error, response, body) {
             return __awaiter(this, void 0, void 0, function* () {
                 const parseJSON = xml_js_1.default.xml2json(body);
+                console.log(parseJSON);
                 const navigationList = JSON.parse(parseJSON).elements[0].elements[2].elements;
                 const navigationInfo = [];
                 navigationList.forEach((info) => {

@@ -130,7 +130,11 @@ function getLiftPos(stCd, stNm, railCd, lnCd, callback) {
             method: 'GET'
         }, function (error, response, body) {
             const liftPosInfo = JSON.parse(body).body;
-            callback(liftPosInfo[0]);
+            if (liftPosInfo === undefined) {
+                callback(null);
+            }
+            else
+                callback(liftPosInfo[0]);
         });
     }
     catch (e) {
@@ -362,22 +366,22 @@ function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn, chtnNextStin
                         //환승역 방면이 상행선이라면 2, 4만 나옴
                         if (prevStinCd > parseInt(chtnNextStinCd)) {
                             //출발 방면이 상행선이라면
-                            if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo === "2") {
+                            if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo === 2) {
                                 transferInfo.push(parse[i]);
                             }
                             //출발 방면이 하행선이라면
-                            else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo === "1") {
+                            else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo === 1) {
                                 transferInfo.push(parse[i]);
                             }
                         }
                         //하행선인 경우
                         else {
                             //출발 방면이 상행선이라면
-                            if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo === "4") {
+                            if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo === 4) {
                                 transferInfo.push(parse[i]);
                             }
                             //출발 방면이 하행선이라면
-                            else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo === "3") {
+                            else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo === 3) {
                                 transferInfo.push(parse[i]);
                             }
                         }
@@ -386,22 +390,22 @@ function getTransferInfo(stCd, stNm, railCd, lnCd, prev, chthTgtLn, chtnNextStin
                         //환승역 방면이 상행선이라면 1,3만 나옴
                         if (prevStinCd > parseInt(chtnNextStinCd)) {
                             //출발 방면이 상행선이라면
-                            if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo === "1") {
+                            if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo === 1) {
                                 transferInfo.push(parse[i]);
                             }
                             //출발 방면이 하행선이라면
-                            else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo === "3") {
+                            else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo === 3) {
                                 transferInfo.push(parse[i]);
                             }
                         }
                         //하행선인 경우
                         else {
                             //출발 방면이 상행선이라면
-                            if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo === "2") {
+                            if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo === 2) {
                                 transferInfo.push(parse[i]);
                             }
                             //출발 방면이 하행선이라면
-                            else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo === "4") {
+                            else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo === 4) {
                                 transferInfo.push(parse[i]);
                             }
                         }
@@ -491,20 +495,26 @@ router.get('/liftPos/:stCd/:stNm/:railCd/:lnCd', (req, res) => __awaiter(void 0,
         const railCd = req.params.railCd;
         const lnCd = req.params.lnCd;
         yield getLiftPos(stCd, stNm, railCd, lnCd, liftPosInfo => {
-            return res.status(200).json({
-                "railOprIsttCd": liftPosInfo.railOprIsttCd,
-                "lnCd": liftPosInfo.lnCd,
-                "stinCd": liftPosInfo.stinCd,
-                "exitNo": liftPosInfo.exitNo,
-                "dtlLoc": liftPosInfo.dtlLoc,
-                "grndDvNmFr": liftPosInfo.grndDvNmFr,
-                "runStinFlorFr": liftPosInfo.runStinFlorFr,
-                "grndDvNmTo": liftPosInfo.grndDvNmTo,
-                "runStinFlorTo": liftPosInfo.runStinFlorTo,
-                "len": liftPosInfo.len,
-                "wd": liftPosInfo.wd,
-                "bndWgt": liftPosInfo.bndWgt
-            });
+            //null인 경우
+            if (liftPosInfo === null) {
+                return res.status(200).json([]);
+            }
+            else {
+                return res.status(200).json({
+                    "railOprIsttCd": liftPosInfo.railOprIsttCd,
+                    "lnCd": liftPosInfo.lnCd,
+                    "stinCd": liftPosInfo.stinCd,
+                    "exitNo": liftPosInfo.exitNo,
+                    "dtlLoc": liftPosInfo.dtlLoc,
+                    "grndDvNmFr": liftPosInfo.grndDvNmFr,
+                    "runStinFlorFr": liftPosInfo.runStinFlorFr,
+                    "grndDvNmTo": liftPosInfo.grndDvNmTo,
+                    "runStinFlorTo": liftPosInfo.runStinFlorTo,
+                    "len": liftPosInfo.len,
+                    "wd": liftPosInfo.wd,
+                    "bndWgt": liftPosInfo.bndWgt
+                });
+            }
         });
     }
     catch (e) {
