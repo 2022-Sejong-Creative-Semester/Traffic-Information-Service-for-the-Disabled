@@ -393,24 +393,28 @@ router.get('/bybusNsubway/:startX/:startY/:endX/:endY', async(req:Request,res:Re
 
 router.get('/odsaytest/:startX/:startY/:endX/:endY',async(req:Request,res:Response)=>{
   try{
-    const startX = req.params.startX;
-    const startY = req.params.startX;
-    const endX = req.params.endX;
-    const endY = req.params.endY;
+    const startX:string = req.params.startX;
+    const startY:string = req.params.startX;
+    const endX:string = req.params.endX;
+    const endY:string = req.params.endY;
 
     const url:string = 'https://api.odsay.com/v1/api/searchPubTransPathT';
-    const queryParams:string = '?SX=' + startX + '&SY=' + startY + '&EX=' + endX + '&EY=' + endY + '&apiKey=' + encodeURIComponent(serviceKey.OdsayKey);
+    let queryParams:string = '?' + encodeURIComponent('SX') + '=' + startX;
+    queryParams += '&' + encodeURIComponent('SY') + '=' + startY;
+    queryParams += '&' + encodeURIComponent('EX') + '=' + endX;
+    queryParams += '&' + encodeURIComponent('EY') + '=' + endY;
+    queryParams += '&' + encodeURIComponent('apiKey') + '=' + encodeURI(serviceKey.OdsayKey);
 
-    console.log(url+queryParams);
-
+    
     request({
       url: url + queryParams,
       method: 'GET'
     }, async function (error:Error, response:any, body:string) {
 
       console.log(body);
-      return res.status(200).json(body);
+      return res.status(200).json({body});
     });
+    
   }
   catch(e){
     console.error(e);
