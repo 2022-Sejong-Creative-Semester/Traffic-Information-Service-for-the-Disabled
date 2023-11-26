@@ -241,13 +241,15 @@ router.get('/bybusNsubway/:startX/:startY/:endX/:endY', (req, res) => __awaiter(
         queryParams += '&' + encodeURIComponent('startY') + '=' + startY;
         queryParams += '&' + encodeURIComponent('endX') + '=' + endX;
         queryParams += '&' + encodeURIComponent('endY') + '=' + endY;
+        queryParams += '&' + encodeURIComponent('resultType=json');
         (0, request_1.default)({
             url: url + queryParams,
             method: 'GET'
         }, function (error, response, body) {
             return __awaiter(this, void 0, void 0, function* () {
+                console.log(body);
                 const parseJSON = xml_js_1.default.xml2json(body);
-                console.log(parseJSON);
+                //console.log(parseJSON);
                 const navigationList = JSON.parse(parseJSON).elements[0].elements[2].elements;
                 const navigationInfo = [];
                 navigationList.forEach((info) => {
@@ -310,6 +312,33 @@ router.get('/bybusNsubway/:startX/:startY/:endX/:endY', (req, res) => __awaiter(
                 return res.status(200).json({
                     navigationInfo: navigationInfo
                 });
+            });
+        });
+    }
+    catch (e) {
+        console.error(e);
+        return res.status(500).json({
+            error: e,
+            errorString: e.toString(),
+        });
+    }
+}));
+router.get('/odsaytest/:startX/:startY/:endX/:endY', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const startX = req.params.startX;
+        const startY = req.params.startX;
+        const endX = req.params.endX;
+        const endY = req.params.endY;
+        const url = 'https://api.odsay.com/v1/api/searchPubTransPathT';
+        const queryParams = '?SX=' + startX + '&SY=' + startY + '&EX=' + endX + '&EY=' + endY + '&apiKey=' + encodeURIComponent(serviceKey_json_1.default.OdsayKey);
+        console.log(url + queryParams);
+        (0, request_1.default)({
+            url: url + queryParams,
+            method: 'GET'
+        }, function (error, response, body) {
+            return __awaiter(this, void 0, void 0, function* () {
+                console.log(body);
+                return res.status(200).json(body);
             });
         });
     }
