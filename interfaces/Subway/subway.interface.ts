@@ -120,7 +120,7 @@ export interface SubwayStationTransferMoveList {
     elvtTpCd: string,
     imgPath: string,
     mvContDtl: string,
-    mvPathMgNo: string,
+    mvPathMgNo: number,
     stMovePath: string
 }
 
