@@ -39,7 +39,6 @@ app.listen(port, () => {
     console.log(`server is listening at localhost:${port}`);
 })
 
-
 //10분 주기로 MySQL Connection 유지용 쿼리 보내기
 const mysql_Connect_Maintenance = setInterval(() => {
     const connection:mysql.connection = db.return_connection();
