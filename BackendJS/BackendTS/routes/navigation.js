@@ -326,19 +326,23 @@ router.get('/bybusNsubway/:startX/:startY/:endX/:endY', (req, res) => __awaiter(
 router.get('/odsaytest/:startX/:startY/:endX/:endY', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const startX = req.params.startX;
-        const startY = req.params.startX;
+        const startY = req.params.startY;
         const endX = req.params.endX;
         const endY = req.params.endY;
         const url = 'https://api.odsay.com/v1/api/searchPubTransPathT';
-        const queryParams = '?SX=' + startX + '&SY=' + startY + '&EX=' + endX + '&EY=' + endY + '&apiKey=' + encodeURIComponent(serviceKey_json_1.default.OdsayKey);
-        console.log(url + queryParams);
+        let queryParams = '?' + encodeURIComponent('lang') + '=' + encodeURIComponent('0');
+        queryParams += '&' + encodeURIComponent('SX') + '=' + startX;
+        queryParams += '&' + encodeURIComponent('SY') + '=' + startY;
+        queryParams += '&' + encodeURIComponent('EX') + '=' + endX;
+        queryParams += '&' + encodeURIComponent('EY') + '=' + endY;
+        queryParams += '&' + encodeURIComponent('apiKey') + '=' + encodeURI(serviceKey_json_1.default.OdsayKey);
         (0, request_1.default)({
             url: url + queryParams,
             method: 'GET'
         }, function (error, response, body) {
             return __awaiter(this, void 0, void 0, function* () {
-                console.log(body);
-                return res.status(200).json(body);
+                console.log(JSON.parse(body));
+                return res.status(200).json(JSON.parse(body));
             });
         });
     }
