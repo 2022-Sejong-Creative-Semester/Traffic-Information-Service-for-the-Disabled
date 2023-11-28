@@ -19,12 +19,11 @@ const Mapping = () => {
     const position = useSelector((state:RootState) => state.map.position)
     const arsid = useSelector((state:RootState)=> state.bus.currentStation);
     const busmode = useSelector((state:RootState) => state.map.busmode);
-    const subwaymode = useSelector((state:RootState) => state.map.subwaymode);
     const {curPosition} = usePosition(geolocationOptions);
     const tmY = curPosition ? curPosition.tmY: position.tmY;
     const tmX = curPosition ? curPosition.tmX: position.tmX;
     useEffect(() => {
-        const container = document.getElementById("map");
+        const container = document.getElementById("busmap");
         const x = position.tmX!==0?Number(position.tmX):tmX!==0?tmX:37.55068403524657;
         const y = position.tmY!==0?Number(position.tmY):tmY!==0?tmY:127.07411251036736;
         const options = {
@@ -34,19 +33,8 @@ const Mapping = () => {
         const map = new window.kakao.maps.Map(container, options);
         if (busmode)
             busmapcoordinate(marker, map)
-        else if (subwaymode)
-            subwaymapcoordinate(marker, map)
-    },[tmX,tmY,busmode,subwaymode,arsid,position])
+    },[tmX,tmY,busmode,arsid,position])
     
-    const subwaymapcoordinate = (marker:any, map:any) => {
-        const markerPosition = new window.kakao.maps.LatLng(parseFloat(String(marker.tmY - 0.0000005)).toFixed(6), parseFloat(String(marker.tmX - 0.0000005)).toFixed(6))
-        const new_marker = new window.kakao.maps.Marker({
-            position: markerPosition,
-            clickable: true,
-        })
-        new_marker.setMap(map)
-    }//마커 찍는 함수
-
     const busmapcoordinate = (marker:any, map:any) => {
         marker.forEach((element:any) => {
             const imageSrc = './image/busImage.png' // 마커이미지의 주소입니다    
@@ -78,7 +66,7 @@ const Mapping = () => {
     }
 
     return (
-        <div className={classes.map} id="map">
+        <div className={classes.busmap} id="busmap">
         </div>
     )
 }

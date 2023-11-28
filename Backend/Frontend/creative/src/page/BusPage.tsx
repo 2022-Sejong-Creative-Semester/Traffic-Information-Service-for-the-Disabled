@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import Mapping from "../component/map/Mapping.tsx"
+import Mapping from "../component/map/BusMapping.tsx"
 import classes from "./BusPage.module.css"
 import Header from "../component/header/Header.tsx"
 import MenuBar from "../component/menu/MenuBar.tsx";

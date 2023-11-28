@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-import Mapping from "../../component/map/Mapping.tsx"
+import Mapping from "../../component/map/SubwayMapping.tsx"
 import SubwayForm from "../../component/subway-component/subwayform/SubwayForm.tsx"
 import SubwayList from "../../component/subway-component/subwaylist/SubwayList.tsx"
 import Header from "../../component/header/Header.tsx"
