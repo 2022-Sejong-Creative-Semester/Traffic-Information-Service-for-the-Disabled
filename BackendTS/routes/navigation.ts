@@ -416,10 +416,20 @@ router.get('/:startX/:startY/:endX/:endY/:type',async(req:Request,res:Response)=
       method: 'GET'
     }, async function (error:Error, response:any, body:string) {
 
+      if(JSON.parse(body).hasOwnProperty("error")){
+        console.error(JSON.parse(body).error);
+        return res.status(500).json({
+          error: JSON.parse(body).error
+        })
+      }
+      
       //JSON parse
       const NavigationList:NavigationResult = JSON.parse(body).result;
 
-      
+      //console.log(error);
+      //console.log(response);
+
+
       //1. 도보 시간, 2. 환승 개수, 3. 총 이동 시간
       NavigationList.path.sort((a:NavigationPath, b:NavigationPath)=>{
         if(a.info.totalWalk === b.info.totalWalk){
