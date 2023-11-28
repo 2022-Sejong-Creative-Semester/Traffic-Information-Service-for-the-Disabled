@@ -2,11 +2,11 @@ import express, {Request, Response, Router} from 'express'
 import request from 'request'
 import convert from 'xml-js'
 import serviceKey from '../KEY/serviceKey.json'
-import {NavigationList, BusPathList, SubwayPathList} from '../../interfaces/Navigation/navigation.interface'
+import { NavigationResult, NavigationPath, RecommendPathList } from '../../interfaces/Navigation/navigation.interface'
 
 const router:Router = express.Router();
 
-const velocity:number = 0.0468;
+const velocity:number = 46.8;
 
 function deg2rad(deg:number){
   return (deg * Math.PI / 180);
@@ -32,6 +32,8 @@ function distance (lat1:number, lon1:number, lat2:number, lon2:number){
     return dist*Math.sqrt(2);
   }
 }
+
+/*
 
 router.get('/bybus/:startX/:startY/:endX/:endY', async(req:Request, res:Response)=>{
     try{
@@ -390,15 +392,15 @@ router.get('/bybusNsubway/:startX/:startY/:endX/:endY', async(req:Request,res:Re
     });
   }
 })
+*/
 
-router.get('/odsaytest/:startX/:startY/:endX/:endY',async(req:Request,res:Response)=>{
+router.get('/:startX/:startY/:endX/:endY/:type',async(req:Request,res:Response)=>{
   try{
     const startX:number = req.params.startX;
     const startY:number = req.params.startY;
     const endX:number = req.params.endX;
     const endY:number = req.params.endY;
-
-
+    const pathType:number =  (req.params.type === "subway" ? 1 : (req.params.type === "bus" ? 2 : 0));
     
     const url:string = 'https://api.odsay.com/v1/api/searchPubTransPathT';
     let queryParams:string = '?' + encodeURIComponent('lang') + '=' + encodeURIComponent('0');
@@ -406,15 +408,86 @@ router.get('/odsaytest/:startX/:startY/:endX/:endY',async(req:Request,res:Respon
     queryParams += '&' + encodeURIComponent('SY') + '=' + startY;
     queryParams += '&' + encodeURIComponent('EX') + '=' + endX;
     queryParams += '&' + encodeURIComponent('EY') + '=' + endY;
-    queryParams += '&' + encodeURIComponent('apiKey') + '=' + encodeURI(serviceKey.OdsayKey);
+    queryParams += '&' + encodeURIComponent('apiKey') + '=' + encodeURIComponent(serviceKey.OdsayKey);
+    queryParams += '&' + encodeURIComponent('SearchPathType') + '=' + pathType;
         
     request({
       url: url + queryParams,
       method: 'GET'
     }, async function (error:Error, response:any, body:string) {
 
-      console.log(JSON.parse(body));
-      return res.status(200).json(JSON.parse(body));
+      //JSON parse
+      const NavigationList:NavigationResult = JSON.parse(body).result;
+
+      
+      //1. 도보 시간, 2. 환승 개수, 3. 총 이동 시간
+      NavigationList.path.sort((a:NavigationPath, b:NavigationPath)=>{
+        if(a.info.totalWalk === b.info.totalWalk){
+          if(a.info.busTransitCount + a.info.subwayTransitCount === b.info.busTransitCount + b.info.subwayTransitCount){
+            return a.info.totalTime - b.info.totalTime;
+          }
+          else{
+            return a.info.busTransitCount + a.info.subwayTransitCount - b.info.busTransitCount + b.info.subwayTransitCount;
+          }
+        }
+        else {
+          return a.info.totalWalk - b.info.totalWalk;
+        }
+      })
+
+      //상위 5개 경로만 반환
+      NavigationList.path = NavigationList.path.slice(0,5);
+
+      NavigationList.path.forEach(element => {
+        //일반인 기준 이동시간 저장
+        const t = element.info.totalWalkTime;
+        //도보 이동 시간 계산
+        element.info.totalWalkTime = Math.floor((element.info.totalWalk * Math.sqrt(2) / velocity) + 0.9999999999);
+        //추가 시간 포함
+        element.info.totalTime += element.info.totalWalkTime - t;
+
+        //info 정리
+        delete element.info.trafficDistance;
+        delete element.info.totalStationCount;
+        delete element.info.busStationCount;
+        delete element.info.subwayStationCount;
+        delete element.info.totalDistance;
+        delete element.info.checkIntervalTime;
+        delete element.info.checkIntervalTimeOverYn;
+
+        //subPath 정리
+        element.subPath.forEach(element=>{
+          //도보인 경우
+          if(element.trafficType === 3){
+            //교통약자 평균 이동속도에 맞게 이동시간 조정
+            element.sectionTime = Math.floor((element.distance * Math.sqrt(2) / velocity) + 0.9999999999);
+          }
+          //버스인 경우
+          else if(element.trafficType === 2){
+            delete element.lane[0].busCityCode;
+            delete element.lane[0].busProviderCode;
+            delete element.startStationCityCode;
+            delete element.startStationProviderCode;
+            delete element.startID;
+            delete element.endStationCityCode;
+            delete element.endStationProviderCode;
+            delete element.endID;
+
+            element.passStopList.stations.forEach(element=>{
+              delete element.stationID;
+              delete element.stationCityCode;
+              delete element.stationProviderCode;
+              delete element.isNonStop;
+            })
+          }
+          //지하철인 경우
+          else if(element.trafficType === 1){
+            delete element.lane[0].subwayCityCode;
+          }
+        })
+      });
+      
+      return res.status(200).json(NavigationList.path);
     });
     
   }
