@@ -403,7 +403,7 @@ router.get('/:startX/:startY/:endX/:endY/:type', (req, res) => __awaiter(void 0,
         const startY = req.params.startY;
         const endX = req.params.endX;
         const endY = req.params.endY;
-        const pathType = (req.params.type === "Subway" ? 1 : (req.params.type === "Bus" ? 2 : 0));
+        const pathType = (req.params.type === "subway" ? 1 : (req.params.type === "bus" ? 2 : 0));
         const url = 'https://api.odsay.com/v1/api/searchPubTransPathT';
         let queryParams = '?' + encodeURIComponent('lang') + '=' + encodeURIComponent('0');
         queryParams += '&' + encodeURIComponent('SX') + '=' + startX;
@@ -436,18 +436,12 @@ router.get('/:startX/:startY/:endX/:endY/:type', (req, res) => __awaiter(void 0,
                 //상위 5개 경로만 반환
                 NavigationList.path = NavigationList.path.slice(0, 5);
                 NavigationList.path.forEach(element => {
-                    //경로 구분
-                    if (element.pathType === 3) {
-                        element.pathClass = "버스 + 지하철";
-                    }
-                    else if (element.pathType === 2) {
-                        element.pathClass = "버스";
-                    }
-                    else if (element.pathType === 1) {
-                        element.pathClass = "지하철";
-                    }
+                    //일반인 기준 이동시간 저장
+                    const t = element.info.totalWalkTime;
                     //도보 이동 시간 계산
                     element.info.totalWalkTime = Math.floor((element.info.totalWalk * Math.sqrt(2) / velocity) + 0.9999999999);
+                    //추가 시간 포함
+                    element.info.totalTime += element.info.totalWalkTime - t;
                     //info 정리
                     delete element.info.trafficDistance;
                     delete element.info.totalStationCount;
