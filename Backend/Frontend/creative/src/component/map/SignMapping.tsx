@@ -50,7 +50,6 @@ const Mapping = () => {
         if(state==="start"){
             start.setPosition(latlng);
             dispatch(SignActions.initializationStart(latlng))
-            console.log(latlng.La)
         }
         else if(state==="end"){
             end.setPosition(latlng);

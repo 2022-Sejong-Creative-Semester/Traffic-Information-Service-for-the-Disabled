@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { RootState } from "../../../store/index.ts";
 
 interface stItem {
-  color:any;
+  color:string;
 }
 
 const StationItem = (props:any) => {

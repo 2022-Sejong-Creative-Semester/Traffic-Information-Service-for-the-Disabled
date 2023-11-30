@@ -1,9 +1,10 @@
 import React from "react"
 import styled from "styled-components"
-import { useDispatch } from "react-redux"
+import { useDispatch,useSelector } from "react-redux"
 import { SignActions } from "../../store/Sign-slice.ts"
+import { RootState } from "../../store/index";
 
-
+import {submitStartAndEnd} from "./signUtil.tsx";
 const StyleButton = styled.button`
     height: 4vh;
     border-radius: 15px;
@@ -14,9 +15,16 @@ const StyleButton = styled.button`
 
 const SignFormButton = ({value}:{value:string}) => {
     const dispatch = useDispatch();
+    let start = useSelector((state:RootState)=>state.sign.startPostion);
+    let end = useSelector((state:RootState)=>state.sign.endPostion);
     const ClickBtn = (event:React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        dispatch(SignActions.initialization(value))
+        if(value==="submit") submitPosition();
+        else dispatch(SignActions.initialization(value));
+    }
+    const submitPosition = () => {
+        if(start.tmX!==-1&&end.tmX!==-1)
+            submitStartAndEnd();
     }
     return (
         <StyleButton onClick={ClickBtn}>  

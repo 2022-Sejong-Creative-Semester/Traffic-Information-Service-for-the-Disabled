@@ -10,7 +10,7 @@ const StyledForm = styled.form`
     z-index: 100;
     top: 15vh;
     height: 1vh;
-    width: 80vw;
+    width: 85vw;
     .signFormInput{
       width: 100%;
       padding: 1em;
@@ -29,6 +29,7 @@ const SignForm = () =>{
             <input placeholder="장소를 입력해주세요." className="signFormInput"/>
             <SignFormButton value="start"/>
             <SignFormButton value="end"/>
+            <SignFormButton value="submit"/>
         </StyledForm>
     )
 }
