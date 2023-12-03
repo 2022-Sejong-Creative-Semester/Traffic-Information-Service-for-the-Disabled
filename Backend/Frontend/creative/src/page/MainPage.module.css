@@ -5,6 +5,7 @@ body {
 }
 .bottom {
     width: 100%;
+<<<<<<< HEAD
     height: 100vh;
 }
 
@@ -14,13 +15,38 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
+}
+.main_detail{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 30vh;
+=======
+    height: 100vh;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+>>>>>>> a4564550bd27da525e96b6fc9b5b02b8210532dc
     animation: fadein 2s;
     -moz-animation: fadein 2s;
-    /* Firefox */
     -webkit-animation: fadein 2s;
-    /* Safari and Chrome */
     -o-animation: fadein 2s;
-    /* Opera */
+}
+.main_title{
+    font-family: 'GmarketSansMedium';
+    font-weight: 700;
+    font-size: 2em;
+}
+.main_explan{
+    display:flex;
+    text-align:center;
+    font-family: 'Pretendard-Regular';
+    font-size: 1em;
 }
 .main_detail{
     display: flex;

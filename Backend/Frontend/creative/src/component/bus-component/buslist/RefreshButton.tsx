@@ -6,8 +6,8 @@ import { BusActions } from "../../../store/Bus-slice.ts";
 import { RootState } from "../../../store/index.ts";
 
 const StyledRefreshButton = styled.button`
-  width: 3vw;
-  height: 3vw;
+  width: 2em;
+  height: 2em;
   border: 0;
   border-radius: 50px;
   background-color: transparent;
@@ -18,14 +18,6 @@ const StyledRefreshButton = styled.button`
   }
   :hover {
     cursor: pointer;
-  }
-  @media (max-width: 500px) {
-    width: 10vw;
-    height: 10vw;
-    img {
-      width: 70%;
-      height: 70%;
-    }
   }
 `;
 

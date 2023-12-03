@@ -10,7 +10,7 @@ width: 19vw;
 height: 85vh;
 margin-right: 2vw;
 font-family: 'GmarketSansMedium';
-background: linear-gradient(270deg, #7C34F3 -44.25%, rgba(146, 85, 245, 0) 222.13%);
+background: #FFD12D;
 font-size: 2.5vw;
 color: #FFFFFF;
 @media (max-width:500px) {

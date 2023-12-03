@@ -1,17 +1,23 @@
-import { configureStore } from "@reduxjs/toolkit"
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit"
 import BusReducer from "./Bus-slice.ts";
 import MapReducer from "./Map-slice.ts"
 import SubwayReducer from "./Subway-slice.ts"
+import SignReducer from "./Sign-slice.ts";
+
 import { combineReducers } from "@reduxjs/toolkit";
 
 
 
 const reducer = combineReducers({
-    bus: BusReducer, map: MapReducer, subway: SubwayReducer
+    bus: BusReducer, map: MapReducer, subway: SubwayReducer, sign:SignReducer
 })
 
 const store = configureStore({
-    reducer: reducer
+    reducer: reducer,
+    middleware: (getDefaultMiddleware) => 
+        getDefaultMiddleware({
+            serializableCheck:false,
+        })
 });
 
 

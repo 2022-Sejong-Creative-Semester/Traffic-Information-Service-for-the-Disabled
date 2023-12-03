@@ -1,19 +1,16 @@
 .main {
-    display: flex;
-    justify-content: start;
     width: 100vw;
+    margin: 10vh;
 }
 
 .elevator {
-    width: 60vw;
-    height: 75vh;
+    width: 100vw;
 }
 
 .subwaypage {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
 }
 
 .subwaylist {
@@ -25,31 +22,4 @@
 .subwaymain {
     display: flex;
     margin-top: 20px;
-}
-
-@media (max-width:500px) {
-    .main {
-        flex-direction: column;
-    }
-
-    .subwaylist {
-        margin: 0;
-    }
-
-    .elevator {
-        width: 100%;
-        height: 40vh;
-    }
-
-    .subwaymain {
-        flex-direction: column;
-        margin-top: 0;
-        height: 100%;
-        justify-content: space-between;
-    }
-
-
-    .subwaylist {
-        margin-right: 0;
-    }
 }

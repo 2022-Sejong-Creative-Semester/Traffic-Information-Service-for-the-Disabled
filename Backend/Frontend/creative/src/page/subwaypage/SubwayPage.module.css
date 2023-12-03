@@ -1,14 +1,9 @@
-.main {
-    display: flex;
-    justify-content: start;
-    width: 100vw;
-}
-
 .subwaypage {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    height: 100vh;
 }
 
 .subwaylist {
@@ -20,22 +15,4 @@
 .subwaymain {
     display: flex;
     margin-top: 20px;
-}
-
-@media (max-width:500px) {
-    .main {
-        flex-direction: column;
-        height: 100%;
-    }
-
-    .subwaymain {
-        flex-direction: column;
-        margin-top: 0;
-        height: 100%;
-        justify-content: space-between;
-    }
-
-    .subwaylist {
-        margin-right: 0;
-    }
 }
