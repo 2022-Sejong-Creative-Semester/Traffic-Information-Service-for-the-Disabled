@@ -25,12 +25,10 @@ const SubwayItems = (props:any) => {
     const idColor = ["#0052A4", "#00A84D", "#EF7C1C", "#00A5DE", "#996CAC", "#CD7C2F", "#747F00", "#E6186C"];
     
     useEffect(() => {
-        if (currentSubway === stCd) {
+        if (currentSubway === stCd)
             setColor("false")
-        }
-        else {
+        else 
             setColor("true")
-        }
         const locationRecive = async () => {
             await api.get(`/subway/stationInfo/${stCd}/${stNm}`)
                 .then(res => {
@@ -42,12 +40,10 @@ const SubwayItems = (props:any) => {
     }, [currentSubway,stCd,stNm])
 
     const ClickSubway = () => {
-        if (currentSubway === stCd) {
+        if (currentSubway === stCd)
             window.location.href = `/#/subway/detail/${stCd}/${stNm}`;
-        }
         else if (currentSubway !== stCd) {
             setColor("false")
-            console.log(position)
             dispatch(MapActions.positioning(position))
             dispatch(MapActions.makerchacking(position))
             dispatch(SubwayActions.clickSubway(stCd))

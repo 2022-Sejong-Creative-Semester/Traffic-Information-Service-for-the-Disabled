@@ -23,7 +23,7 @@ const SubwayForm = () => {
         await api.get(`/subway/stNm/${value}`)
             .then(res => {
                 const { data } = res;
-                console.log(data)
+                
                 dispatch(SubwayActions.addSubwayInfo(data))
                 dispatch(MapActions.Onsubwaymode())
             }).catch(error => {

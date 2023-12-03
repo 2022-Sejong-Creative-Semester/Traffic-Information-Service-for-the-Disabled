@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 
-
 interface graphItem {
     label:string,
     portion:number,
@@ -39,13 +38,17 @@ const SignDetailGraph = ({graph}:any) => {
             {graph.subPath.map((ele:any,index:number)=>{
                 if(ele.sectionTime!==0){
                     let color="#D9D9D9";
-                    if(ele.trafficType===1)
+                    if(ele.trafficType===1){
                         color = idColor[ele.lane[0].subwayCode-1]
-                    else if(ele.trafficType===2)
+                    }
+                    else if(ele.trafficType===2){
                         color = busColor;
-                    return <StyleSignDetailGraphLi key={index} label={color} sum={graph.info.totalTime} portion={ele.sectionTime}>
+                    } 
+                    return (
+                    <StyleSignDetailGraphLi key={index} label={color} sum={graph.info.totalTime} portion={ele.sectionTime}>
                         {ele.sectionTime}분
                     </StyleSignDetailGraphLi>
+                    )
                 }
             })}
         </StyleSignDetailGraph>
@@ -53,9 +56,3 @@ const SignDetailGraph = ({graph}:any) => {
 }
 
 export default SignDetailGraph;
-
-/*
- time:ele.info.totalTime,
-type:ele.pathType,
-
-*/

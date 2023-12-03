@@ -10,24 +10,14 @@ const useSignForm = () => {
     let start = useSelector((state:RootState)=>state.sign.startPostion);
     let end = useSelector((state:RootState)=>state.sign.endPostion);  
     useEffect(() => {
-        const getArr = async () => {
+        const getbusNsub = async () => {
             await api.get(`/navigation/${start.tmY}/${start.tmX}/${end.tmY}/${end.tmX}/busNsub`)
             .then(res=>{
-                const graphInfo = res.data.map((ele:any)=>{
-                    return {
-                        time:ele.info.totalTime,
-                        type:ele.pathType,
-                    }
-                })
-                const subwayLi = res.data.filter((ele:any)=>(
-                    ele.pathType===3
-                ))
-                console.log(res.data)
-                SetSignArr([res.data,subwayLi])
-                return res.data
+                console.log(res.data,"busNsub")
+                SetSignArr([res.data])
             })
         }
-        getArr();
+        getbusNsub();
     },[start,end])
     return signArr;
 }

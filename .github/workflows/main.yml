@@ -1,44 +1,42 @@
 name: GCP CI/CD
 on:
-  push:
-      branches: [ main ]
+  pull_request:
+    types:
+      - closed
 
 jobs:
-  build:
+  if_merged:
     runs-on: ubuntu-latest
     steps:
-    - name: executing remote ssh commands using ssh key
+    - if: github.event.pull_request.merged == true && github.head_ref == 'feature/Backend'
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }} 
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_KEY }} 
-        #passphrase: ${{ secrets.PASSPHRASE }} 
+        passphrase: ${{ secrets.PASSPHRASE }} 
         port: 22
         script: |
-
-            cd ${{ secrets.PWD }}
-            
-            git pull https://${{ secrets.GIT_TOKEN }}:x-oauth-basic@github.com/2022-Sejong-Creative-Semester/Traffic-Information-Service-for-the-Disabled.git main
-
-            PR_BRANCH="${{ github.head_ref }}"
-
-            #Frontend에서 보낸 PR의 경우
-            if [[ $PR_BRANCH == "Frontend"* ]]; then
-
-              cd ${{ secrets.PWD }}/Frontend/creative
-
-              #메모리 오버 방지를 위해 기존 서버 동작 중지
-              pm2 stop Traffic
-
-              #의존성 설치
-              npm install
-
-              #npm run build 까지 추가로 진행
-              npm run build
-            
-            cd ${{ secrets.PWD }}
-
-            npm install
-
-            pm2 restart Traffic
+          cd ${{ secrets.PWD }}
+          git pull origin main
+          cd ${{ secrets.PWD }}/BackendJS/BackendTS
+          npm install
+          pm2 restart Traffic
+    - if: github.event.pull_request.merged == true && github.head_ref == 'Frontend'
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }} 
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_KEY }} 
+        passphrase: ${{ secrets.PASSPHRASE }} 
+        port: 22
+        script: |
+          cd ${{ secrets.PWD }}
+          git pull origin main
+          cd ${{ secrets.PWD }}/Backend/Frontend/creative
+          pm2 stop Traffic
+          npm install
+          npm run build
+          cd ${{ secrets.PWD }}/BackendJS/BackendTS
+          npm install
+          pm2 restart Traffic

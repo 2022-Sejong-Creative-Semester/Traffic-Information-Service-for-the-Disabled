@@ -11,6 +11,7 @@ const StyledSignDetail = styled.main`
     flex-direction: column;
     font-family: "Pretendard-Regular";
     font-style: normal;
+    overflow: auto;
     .detail{
         margin-top: 1.2em;
         padding-bottom: 1em;
@@ -24,9 +25,9 @@ const SignDetail = () => {
     const arr = useSignForm();
     return (
         <StyledSignDetail>
-            {arr[0].length!==0&&arr[0].map((ele:any)=>{
+            {arr[0].length!==0&&arr[0].map((ele:any,index:number)=>{
                 return (
-                    <div className="detail">
+                    <div className="detail" key={index}>
                         <span>{ele.info.totalTime}분</span>
                         <SignDetailGraph graph={ele}/>
                         <SignDetailInfo graph={ele}/>

@@ -17,8 +17,8 @@ const Mapping = () => {
     const [map,setMap] = useState(null);
     const [start,setStart] = useState<any>(null);
     const [end,setEnd] = useState<any>(null);
+    const [prev,setPrev] = useState<any>(start);
     const position = useSelector((state:RootState) => state.map.position)
-    const arsid = useSelector((state:RootState)=> state.bus.currentStation);
     const {curPosition} = usePosition(geolocationOptions);
     const state = useSelector((state:RootState)=>state.sign.State);
     const tmY = curPosition ? curPosition.tmY: position.tmY;
@@ -43,7 +43,7 @@ const Mapping = () => {
         Endmarker.setMap(map);
         setStart(Startmarker)
         setEnd(Endmarker);
-    },[tmX,tmY,arsid,position])
+    },[tmX,tmY,position])
     
     const moveMarker = (mouseEvent:any) => {
         let latlng = mouseEvent!.latLng;
@@ -63,6 +63,7 @@ const Mapping = () => {
     }
     if(map&&state!=="")
         changeStateMarker();
+       
     return (
         <div className={classes.signmap} id="signmap">
         </div>

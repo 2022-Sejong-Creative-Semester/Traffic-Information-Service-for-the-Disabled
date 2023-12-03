@@ -35,16 +35,18 @@ const db = __importStar(require("./db"));
 db.connect();
 const busdata_1 = __importDefault(require("./routes/busdata"));
 const subwaydata_1 = __importDefault(require("./routes/subwaydata"));
+const navigation_1 = __importDefault(require("./routes/navigation"));
 let corsOptions = {
     origin: ['http://localhost:3000/#/', 'http://localhost:3000', 'http://localhost:3005', 'http://34.168.80.42:3000', 'http://172.30.1.35:5000', 'http://localhost:5000'],
     credentials: true
 };
 app.use((0, cors_1.default)(corsOptions));
-app.use(express_1.default.static(path_1.default.join(__dirname, './Frontend/creative/build')));
+app.use(express_1.default.static(path_1.default.join(__dirname, '../../Backend/Frontend/creative/build')));
 app.use('/bus', busdata_1.default);
 app.use('/subway', subwaydata_1.default);
+app.use('/navigation', navigation_1.default);
 app.get('/', (req, res) => {
-    res.sendFile(path_1.default.join(__dirname, './Frontend/creative/build/index.html'));
+    res.sendFile(path_1.default.join(__dirname, '../../Backend/Frontend/creative/build/index.html'));
 });
 app.get('/', (req, res) => {
     res.json({
@@ -54,7 +56,7 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
     console.log(`server is listening at localhost:${port}`);
 });
-//1시간 주기로 MySQL Connection 유지용 쿼리 보내기
+//10분 주기로 MySQL Connection 유지용 쿼리 보내기
 const mysql_Connect_Maintenance = setInterval(() => {
     const connection = db.return_connection();
     connection.query("SELECT 1");
