@@ -6,14 +6,15 @@ const StyledBusItem = styled.li`
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  min-height: 10%;
   list-style: none;
   text-align: center;
   border-bottom: 1px solid #d2d2d2;
   font-family: "Pretendard-Regular";
   .mark {
-    width: 1.5vw;
-    height: 1.5vw;
-    margin-right: 0.8vw;
+    width: 1em;
+    height: 1em;
+    margin-right: 0.5rem;
   }
   :hover {
     cursor: pointer;
@@ -38,7 +39,7 @@ const StyledBusItem = styled.li`
     font-family: "Pretendard-Regular";
     font-style: normal;
     font-weight: 600;
-    font-size: 2vw;
+    font-size: 1em;
     line-height: 60px;
     margin-right: 10px;
   }
@@ -46,7 +47,7 @@ const StyledBusItem = styled.li`
     font-family: "Pretendard-Regular";
     font-style: normal;
     font-weight: 600;
-    font-size: 1.3vw;
+    font-size: 1em;
     line-height: 29px;
   }
   .id {
@@ -54,27 +55,9 @@ const StyledBusItem = styled.li`
     font-family: "Pretendard-Regular";
     font-style: normal;
     font-weight: 600;
-    font-size: 1.5vw;
+    font-size: 1em;
     line-height: 29px;
     color: #9c9c9c;
-  }
-
-  @media (max-width: 500px) {
-    height: 28%;
-    .Name {
-      font-size: 5vw;
-    }
-    .direction {
-      font-size: 3vw;
-    }
-    .id {
-      font-size: 3vw;
-    }
-    .mark {
-      width: 100%;
-      height: 100%;
-      margin-right: 2vw;
-    }
   }
 `;
 

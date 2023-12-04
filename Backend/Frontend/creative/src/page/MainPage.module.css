@@ -14,13 +14,27 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
+}
+.main_detail{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 30vh;
     animation: fadein 2s;
     -moz-animation: fadein 2s;
-    /* Firefox */
     -webkit-animation: fadein 2s;
-    /* Safari and Chrome */
     -o-animation: fadein 2s;
-    /* Opera */
+}
+.main_title{
+    font-family: 'GmarketSansMedium';
+    font-weight: 700;
+    font-size: 2em;
+}
+.main_explan{
+    display:flex;
+    text-align:center;
+    font-family: 'Pretendard-Regular';
+    font-size: 1em;
 }
 .main_detail{
     display: flex;

@@ -8,14 +8,18 @@ import { MapActions } from "../../store/Map-slice.ts";
 
 const StyledHeader = styled.header`
 display:flex;
+position: fixed;
+top: 0;
+z-index: 100;
 justify-content:space-between;
+background-color: #FFFFFF;
 align-items:center;
 position:fixed;
 top: 0;
 font-family: 'GmarketSansMedium';
 border-bottom: 2px solid #EBEBEB;
 width:100vw;
-min-height:8vh;
+height:10vh;
 .header_home{  
     font-size:5vw;
     color:#000000;
