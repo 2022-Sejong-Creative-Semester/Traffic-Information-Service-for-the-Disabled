@@ -5,7 +5,6 @@ body {
 }
 .bottom {
     width: 100%;
-<<<<<<< HEAD
     height: 100vh;
 }
 
@@ -21,17 +20,6 @@ body {
     flex-direction: column;
     justify-content: space-evenly;
     height: 30vh;
-=======
-    height: 100vh;
-}
-
-.main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
->>>>>>> a4564550bd27da525e96b6fc9b5b02b8210532dc
     animation: fadein 2s;
     -moz-animation: fadein 2s;
     -webkit-animation: fadein 2s;

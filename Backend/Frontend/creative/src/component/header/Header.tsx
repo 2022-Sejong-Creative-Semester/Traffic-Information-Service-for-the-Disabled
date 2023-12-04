@@ -19,11 +19,7 @@ top: 0;
 font-family: 'GmarketSansMedium';
 border-bottom: 2px solid #EBEBEB;
 width:100vw;
-<<<<<<< HEAD
 height:10vh;
-=======
-min-height:8vh;
->>>>>>> a4564550bd27da525e96b6fc9b5b02b8210532dc
 .header_home{  
     font-size:5vw;
     color:#000000;
