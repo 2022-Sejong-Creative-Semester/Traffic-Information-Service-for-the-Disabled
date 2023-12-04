@@ -24,8 +24,9 @@ const Mapping = () => {
     const tmX = curPosition ? curPosition.tmX: position.tmX;
     useEffect(() => {
         const container = document.getElementById("busmap");
-        const x = position.tmX!==0?Number(position.tmX):tmX!==0?tmX:37.55068403524657;
-        const y = position.tmY!==0?Number(position.tmY):tmY!==0?tmY:127.07411251036736;
+        const x = position.tmX!==0?Number(position.tmX):tmX!==0?tmX:127.07411251036736;
+        const y = position.tmY!==0?Number(position.tmY):tmY!==0?tmY:37.55068403524657;
+        console.log(x,y)
         const options = {
             center: new window.kakao.maps.LatLng(y, x),
             level: 3,
