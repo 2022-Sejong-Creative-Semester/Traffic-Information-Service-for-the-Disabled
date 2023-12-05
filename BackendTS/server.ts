@@ -20,13 +20,13 @@ const httpsOptions = {
 };
 
 let corsOptions: cors.CorsOptions = {
-    origin: ['http://localhost:3000/#/', 'http://localhost:3000', 'http://localhost:3005', 'http://34.168.80.42:3000', 'http://172.30.1.35:5000', 'http://localhost:5000', 'http://localhost:80', 'http://localhost:80/#/', 'http://www.easy-taza.site'],
+    origin: ['http://localhost:3000/#/', 'http://localhost:3000', 'http://localhost:3005', 'http://34.168.80.42:3000', 'http://172.30.1.35:5000', 'http://localhost:5000', 'http://localhost:80', 'http://localhost:80/#/', 'https://www.easy-taza.site'],
     credentials: true
 }
 
 app.use(cors(corsOptions));
 
-app.use(express.static(path.join(__dirname, '../../Backend/Frontend/creative/build')))
+//app.use(express.static(path.join(__dirname, '../../Backend/Frontend/creative/build')))
 
 app.use('/bus', busRouter);
 app.use('/subway', subwayRouter);

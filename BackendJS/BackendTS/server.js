@@ -29,7 +29,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const app = (0, express_1.default)();
 const port = 3005;
-const path_1 = __importDefault(require("path"));
 const cors_1 = __importDefault(require("cors"));
 const fs_1 = __importDefault(require("fs"));
 const https_1 = __importDefault(require("https"));
@@ -43,11 +42,11 @@ const httpsOptions = {
     cert: fs_1.default.readFileSync('./KEY/rootca.crt')
 };
 let corsOptions = {
-    origin: ['http://localhost:3000/#/', 'http://localhost:3000', 'http://localhost:3005', 'http://34.168.80.42:3000', 'http://172.30.1.35:5000', 'http://localhost:5000', 'http://localhost:80', 'http://localhost:80/#/', 'http://www.easy-taza.site'],
+    origin: ['http://localhost:3000/#/', 'http://localhost:3000', 'http://localhost:3005', 'http://34.168.80.42:3000', 'http://172.30.1.35:5000', 'http://localhost:5000', 'http://localhost:80', 'http://localhost:80/#/', 'https://www.easy-taza.site'],
     credentials: true
 };
 app.use((0, cors_1.default)(corsOptions));
-app.use(express_1.default.static(path_1.default.join(__dirname, '../../Backend/Frontend/creative/build')));
+//app.use(express.static(path.join(__dirname, '../../Backend/Frontend/creative/build')))
 app.use('/bus', busdata_1.default);
 app.use('/subway', subwaydata_1.default);
 app.use('/navigation', navigation_1.default);
