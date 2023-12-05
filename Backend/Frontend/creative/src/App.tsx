@@ -6,6 +6,7 @@ import SubwayPage from "./page/subwaypage/SubwayPage.tsx"
 import SubwayDetailPage from "./page/subwaypage/SubwayDetailPage.tsx"
 import SubwayElevatorPage from "./page/subwaypage/SubwayElevator.tsx";
 import SubwayBathChairPage from "./page/subwaypage/SubwayBathchair.tsx";
+import SubwayTransferPAge from "./page/subwaypage/SubwayTransferPage.tsx";
 import SignPage from "./page/SignPage.tsx";
 import SignDetailPage from "./page/SIgnDetailPage.tsx";
 
@@ -20,6 +21,7 @@ function App() {
         <Route path="/subway/detail/:stCd/:stNm" element={<SubwayDetailPage />} />
         <Route path="/subway/elevator/:stCd/:stNm/:railCd/:lnCd" element={<SubwayElevatorPage />} />
         <Route path="/subway/bathchair/:stCd/:stNm/:railCd/:lnCd" element={<SubwayBathChairPage />} />
+        <Route path="/subway/transfer/:stCd/:stNm/:railCd/:lnCd" element={<SubwayTransferPAge/>}/>
         <Route path="/sign" element={<SignPage/>}/>
         <Route path="/sign/detail" element={<SignDetailPage/>}/>
       </Routes>
