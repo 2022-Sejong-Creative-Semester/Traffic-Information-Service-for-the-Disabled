@@ -31,13 +31,19 @@ const app = (0, express_1.default)();
 const port = 3005;
 const path_1 = __importDefault(require("path"));
 const cors_1 = __importDefault(require("cors"));
+const fs_1 = __importDefault(require("fs"));
+const https_1 = __importDefault(require("https"));
 const db = __importStar(require("./db"));
 db.connect();
 const busdata_1 = __importDefault(require("./routes/busdata"));
 const subwaydata_1 = __importDefault(require("./routes/subwaydata"));
 const navigation_1 = __importDefault(require("./routes/navigation"));
+const httpsOptions = {
+    key: fs_1.default.readFileSync('./KEY/rootca.key'),
+    cert: fs_1.default.readFileSync('./KEY/rootca.crt')
+};
 let corsOptions = {
-    origin: ['http://localhost:3000/#/', 'http://localhost:3000', 'http://localhost:3005', 'http://34.168.80.42:3000', 'http://172.30.1.35:5000', 'http://localhost:5000'],
+    origin: ['http://localhost:3000/#/', 'http://localhost:3000', 'http://localhost:3005', 'http://34.168.80.42:3000', 'http://172.30.1.35:5000', 'http://localhost:5000', 'http://localhost:80', 'http://localhost:80/#/', 'http://www.easy-taza.site'],
     credentials: true
 };
 app.use((0, cors_1.default)(corsOptions));
@@ -46,16 +52,19 @@ app.use('/bus', busdata_1.default);
 app.use('/subway', subwaydata_1.default);
 app.use('/navigation', navigation_1.default);
 app.get('/', (req, res) => {
-    res.sendFile(path_1.default.join(__dirname, '../../Backend/Frontend/creative/build/index.html'));
-});
-app.get('/', (req, res) => {
     res.json({
         success: true,
     });
 });
+const HTTPS_PORT = 3005;
+https_1.default.createServer(httpsOptions, app).listen(HTTPS_PORT, () => {
+    console.log(`server is listening at localhost:${HTTPS_PORT}`);
+});
+/*
 app.listen(port, () => {
     console.log(`server is listening at localhost:${port}`);
-});
+})
+*/
 //10분 주기로 MySQL Connection 유지용 쿼리 보내기
 const mysql_Connect_Maintenance = setInterval(() => {
     const connection = db.return_connection();
