@@ -27,6 +27,7 @@ const SubwayForm = () => {
                 dispatch(SubwayActions.addSubwayInfo(data))
                 dispatch(MapActions.Onsubwaymode())
             }).catch(error => {
+                console.log(error)
                 alert("데이터를 받아오지 못했습니다.")
             });
 
