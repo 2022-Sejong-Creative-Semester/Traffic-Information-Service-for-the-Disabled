@@ -36,8 +36,8 @@ const SubwayDetailPage = () => {
         <div className={classes.subwaypage}>
             <Header />
             <div className={classes.main}>
-            <SubwayPanel text={["지하철편의시설"]} menu={<SubwayBar />} />
-            <SubwayDetail info={info} />
+                <SubwayPanel text={["지하철편의시설"]} menu={<SubwayBar />} />
+                <SubwayDetail info={info} />
             </div>
             <MenuBar/>
         </div>
