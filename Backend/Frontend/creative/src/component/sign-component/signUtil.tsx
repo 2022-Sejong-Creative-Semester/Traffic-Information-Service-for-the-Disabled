@@ -1,6 +1,12 @@
 import React from "react"
 import { api } from "../auth/Api.ts"
 
-export const submitStartAndEnd = () =>{
-    window.location.href = `/#/sign/detail`
+interface coordinate {
+    tmX:number,
+    tmY:number
+}
+
+
+export const submitStartAndEnd = (start:coordinate,end:coordinate) =>{
+    window.location.href = `/#/sign/detail/${start.tmY}/${start.tmX}/${end.tmY}/${end.tmX}`
 }

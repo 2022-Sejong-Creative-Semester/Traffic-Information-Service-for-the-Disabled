@@ -25,7 +25,7 @@ function App() {
         <Route path="/subway/transfer/:stCd/:stNm/:railCd/:lnCd" element={<SubwayTransferPAge/>}/>
         <Route path="/subway/transfer/detail/:stCd/:stNm/:railCd/:lnCd/:prevStinCd/:chthTgtLn/:chtnNextStinCd" element={<SubwayTranferDetailPage/>}/>
         <Route path="/sign" element={<SignPage/>}/>
-        <Route path="/sign/detail" element={<SignDetailPage/>}/>
+        <Route path="/sign/detail/:sTmY/:sTmX/:eTmY/:eTmX" element={<SignDetailPage/>}/>
       </Routes>
     </HashRouter>
   );
