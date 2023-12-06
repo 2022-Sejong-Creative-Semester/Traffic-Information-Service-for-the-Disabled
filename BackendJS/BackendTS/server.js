@@ -31,7 +31,6 @@ const app = (0, express_1.default)();
 const port = 3005;
 const cors_1 = __importDefault(require("cors"));
 const fs_1 = __importDefault(require("fs"));
-const https_1 = __importDefault(require("https"));
 const db = __importStar(require("./db"));
 db.connect();
 const busdata_1 = __importDefault(require("./routes/busdata"));
@@ -56,14 +55,14 @@ app.get('/', (req, res) => {
     });
 });
 const HTTPS_PORT = 3005;
-https_1.default.createServer(httpsOptions, app).listen(HTTPS_PORT, () => {
+/*
+https.createServer(httpsOptions, app).listen(HTTPS_PORT, ()=>{
     console.log(`server is listening at localhost:${HTTPS_PORT}`);
 });
-/*
+*/
 app.listen(port, () => {
     console.log(`server is listening at localhost:${port}`);
-})
-*/
+});
 //10분 주기로 MySQL Connection 유지용 쿼리 보내기
 const mysql_Connect_Maintenance = setInterval(() => {
     const connection = db.return_connection();
