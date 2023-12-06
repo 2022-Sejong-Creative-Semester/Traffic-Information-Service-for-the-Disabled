@@ -5,14 +5,3 @@
     justify-content: center;
     height: 100vh;
 }
-
-.subwaylist {
-    display: flex;
-    flex-direction: column;
-    margin-right: 30px;
-}
-
-.subwaymain {
-    display: flex;
-    margin-top: 20px;
-}

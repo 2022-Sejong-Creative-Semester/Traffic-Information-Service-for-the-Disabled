@@ -5,14 +5,3 @@
     justify-content: center;
     height: 100vh;
 }
-
-.busmain {
-    display: flex;
-    margin-top: 20px;
-}
-
-.buslist {
-    display: flex;
-    flex-direction: column;
-    margin-right: 30px;
-}
