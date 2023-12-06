@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import SignDetailInfoList from "./SignDetailInfoLIst.tsx";
 
 const StyledSignDetailInfo = styled.div`
     display: flex;
@@ -28,9 +29,10 @@ const SignDetailInfo = ({graph}:any) => {
                             <StyledSignDetailInfoLi key={index}>
                                 <span>{name}</span>
                                 <div className="SignDetail">
-                                    <span>{ele.endName} - </span>
-                                    <span>{ele.startName}</span>
+                                    <span>{ele.startName} - </span>
+                                    <span>{ele.endName}</span>
                                 </div>
+                                <SignDetailInfoList info={ele}/>
                             </StyledSignDetailInfoLi>
                     )
                 }
