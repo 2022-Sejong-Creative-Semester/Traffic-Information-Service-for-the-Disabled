@@ -429,19 +429,33 @@ router.get('/:startX/:startY/:endX/:endY/:type',async(req:Request,res:Response)=
       //console.log(error);
       //console.log(response);
 
-
+      //275 -> 10분
+      //10분 ->
+      //버스 환승 ->
+      //
       //1. 도보 시간, 2. 환승 개수, 3. 총 이동 시간
       NavigationList.path.sort((a:NavigationPath, b:NavigationPath)=>{
-        if(a.info.totalWalk === b.info.totalWalk){
-          if(a.info.busTransitCount + a.info.subwayTransitCount === b.info.busTransitCount + b.info.subwayTransitCount){
-            return a.info.totalTime - b.info.totalTime;
+
+        //가중치 계산
+        const weight_A:number = a.info.totalWalk/300 * 30 + a.info.totalTime + a.info.busTransitCount*10 + a.info.subwayTransitCount*5;
+        const weight_B:number = b.info.totalWalk/300 * 30 + b.info.totalTime + b.info.busTransitCount*10 + b.info.subwayTransitCount*5;
+
+        if(weight_A === weight_B){
+          if(a.info.totalWalkTime === b.info.totalWalkTime){
+            if(a.info.busTransitCount + a.info.subwayTransitCount === b.info.busTransitCount + b.info.busTransitCount){
+              return a.info.totalTime - b.info.totalTime;
+            }
+            else{
+              return a.info.busTransitCount + a.info.subwayTransitCount - b.info.busTransitCount + b.info.busTransitCount;
+            }
+            
           }
           else{
-            return a.info.busTransitCount + a.info.subwayTransitCount - b.info.busTransitCount + b.info.subwayTransitCount;
+            return a.info.totalWalkTime - b.info.totalWalkTime;
           }
         }
         else {
-          return a.info.totalWalk - b.info.totalWalk;
+          return weight_A - weight_B;
         }
       })
 
