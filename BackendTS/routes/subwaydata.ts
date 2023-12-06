@@ -45,7 +45,7 @@ function getSubwayStationName(stNm:string, callback:(nameList:Array<SubwayStatio
 	}
 }
 
-function getSubwayStationInfo(stCd:string, stNm:string, callback:(stationInfo:SubwayStationInfo)=>void) {
+function getSubwayStationInfo(stCd:string, stNm:string, callback:(stationInfo:SubwayStationInfo|null)=>void) {
 	try {
 
 		const connection:mysql.connection = db.return_connection();
@@ -57,12 +57,10 @@ function getSubwayStationInfo(stCd:string, stNm:string, callback:(stationInfo:Su
 				console.log(err);
 			}
 			
-			/*
 			//NULL error
-			if (results.length !== 0) {
-				return callback();
+			if (results.length === 0) {
+				return callback(null);
 			}
-			*/
 			
 			const url:string = 'https://openapi.kric.go.kr/openapi/convenientInfo/stationInfo';
 			let queryParams:string = '?' + encodeURI('serviceKey');
@@ -544,9 +542,17 @@ router.get('/stationInfo/:stCd/:stNm', async (req:Request, res:Response) => {
 		const stNm = req.params.stNm;
 
 		await getSubwayStationInfo(stCd, stNm, stationinfo => {
-			return res.status(200).json({
-				stationinfo
-			})
+			if(stationinfo === null){
+				return res.status(500).json({
+					error: "No Station"
+				})
+			}
+
+			else{
+				return res.status(200).json({
+					stationinfo
+				})
+			}
 		})
 	}
 	catch (e) {
@@ -673,7 +679,7 @@ router.get('/transferMove/transferList/:stCd/:stNm/:railCd/:lnCd', async (req:Re
 		await getTransferList(stCd, stNm, railCd, lnCd, transferInfo => {
 			if (transferInfo.sourceStation.length === 0 || transferInfo.transferStation.length === 0) {
 				return res.status(500).json({
-					error: 404,
+					error: 500,
 					errorString: "Not Transfer Station"
 				})
 			}
