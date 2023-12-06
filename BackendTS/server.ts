@@ -40,16 +40,17 @@ app.get('/', (req:Request, res:Response) => {
 
 const HTTPS_PORT = 3005;
 
-/*
+
 https.createServer(httpsOptions, app).listen(HTTPS_PORT, ()=>{
     console.log(`server is listening at localhost:${HTTPS_PORT}`);
 });
-*/
 
 
+/*
 app.listen(port, () => {
     console.log(`server is listening at localhost:${port}`);
 })
+*/
 
 
 //10분 주기로 MySQL Connection 유지용 쿼리 보내기
