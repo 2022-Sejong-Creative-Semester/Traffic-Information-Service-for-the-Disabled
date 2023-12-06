@@ -19,8 +19,6 @@ const StyledSignDetail = styled.main`
     }
 `
 
-
-//그래프에 필요한것 1. type 2. 시간을 준다. 
 const SignDetail = () => {
     const arr = useSignForm();
     return (
