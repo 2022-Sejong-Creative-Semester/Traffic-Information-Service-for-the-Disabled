@@ -17,15 +17,18 @@ const SignFormButton = ({value}:{value:string}) => {
     const dispatch = useDispatch();
     let start = useSelector((state:RootState)=>state.sign.startPostion);
     let end = useSelector((state:RootState)=>state.sign.endPostion);
+    
     const ClickBtn = (event:React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         if(value==="submit") submitPosition();
         else dispatch(SignActions.initialization(value));
     }
+    
     const submitPosition = () => {
         if(start.tmX!==-1&&end.tmX!==-1)
-            submitStartAndEnd();
+            submitStartAndEnd(start,end);
     }
+    
     return (
         <StyleButton onClick={ClickBtn}>  
             {value}

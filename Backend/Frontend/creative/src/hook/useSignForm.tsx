@@ -1,24 +1,28 @@
 import React,{useEffect,useState} from "react"
-import { useSelector } from "react-redux";
-import {wrapPromise} from "../promise/warmPromise.ts"
+import { useParams } from "react-router-dom";
+
 import { api } from "../component/auth/Api.ts";
-import { RootState } from "../store/index";
 
 
 const useSignForm = () => {
+    const param = useParams();
     const [signArr,SetSignArr] = useState<any[]>([""]);
-    let start = useSelector((state:RootState)=>state.sign.startPostion);
-    let end = useSelector((state:RootState)=>state.sign.endPostion);  
     useEffect(() => {
+        const sTmX = param.sTmX;
+        const sTmY = param.sTmY; 
+        const eTmX = param.eTmX;
+        const eTmY = param.eTmY;
         const getbusNsub = async () => {
-            await api.get(`/navigation/${start.tmY}/${start.tmX}/${end.tmY}/${end.tmX}/busNsub`)
+            await api.get(`/navigation/${sTmY}/${sTmX}/${eTmY}/${eTmX}/busNsub`)
             .then(res=>{
-                console.log(res.data,"busNsub")
                 SetSignArr([res.data])
+                console.log(res.data)
+            }).catch(error=>{
+                console.log(error)
             })
         }
         getbusNsub();
-    },[start,end])
+    },[param])
     return signArr;
 }
 
