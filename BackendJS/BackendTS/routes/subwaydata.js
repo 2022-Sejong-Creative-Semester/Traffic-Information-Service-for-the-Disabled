@@ -74,12 +74,10 @@ function getSubwayStationInfo(stCd, stNm, callback) {
             if (err) {
                 console.log(err);
             }
-            /*
             //NULL error
-            if (results.length !== 0) {
-                return callback();
+            if (results.length === 0) {
+                return callback(null);
             }
-            */
             const url = 'https://openapi.kric.go.kr/openapi/convenientInfo/stationInfo';
             let queryParams = '?' + encodeURI('serviceKey');
             queryParams += '=' + serviceKey_json_1.default.subwayRailKey;
@@ -475,9 +473,16 @@ router.get('/stationInfo/:stCd/:stNm', (req, res) => __awaiter(void 0, void 0, v
         const stCd = req.params.stCd;
         const stNm = req.params.stNm;
         yield getSubwayStationInfo(stCd, stNm, stationinfo => {
-            return res.status(200).json({
-                stationinfo
-            });
+            if (stationinfo === null) {
+                return res.status(500).json({
+                    error: "No Station"
+                });
+            }
+            else {
+                return res.status(200).json({
+                    stationinfo
+                });
+            }
         });
     }
     catch (e) {
@@ -588,7 +593,7 @@ router.get('/transferMove/transferList/:stCd/:stNm/:railCd/:lnCd', (req, res) =>
         yield getTransferList(stCd, stNm, railCd, lnCd, transferInfo => {
             if (transferInfo.sourceStation.length === 0 || transferInfo.transferStation.length === 0) {
                 return res.status(500).json({
-                    error: 404,
+                    error: 500,
                     errorString: "Not Transfer Station"
                 });
             }
