@@ -17,7 +17,7 @@ const SubwayTranferPage = () => {
         <div className={classes.subwaypage}>
             <Header />
             <div className={classes.main}>
-                <SubwayPanel text={["지하철편의시설"]} menu={<SubwayBar />} />
+                <SubwayPanel text={["환승 이동 경로"]} menu={<SubwayBar />} />
                 <SubwayTransferDetail param={param} setImage={setImage}/>
             </div>
             <img className={classes.detailImge} alt={image} src={image}></img>

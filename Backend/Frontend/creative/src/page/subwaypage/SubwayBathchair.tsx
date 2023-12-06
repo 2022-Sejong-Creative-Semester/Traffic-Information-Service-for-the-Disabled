@@ -28,7 +28,6 @@ const SubwayBathchair = () => {
             await api.get(`/subway/liftMove/${stCd}/${stNm}/${railCd}/${lnCd}`)
                 .then(res => {
                     const { data } = res;
-                    console.log(data)
                     setBath(data)
                 })
             await api.get(`/subway/convenience/${stCd}/${stNm}/${railCd}/${lnCd}`)

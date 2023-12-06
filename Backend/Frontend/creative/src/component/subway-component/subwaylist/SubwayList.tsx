@@ -11,11 +11,12 @@ flex-direction:column;
 align-items: center;
 box-sizing: border-box;
 width: 100%;
-max-height:50%;
-min-height:50%;
-padding:0;
+max-height:40%;
+padding: 0;
 margin:0;
-overflow:auto;
+margin-bottom:18%;
+z-index: 100;
+overflow:scroll;
 a{ 
     text-decoration:none; 
 }
@@ -27,10 +28,11 @@ const SubwayList = () => {
     return (
         <StyledList>
             {subwayCheck && <SubwayNumber count={subway.length} />}
-            {subwayCheck && subway.map((elemnet:any) =>
+            {subwayCheck && subway.map((elemnet:any,index:number) =>
                 <SubwayItems
                     key={elemnet.stCd + elemnet.stNm}
                     items={elemnet}
+                    index={index}
                 />)}
         </StyledList>
     )

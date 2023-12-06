@@ -23,10 +23,10 @@ const SubwayForm = () => {
         await api.get(`/subway/stNm/${value}`)
             .then(res => {
                 const { data } = res;
-                
                 dispatch(SubwayActions.addSubwayInfo(data))
                 dispatch(MapActions.Onsubwaymode())
-            }).catch(error => {
+            })
+            .catch(error => {
                 console.log(error)
                 alert("데이터를 받아오지 못했습니다.")
             });
