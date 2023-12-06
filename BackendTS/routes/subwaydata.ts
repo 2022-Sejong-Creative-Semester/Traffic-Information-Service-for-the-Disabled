@@ -45,7 +45,7 @@ function getSubwayStationName(stNm:string, callback:(nameList:Array<SubwayStatio
 	}
 }
 
-function getSubwayStationInfo(stCd:string, stNm:string, callback:(stationInfo:SubwayStationInfo)=>void) {
+function getSubwayStationInfo(stCd:string, stNm:string, callback:(stationInfo:SubwayStationInfo|null)=>void) {
 	try {
 
 		const connection:mysql.connection = db.return_connection();
@@ -57,12 +57,10 @@ function getSubwayStationInfo(stCd:string, stNm:string, callback:(stationInfo:Su
 				console.log(err);
 			}
 			
-			/*
 			//NULL error
-			if (results.length !== 0) {
-				return callback();
+			if (results.length === 0) {
+				return callback(null);
 			}
-			*/
 			
 			const url:string = 'https://openapi.kric.go.kr/openapi/convenientInfo/stationInfo';
 			let queryParams:string = '?' + encodeURI('serviceKey');
@@ -83,6 +81,11 @@ function getSubwayStationInfo(stCd:string, stNm:string, callback:(stationInfo:Su
 			}, function (error:Error, response:any, body:string) {
 
 				const stationinfo:SubwayStationInfoRequest = JSON.parse(body).body[0];
+
+				//NULL error
+				if (stationinfo === undefined) {
+					return callback(null);
+				}
 
 				callback({
 					railCd: stationinfo.railOprIsttCd,
@@ -127,6 +130,7 @@ function getLiftPos(stCd:string, stNm:string, railCd:string, lnCd:string, callba
 			if(liftPosInfo === undefined){
 				callback(null);
 			}
+			
 			else callback(liftPosInfo[0]);
 
 		});
@@ -158,6 +162,10 @@ function getLiftMove(stCd:string, stNm:string, railCd:string, lnCd:string, callb
 
 			//목적지 별로 구분하여 제공
 			const liftMoveParse:Array<SubwayStationLiftMove> = JSON.parse(body).body;
+
+			if(liftMoveParse === undefined){
+				return callback(null);
+			}
 
 			let liftInfo:SubwayStationLiftInfo = {
 				direction: "",
@@ -210,7 +218,13 @@ function getElevatorPos(stCd:string, stNm:string, railCd:string, lnCd:string, ca
 			method: 'GET'
 		}, function (error:Error, response:any, body:any) {
 			const ElevatorPosInfo:SubwayStationElevatorPosInfo = JSON.parse(body).body;
-			callback(ElevatorPosInfo);
+
+			if(ElevatorPosInfo === undefined){
+				return callback(null);
+			}
+			else{
+				callback(ElevatorPosInfo);
+			}
 		});
 	}
 	catch (e) {
@@ -245,26 +259,32 @@ function getElevatorMove(stCd:string, stNm:string, railCd:string, lnCd:string, c
 
 			const elevatorMoveParse:Array<SubwayStationElevatorMove> = JSON.parse(body).body;
 
-			for (let i = 0; i < elevatorMoveParse.length; i++) {
-				if (elevatorMoveParse[i].mvTpOrdr === 1) {
-					if (elevatorInfo.info.length !== 0) {
-						const direction:string = elevatorInfo.info[elevatorInfo.info.length - 2].mvContDtl.split('승강장')[0].substr(3);
-						elevatorInfo.direction = direction;
-
-						elevatorMove.push(elevatorInfo);
-						elevatorInfo.direction = "";
-						elevatorInfo.info = [];
-					}
-				}
-				elevatorInfo.info.push(elevatorMoveParse[i]);
+			if(elevatorMoveParse === undefined){
+				return callback(null);
 			}
-			
-			const direction:string = elevatorInfo.info[elevatorInfo.info.length - 2].mvContDtl.split('승강장')[0].substr(3);
-			elevatorInfo.direction = direction;
-			
-			elevatorMove.push(elevatorInfo);
 
-			callback(elevatorMove);
+			else{
+				for (let i = 0; i < elevatorMoveParse.length; i++) {
+					if (elevatorMoveParse[i].mvTpOrdr === 1) {
+						if (elevatorInfo.info.length !== 0) {
+							const direction:string = elevatorInfo.info[elevatorInfo.info.length - 2].mvContDtl.split('승강장')[0].substr(3);
+							elevatorInfo.direction = direction;
+	
+							elevatorMove.push(elevatorInfo);
+							elevatorInfo.direction = "";
+							elevatorInfo.info = [];
+						}
+					}
+					elevatorInfo.info.push(elevatorMoveParse[i]);
+				}
+				
+				const direction:string = elevatorInfo.info[elevatorInfo.info.length - 2].mvContDtl.split('승강장')[0].substr(3);
+				elevatorInfo.direction = direction;
+				
+				elevatorMove.push(elevatorInfo);
+	
+				callback(elevatorMove);
+			}	
 		});
 	}
 	catch (e) {
@@ -283,7 +303,6 @@ function getTransferList(stCd:string, stNm:string, railCd:string, lnCd:string, c
 			transferStation: []
 		};
 
-
 		let sql:string = "Select * FROM subcode_1 WHERE (STIN_CD = ? or STIN_CD = ?) and LN_CD = ? and RAIL_OPR_ISTT_CD = ?;";
 
 		connection.query(sql, [parseInt(stCd) + 1, parseInt(stCd) -1, lnCd, railCd], function (err:Error, results:any, fields:any) {
@@ -293,25 +312,14 @@ function getTransferList(stCd:string, stNm:string, railCd:string, lnCd:string, c
 			}
 
 			let sourceStation:Array<SubwayStationTransferStationInfo> = [];
-
-			/*
-			if (results.length == 0) {
-				return callback({
-					error: 404,
-					errorString: "Not Transfer Station"
-				});
-			}
-			*/
-			/*else*/ {
-				for (let i = 0; i < results.length; i++) {
-					sourceStation.push({
-						stCd: results[i].STIN_CD,
-						stNm: results[i].STIN_NM,
-						railCd: results[i].RAIL_OPR_ISTT_CD,
-						lnCd: results[i].LN_CD
-					})
-				}
-
+			
+			for (let i = 0; i < results.length; i++) {
+				sourceStation.push({
+					stCd: results[i].STIN_CD,
+					stNm: results[i].STIN_NM,
+					railCd: results[i].RAIL_OPR_ISTT_CD,
+					lnCd: results[i].LN_CD
+				})
 			}
 			transferList.sourceStation = sourceStation;
 		});
@@ -323,36 +331,40 @@ function getTransferList(stCd:string, stNm:string, railCd:string, lnCd:string, c
 				console.log(err);
 			}
 
-			if (results.length === 1) {
-				/*
-				return callback({
-					error: 404,
-					errorString: "Not Transfer Station"
-				});
-				*/
+			if (results.length === 0 || results.length === 1) {
+				return callback(null);
 			}
 
-			for (let i = 0; i < results.length; i++) {
-				if (results[i].STIN_CD != stCd) {
-					const sql2:string = "Select * FROM subcode_1 WHERE (STIN_CD = ? or STIN_CD = ?) and RAIL_OPR_ISTT_CD = ?;";
-					connection.query(sql2, [parseInt(results[i].STIN_CD) + 1, parseInt(results[i].STIN_CD) - 1, results[i].RAIL_OPR_ISTT_CD], function (err:Error, results2:any, fields:any) {
-						let transferStation:Array<SubwayStationTransferStationInfo> = [];
-
-						for (let j = 0; j < results2.length; j++) {
-							transferStation.push({
-								stCd: results2[j].STIN_CD,
-								stNm: results2[j].STIN_NM,
-								railCd: results2[j].RAIL_OPR_ISTT_CD,
-								lnCd: results2[j].LN_CD
-							})
-						}
-						transferList.transferStation = transferStation;
+			else{
+				for (let i = 0; i < results.length; i++) {
+					if (results[i].STIN_CD != stCd) {
+						const sql2:string = "Select * FROM subcode_1 WHERE (STIN_CD = ? or STIN_CD = ?) and RAIL_OPR_ISTT_CD = ?;";
+						connection.query(sql2, [parseInt(results[i].STIN_CD) + 1, parseInt(results[i].STIN_CD) - 1, results[i].RAIL_OPR_ISTT_CD], function (err:Error, results2:any, fields:any) {
+							let transferStation:Array<SubwayStationTransferStationInfo> = [];
+	
+							if(results.length === 0){
+								return callback(null);
+							}
+							else{
+								for (let j = 0; j < results2.length; j++) {
+									transferStation.push({
+										stCd: results2[j].STIN_CD,
+										stNm: results2[j].STIN_NM,
+										railCd: results2[j].RAIL_OPR_ISTT_CD,
+										lnCd: results2[j].LN_CD
+									})
+								}
+								transferList.transferStation = transferStation;
+								
+								callback(transferList);
+							}
+							
+						});
 						
-						callback(transferList);
-					});
-					
+					}
 				}
 			}
+			
 		});
 		
 	}
@@ -375,6 +387,10 @@ function getTransferInfo(stCd:string, stNm:string, railCd:string, lnCd:string, p
 
 			if (err) {
 				console.log(err);
+			}
+
+			if(results.length === 0){
+				return callback(null);
 			}
 
 			let prevStinCd:number;
@@ -408,61 +424,67 @@ function getTransferInfo(stCd:string, stNm:string, railCd:string, lnCd:string, p
 				method: 'GET'
 			}, function (error:Error, response:any, body:any) {
 				const parse:Array<SubwayStationTransferMoveList> = JSON.parse(body).body;
-				for (let i = 0; i < parse.length; i++) {
-					//성수가 211 하행
-					//railCd로 비교
 
-					//2호선의 경우 상 하행이 반대
-					if (railCd === "S1" && lnCd === "2") {
-						//환승역 방면이 상행선이라면 2, 4만 나옴
-						if (prevStinCd > parseInt(chtnNextStinCd)) {
-							//출발 방면이 상행선이라면
-							if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo === 2) {
-								transferInfo.push(parse[i]);
-							}
-							//출발 방면이 하행선이라면
-							else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo === 1) {
-								transferInfo.push(parse[i]);
-							}
-						}
-						//하행선인 경우
-						else {
-							//출발 방면이 상행선이라면
-							if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo === 4) {
-								transferInfo.push(parse[i]);
-							}
-							//출발 방면이 하행선이라면
-							else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo === 3) {
-								transferInfo.push(parse[i]);
-							}
-						}
-					}
-					else {
-						//환승역 방면이 상행선이라면 1,3만 나옴
-						if (prevStinCd > parseInt(chtnNextStinCd)) {
-							//출발 방면이 상행선이라면
-							if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo === 1) {
-								transferInfo.push(parse[i]);
-							}
-							//출발 방면이 하행선이라면
-							else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo === 3) {
-								transferInfo.push(parse[i]);
-							}
-						}
-						//하행선인 경우
-						else {
-							//출발 방면이 상행선이라면
-							if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo === 2) {
-								transferInfo.push(parse[i]);
-							}
-							//출발 방면이 하행선이라면
-							else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo === 4) {
-								transferInfo.push(parse[i]);
-							}
-						}
-					}
+				if(parse === undefined){
+					return callback(null);
 				}
-				callback(transferInfo);
+				else {
+					for (let i = 0; i < parse.length; i++) {
+						//성수가 211 하행
+						//railCd로 비교
+	
+						//2호선의 경우 상 하행이 반대
+						if (railCd === "S1" && lnCd === "2") {
+							//환승역 방면이 상행선이라면 2, 4만 나옴
+							if (prevStinCd > parseInt(chtnNextStinCd)) {
+								//출발 방면이 상행선이라면
+								if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo === 2) {
+									transferInfo.push(parse[i]);
+								}
+								//출발 방면이 하행선이라면
+								else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo === 1) {
+									transferInfo.push(parse[i]);
+								}
+							}
+							//하행선인 경우
+							else {
+								//출발 방면이 상행선이라면
+								if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo === 4) {
+									transferInfo.push(parse[i]);
+								}
+								//출발 방면이 하행선이라면
+								else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo === 3) {
+									transferInfo.push(parse[i]);
+								}
+							}
+						}
+						else {
+							//환승역 방면이 상행선이라면 1,3만 나옴
+							if (prevStinCd > parseInt(chtnNextStinCd)) {
+								//출발 방면이 상행선이라면
+								if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo === 1) {
+									transferInfo.push(parse[i]);
+								}
+								//출발 방면이 하행선이라면
+								else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo === 3) {
+									transferInfo.push(parse[i]);
+								}
+							}
+							//하행선인 경우
+							else {
+								//출발 방면이 상행선이라면
+								if (parseInt(stCd) > parseInt(prev) && parse[i].mvPathMgNo === 2) {
+									transferInfo.push(parse[i]);
+								}
+								//출발 방면이 하행선이라면
+								else if (parseInt(stCd) < parseInt(prev) && parse[i].mvPathMgNo === 4) {
+									transferInfo.push(parse[i]);
+								}
+							}
+						}
+					}
+					callback(transferInfo);
+				}
 			});
 
 		});
@@ -475,7 +497,7 @@ function getTransferInfo(stCd:string, stNm:string, railCd:string, lnCd:string, p
 	}
 }
 
-function getConvenience(stCd:string, stNm:string, railCd:string, lnCd:string, callback:(conveneinceInfo:Array<SubwayStationConvenience>)=>void) {
+function getConvenience(stCd:string, stNm:string, railCd:string, lnCd:string, callback:(conveneinceInfo:Array<SubwayStationConvenience>|null)=>void) {
 	try {
 
 		const conveneinceInfo:Array<SubwayStationConvenience> = [];
@@ -494,13 +516,18 @@ function getConvenience(stCd:string, stNm:string, railCd:string, lnCd:string, ca
 		}, function (error:Error, response:any, body:any) {
 			const parse:Array<SubwayStationConvenience> = JSON.parse(body).body;
 
-			for (let i = 0; i < parse.length; i++) {
-				if (parse[i].gubun === "EV" || parse[i].gubun === "WCLF") {
-					conveneinceInfo.push(parse[i]);
-				}
+			if(parse === undefined){
+				callback(null);
 			}
+			else {
+				for (let i = 0; i < parse.length; i++) {
+					if (parse[i].gubun === "EV" || parse[i].gubun === "WCLF") {
+						conveneinceInfo.push(parse[i]);
+					}
+				}
 
-			callback(conveneinceInfo);
+				callback(conveneinceInfo);
+			}
 		});
 	}
 	catch (e) {
@@ -544,9 +571,17 @@ router.get('/stationInfo/:stCd/:stNm', async (req:Request, res:Response) => {
 		const stNm = req.params.stNm;
 
 		await getSubwayStationInfo(stCd, stNm, stationinfo => {
-			return res.status(200).json({
-				stationinfo
-			})
+			if(stationinfo === null){
+				return res.status(500).json({
+					error: "No Station"
+				})
+			}
+
+			else{
+				return res.status(200).json({
+					stationinfo
+				})
+			}
 		})
 	}
 	catch (e) {
@@ -609,7 +644,13 @@ router.get('/liftMove/:stCd/:stNm/:railCd/:lnCd', async (req:Request, res:Respon
 		const lnCd = req.params.lnCd;
 
 		await getLiftMove(stCd, stNm, railCd, lnCd, callback=> {
-			return res.status(200).json(callback);
+			if(callback === null){
+				return res.status(200).json([]);
+			}
+
+			else {
+				return res.status(200).json(callback);
+			}
 		});
 	}
 	catch (e) {
@@ -629,6 +670,9 @@ router.get('/ElevatorPos/:stCd/:stNm/:railCd/:lnCd', async (req:Request, res:Res
 		const lnCd = req.params.lnCd;
 
 		await getElevatorPos(stCd, stNm, railCd, lnCd, callback => {
+			if(callback===null){
+				return res.status(200).json([]);
+			}
 			return res.status(200).json(callback)
 		});
 	}
@@ -649,7 +693,12 @@ router.get('/ElevatorMove/:stCd/:stNm/:railCd/:lnCd', async (req:Request, res:Re
 		const lnCd = req.params.lnCd;
 
 		await getElevatorMove(stCd, stNm, railCd, lnCd, callback => {
-			return res.status(200).json(callback);
+			if(callback === null){
+				return res.status(200).json([]);
+			}
+			else {
+				return res.status(200).json(callback);
+			}
 		});
 	}
 	catch (e) {
@@ -671,13 +720,22 @@ router.get('/transferMove/transferList/:stCd/:stNm/:railCd/:lnCd', async (req:Re
 		const lnCd = req.params.lnCd;
 
 		await getTransferList(stCd, stNm, railCd, lnCd, transferInfo => {
-			if (transferInfo.sourceStation.length === 0 || transferInfo.transferStation.length === 0) {
+			if(transferInfo === null)
+			{
 				return res.status(500).json({
-					error: 404,
+					error: 500,
 					errorString: "Not Transfer Station"
 				})
 			}
-			return res.status(200).json(transferInfo)
+			else if (transferInfo.sourceStation.length === 0 || transferInfo.transferStation.length === 0) {
+				return res.status(500).json({
+					error: 500,
+					errorString: "Not Transfer Station"
+				})
+			}
+			else {
+				return res.status(200).json(transferInfo)
+			}
 		});
 		
 	}
@@ -703,7 +761,13 @@ router.get('/transferMove/transferInfo/:stCd/:stNm/:railCd/:lnCd/:prevStinCd/:ch
 
 		await getTransferInfo(stCd, stNm, railCd, lnCd, prevStinCd, chthTgtLn, chtnNextStinCd, callback => {
 			
-			return res.json(callback)
+			if(callback === null){
+				return res.status(200).json([]);
+			}
+
+			else {
+				return res.status(200).json(callback);
+			}
 		});
 
 	}
@@ -726,7 +790,7 @@ router.get('/convenience/:stCd/:stNm/:railCd/:lnCd', async (req:Request, res:Res
 		await getConvenience(stCd, stNm, railCd, lnCd, conveneinceInfo => {
 			
 			//No Data
-			if (conveneinceInfo.length === 0) {
+			if (conveneinceInfo === null) {
 				return res.status(500).json({
 					error: 404,
 					errorString: "No conveneince"
