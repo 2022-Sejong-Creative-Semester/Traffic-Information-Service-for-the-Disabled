@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const StyledSubwayNumber = styled.header`
+const StyledSubwayNumber = styled.div`
 display:flex;
 justify-content: space-between;
 line-height: 60px;

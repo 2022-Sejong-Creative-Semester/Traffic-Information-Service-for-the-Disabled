@@ -6,12 +6,12 @@ const StyledSubwayTransferDetail = styled.main`
     display:flex;
     flex-direction:column;
     align-items: start;
-    justify-content: space-evenly;
+    justify-content: start;
     width: 98vw;
-    height: 40vh;
+    max-height: 40vh;
     border: 4px solid #FFD12D;
     overflow: auto;
-`
+    `
 const StyledTransferDetailLi = styled.span`
      font-family: 'Pretendard-Regular';
      font-weight: 600;

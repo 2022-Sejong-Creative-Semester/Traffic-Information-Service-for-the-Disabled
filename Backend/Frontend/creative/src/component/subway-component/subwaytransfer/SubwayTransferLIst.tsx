@@ -50,7 +50,7 @@ const SubwayTranferDetail = ({param}:any) => {
                     setTransfer(transferStation);
                 }).catch(error=>{
                     alert("환승역이 아닙니다!")
-                    window.location.href = `/subway/detail/${stCd}/${stNm}`
+                    window.location.href = `/#/subway/detail/${stCd}/${stNm}`
                 })
         }
         getDetail()

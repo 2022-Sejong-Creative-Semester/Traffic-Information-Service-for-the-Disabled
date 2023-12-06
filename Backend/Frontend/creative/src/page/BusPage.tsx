@@ -13,8 +13,8 @@ const BusPage = () => {
     return (
         <div className={classes.buspage}>
             <Header />
-            <Mapping />
             <BusForm />
+            <Mapping />
             {busmode&&<BusList/>}
             <MenuBar/>
         </div>

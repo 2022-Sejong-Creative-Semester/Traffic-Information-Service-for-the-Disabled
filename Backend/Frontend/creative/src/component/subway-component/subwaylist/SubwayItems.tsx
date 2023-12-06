@@ -20,7 +20,7 @@ const SubwayItems = (props:any) => {
     const dispatch = useDispatch()
     const currentSubway = useSelector((state:RootState) => state.subway.currentSubway)
 
-    const {items} = props;
+    const {items,index} = props;
     const { stNm, lnNm, stCd } = items
     const idColor = ["#0052A4", "#00A84D", "#EF7C1C", "#00A5DE", "#996CAC", "#CD7C2F", "#747F00", "#E6186C"];
     
@@ -38,7 +38,6 @@ const SubwayItems = (props:any) => {
         }
         locationRecive()
     }, [currentSubway,stCd,stNm])
-
     const ClickSubway = () => {
         if (currentSubway === stCd)
             window.location.href = `/#/subway/detail/${stCd}/${stNm}`;
