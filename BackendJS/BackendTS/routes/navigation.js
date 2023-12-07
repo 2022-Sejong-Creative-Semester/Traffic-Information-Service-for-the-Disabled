@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -14,6 +37,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 const express_1 = __importDefault(require("express"));
 const request_1 = __importDefault(require("request"));
 const serviceKey_json_1 = __importDefault(require("../KEY/serviceKey.json"));
+const db = __importStar(require("../db"));
 const router = express_1.default.Router();
 const velocity = 46.8;
 function deg2rad(deg) {
@@ -455,7 +479,7 @@ router.get('/:startX/:startY/:endX/:endY/:type', (req, res) => __awaiter(void 0,
                 });
                 //상위 5개 경로만 반환
                 NavigationList.path = NavigationList.path.slice(0, 5);
-                NavigationList.path.forEach(element => {
+                NavigationList.path.forEach((element) => __awaiter(this, void 0, void 0, function* () {
                     //일반인 기준 이동시간 저장
                     const t = element.info.totalWalkTime;
                     //도보 이동 시간 계산
@@ -471,7 +495,7 @@ router.get('/:startX/:startY/:endX/:endY/:type', (req, res) => __awaiter(void 0,
                     delete element.info.checkIntervalTime;
                     delete element.info.checkIntervalTimeOverYn;
                     //subPath 정리
-                    element.subPath.forEach(element => {
+                    yield element.subPath.forEach((element) => __awaiter(this, void 0, void 0, function* () {
                         //도보인 경우
                         if (element.trafficType === 3) {
                             //교통약자 평균 이동속도에 맞게 이동시간 조정
@@ -497,10 +521,46 @@ router.get('/:startX/:startY/:endX/:endY/:type', (req, res) => __awaiter(void 0,
                         //지하철인 경우
                         else if (element.trafficType === 1) {
                             delete element.lane[0].subwayCityCode;
+                            if (element.lane[0].name === "수도권 분당선(급행)") {
+                                element.lane[0].subwayCode = 10;
+                            }
+                            else if (element.lane[0].name === "수도권 신분당선") {
+                                element.lane[0].subwayCode = 11;
+                            }
+                            const getSationInfo = (name, subwayCode) => new Promise((res, rej) => {
+                                const SQL = "Select * from subcode_1 where STIN_NM LIKE ? and LN_CD = ?;";
+                                const connection = db.return_connection();
+                                connection.query(SQL, ['%' + name + '%', subwayCode], function (err, results, fields) {
+                                    if (err) {
+                                        console.log(err);
+                                        return rej(err);
+                                    }
+                                    else {
+                                        return res({
+                                            stCd: results[0].STIN_CD,
+                                            lnCd: results[0].LN_CD,
+                                            railCd: results[0].RAIL_OPR_ISTT_CD,
+                                            stNm: results[0].STIN_NM
+                                        });
+                                    }
+                                });
+                            });
+                            const startInfo = yield getSationInfo(element.passStopList.stations[0].stationName, element.lane[0].subwayCode);
+                            const endInfo = yield getSationInfo(element.passStopList.stations[element.passStopList.stations.length - 1].stationName, element.lane[0].subwayCode);
+                            element.passStopList.stations[0].stNm = startInfo.stNm;
+                            element.passStopList.stations[0].stCd = startInfo.stCd;
+                            element.passStopList.stations[0].lnCd = startInfo.lnCd;
+                            element.passStopList.stations[0].railCd = startInfo.railCd;
+                            element.passStopList.stations[element.passStopList.stations.length - 1].stNm = endInfo.stNm;
+                            element.passStopList.stations[element.passStopList.stations.length - 1].stCd = endInfo.stCd;
+                            element.passStopList.stations[element.passStopList.stations.length - 1].lnCd = endInfo.lnCd;
+                            element.passStopList.stations[element.passStopList.stations.length - 1].railCd = endInfo.railCd;
+                            console.log(element.passStopList.stations[0]);
+                            console.log(element.passStopList.stations[element.passStopList.stations.length - 1]);
                         }
-                    });
-                });
-                return res.status(200).json(NavigationList.path);
+                    }));
+                }));
+                return setTimeout(() => res.status(200).json(NavigationList.path), 1000);
             });
         });
     }

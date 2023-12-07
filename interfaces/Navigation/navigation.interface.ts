@@ -73,7 +73,11 @@ interface StationList{
     arsID?: string,
     x: string,
     y: string,
-    isNonStop?: string
+    isNonStop?: string,
+    stCd?: string,
+    lnCd?: string,
+    railCd?: string,
+    stNm?: string
 }
 
 interface NavigationPassStopList{
