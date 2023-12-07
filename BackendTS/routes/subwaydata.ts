@@ -801,7 +801,6 @@ router.get('/convenience/:stCd/:stNm/:railCd/:lnCd', async (req:Request, res:Res
 			}
 		});
 
-		
 	}
 	catch (e) {
 		console.error(e);

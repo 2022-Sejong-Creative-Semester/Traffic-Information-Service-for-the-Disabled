@@ -3,6 +3,7 @@ import request from 'request'
 import convert from 'xml-js'
 import serviceKey from '../KEY/serviceKey.json'
 import { NavigationResult, NavigationPath, RecommendPathList } from '../../interfaces/Navigation/navigation.interface'
+import * as db from '../db'
 
 const router:Router = express.Router();
 
@@ -462,7 +463,7 @@ router.get('/:startX/:startY/:endX/:endY/:type',async(req:Request,res:Response)=
       //상위 5개 경로만 반환
       NavigationList.path = NavigationList.path.slice(0,5);
 
-      NavigationList.path.forEach(element => {
+      NavigationList.path.forEach(async (element) => {
         //일반인 기준 이동시간 저장
         const t = element.info.totalWalkTime;
         //도보 이동 시간 계산
@@ -480,7 +481,7 @@ router.get('/:startX/:startY/:endX/:endY/:type',async(req:Request,res:Response)=
         delete element.info.checkIntervalTimeOverYn;
 
         //subPath 정리
-        element.subPath.forEach(element=>{
+        await element.subPath.forEach(async(element)=>{
           //도보인 경우
           if(element.trafficType === 3){
             //교통약자 평균 이동속도에 맞게 이동시간 조정
@@ -507,11 +508,52 @@ router.get('/:startX/:startY/:endX/:endY/:type',async(req:Request,res:Response)=
           //지하철인 경우
           else if(element.trafficType === 1){
             delete element.lane[0].subwayCityCode;
+            if(element.lane[0].name === "수도권 분당선(급행)"){
+              element.lane[0].subwayCode = 10;
+            }
+            else if(element.lane[0].name === "수도권 신분당선"){
+              element.lane[0].subwayCode = 11;
+            }
+
+            const getSationInfo = (name:string, subwayCode:number) => new Promise((res,rej)=>{
+              const SQL:string = "Select * from subcode_1 where STIN_NM LIKE ? and LN_CD = ?;";
+              const connection:any = db.return_connection();
+              
+              connection.query(SQL, ['%' + name + '%',subwayCode],function(err:Error,results:any,fields:any){
+                if (err) {
+                  console.log(err);
+                  return rej(err);
+                }
+                else{
+                  return res({
+                    stCd: results[0].STIN_CD,
+                    lnCd: results[0].LN_CD,
+                    railCd: results[0].RAIL_OPR_ISTT_CD,
+                    stNm: results[0].STIN_NM
+                  })
+                }
+              })
+            })
+
+            const startInfo:any = await getSationInfo(element.passStopList.stations[0].stationName, element.lane[0].subwayCode);
+            const endInfo:any = await getSationInfo(element.passStopList.stations[element.passStopList.stations.length-1].stationName, element.lane[0].subwayCode);
+
+            element.passStopList.stations[0].stNm = startInfo.stNm;
+            element.passStopList.stations[0].stCd = startInfo.stCd;
+            element.passStopList.stations[0].lnCd = startInfo.lnCd;
+            element.passStopList.stations[0].railCd = startInfo.railCd;
+
+            element.passStopList.stations[element.passStopList.stations.length-1].stNm = endInfo.stNm;
+            element.passStopList.stations[element.passStopList.stations.length-1].stCd = endInfo.stCd;
+            element.passStopList.stations[element.passStopList.stations.length-1].lnCd = endInfo.lnCd;
+            element.passStopList.stations[element.passStopList.stations.length-1].railCd = endInfo.railCd;
+
           }
         })
       });
       
-      return res.status(200).json(NavigationList.path);
+      return setTimeout(() => res.status(200).json(NavigationList.path), 1000);
+
     });
     
   }
