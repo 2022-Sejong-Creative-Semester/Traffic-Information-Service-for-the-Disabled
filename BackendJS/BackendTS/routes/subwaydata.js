@@ -69,7 +69,7 @@ function getSubwayStationName(stNm, callback) {
 function getSubwayStationInfo(stCd, stNm, callback) {
     try {
         const connection = db.return_connection();
-        let sql = "Select * FROM subcode_1 a, 도우미번호 b WHERE (a.stin_nm = b.역명 and a.ln_cd = b.운영노선명) and a.stin_cd = ? and a.stin_nm = ?";
+        let sql = "Select RAIL_OPR_ISTT_CD, LN_CD, STIN_CD, STIN_NM, `교통약자도우미 전화번호` as wNum, en_name, f_code FROM subcode_1 a, 도우미번호 b WHERE (a.stin_nm = b.역명 and a.ln_cd = b.운영노선명) and a.stin_cd = ? and a.stin_nm = ?";
         connection.query(sql, [stCd, stNm], function (err, results, fields) {
             if (err) {
                 console.log(err);
@@ -99,6 +99,7 @@ function getSubwayStationInfo(stCd, stNm, callback) {
                 if (stationinfo === undefined) {
                     return callback(null);
                 }
+                console.log(results[0]);
                 callback({
                     railCd: stationinfo.railOprIsttCd,
                     lnCd: stationinfo.lnCd,
@@ -107,7 +108,7 @@ function getSubwayStationInfo(stCd, stNm, callback) {
                     roadNm: stationinfo.roadNmAdr,
                     tmX: stationinfo.stinLocLon,
                     tmY: stationinfo.stinLocLat,
-                    wNum: results[0].wnum,
+                    wNum: results[0].wNum,
                     eName: results[0].en_name,
                     fCode: results[0].f_code
                 });
