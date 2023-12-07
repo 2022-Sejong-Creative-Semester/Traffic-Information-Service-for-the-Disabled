@@ -555,8 +555,6 @@ router.get('/:startX/:startY/:endX/:endY/:type', (req, res) => __awaiter(void 0,
                             element.passStopList.stations[element.passStopList.stations.length - 1].stCd = endInfo.stCd;
                             element.passStopList.stations[element.passStopList.stations.length - 1].lnCd = endInfo.lnCd;
                             element.passStopList.stations[element.passStopList.stations.length - 1].railCd = endInfo.railCd;
-                            console.log(element.passStopList.stations[0]);
-                            console.log(element.passStopList.stations[element.passStopList.stations.length - 1]);
                         }
                     }));
                 }));

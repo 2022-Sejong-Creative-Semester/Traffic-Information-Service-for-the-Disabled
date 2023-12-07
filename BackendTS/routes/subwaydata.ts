@@ -50,7 +50,7 @@ function getSubwayStationInfo(stCd:string, stNm:string, callback:(stationInfo:Su
 
 		const connection:mysql.connection = db.return_connection();
 
-		let sql:string = "Select * FROM subcode_1 a, 도우미번호 b WHERE (a.stin_nm = b.역명 and a.ln_cd = b.운영노선명) and a.stin_cd = ? and a.stin_nm = ?";
+		let sql:string = "Select RAIL_OPR_ISTT_CD, LN_CD, STIN_CD, STIN_NM, `교통약자도우미 전화번호` as wNum, en_name, f_code FROM subcode_1 a, 도우미번호 b WHERE (a.stin_nm = b.역명 and a.ln_cd = b.운영노선명) and a.stin_cd = ? and a.stin_nm = ?";
 
 		connection.query(sql, [stCd, stNm], function (err:Error, results:any, fields:any) {
 			if (err) {
@@ -95,7 +95,7 @@ function getSubwayStationInfo(stCd:string, stNm:string, callback:(stationInfo:Su
 					roadNm: stationinfo.roadNmAdr,
 					tmX: stationinfo.stinLocLon,
 					tmY: stationinfo.stinLocLat,
-					wNum: results[0].wnum,
+					wNum: results[0].wNum,
 					eName: results[0].en_name,
 					fCode: results[0].f_code
 				});
