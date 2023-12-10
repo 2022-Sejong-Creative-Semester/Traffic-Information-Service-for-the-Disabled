@@ -2,6 +2,9 @@ import React from "react";
 import styled from "styled-components";
 
 import {moveSubway} from "./signUtil.tsx"
+import BusTimer from "../bus-component/buslist/BusTimer.tsx"
+import useBusTimer from "../../hook/useBusTImer.tsx";
+
 const StyledSignInfoList = styled.ul`
     display: flex;
     flex-direction: column;
@@ -25,17 +28,19 @@ const StyledSignInfoSubway = styled.button`
 
 
 const SignDetailInfoList = ({info}:any) => {
-    if(info.trafficType===2){
+    const timer = useBusTimer(info.startArsID,info.lane[0].busNo)
+    if(info.trafficType===2){//버스
         return (
             <StyledSignInfoList>
                 {info.startName}
+                <BusTimer timer={timer}/>
                 {info.passStopList.stations.map((ele:any)=>(
                     <StyledSignInfoListDetail key={ele.stationName}>{ele.stationName}</StyledSignInfoListDetail>
                 ))}
             </StyledSignInfoList>
         )
     }
-    else if(info.trafficType===1){
+    else if(info.trafficType===1){//지하철
         return (
             <StyledSignInfoList>
                 <StyledSignInfoSubway onClick={()=>moveSubway(info.passStopList.stations[0].stationID,info.passStopList.stations[0].stationName)}>{info.startName} 편의시설</StyledSignInfoSubway>

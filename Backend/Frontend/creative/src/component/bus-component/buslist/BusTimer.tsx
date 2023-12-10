@@ -5,9 +5,10 @@ import styled from "styled-components";
 const StyledBusTimer = styled.div``;
 
 const BusTimer = (props:any) => {
-  const [Timer] = useState(props.timer);
+  const [timer,setTimer] = useState(props.timer);
+  console.log(props.timer)
   setInterval(() => {}, 1000);
-  return <StyledBusTimer>{Timer}</StyledBusTimer>;
+  return <StyledBusTimer>{timer}</StyledBusTimer>;
 };
 
 export default BusTimer;
