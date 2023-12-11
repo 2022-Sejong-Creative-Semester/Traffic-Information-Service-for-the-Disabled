@@ -1,4 +1,4 @@
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit"
+import { configureStore } from "@reduxjs/toolkit"
 import BusReducer from "./Bus-slice.ts";
 import MapReducer from "./Map-slice.ts"
 import SubwayReducer from "./Subway-slice.ts"

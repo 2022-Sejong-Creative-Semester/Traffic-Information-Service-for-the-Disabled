@@ -48,11 +48,11 @@ const Mapping = () => {
     
     const moveMarker = (mouseEvent:any) => {
         let latlng = mouseEvent!.latLng;
-        if(state==="start"){
+        if(state==="시작위치 마커"){
             start.setPosition(latlng);
             dispatch(SignActions.initializationStart(latlng))
         }
-        else if(state==="end"){
+        else if(state==="도착 위치 마커"){
             end.setPosition(latlng);
             dispatch(SignActions.initializationEnd(latlng))
         }
@@ -62,8 +62,9 @@ const Mapping = () => {
     const changeStateMarker = () => {
         window.kakao.maps.event.addListener(map,"click", moveMarker)
     }
-    if(map&&state!=="")
+    if(map&&state!==""){
         changeStateMarker();
+    }
        
     return (
         <div className={classes.signmap} id="signmap">

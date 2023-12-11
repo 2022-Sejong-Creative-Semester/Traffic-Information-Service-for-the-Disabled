@@ -12,12 +12,11 @@ flex-direction:column;
 align-items: center;
 box-sizing: border-box;
 width: 100%;
-max-height:40vh;
+max-height:36vh;
 padding:0;
 margin:0;
-margin-bottom: 18%;
 overflow:auto;
-z-index: 100;
+z-index: 10;
 `
 
 

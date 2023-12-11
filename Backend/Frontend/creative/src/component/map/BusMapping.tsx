@@ -34,6 +34,7 @@ const Mapping = () => {
         if (busmode)
             busmapcoordinate(marker, map)
     },[tmX,tmY,busmode,arsid,position])
+    
     const busmapcoordinate = (marker:any, map:any) => {
         marker.forEach((element:any) => {
             const imageSrc = './image/busImage.png' // 마커이미지의 주소입니다    

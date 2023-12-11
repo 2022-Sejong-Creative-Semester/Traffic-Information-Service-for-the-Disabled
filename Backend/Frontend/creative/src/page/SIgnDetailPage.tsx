@@ -1,7 +1,6 @@
 import React,{Suspense} from "react";
 import classes from "./SignDetailPage.module.css"
 import Header from "../component/header/Header.tsx"
-import MenuBar from "../component/menu/MenuBar.tsx";
 import SignDetail from "../component/sign-component/SignDetail.tsx";
 import Loding from "../component/loding/Loding.tsx";
 
@@ -20,7 +19,6 @@ const SignDetailPage = () => {
             <Suspense fallback={<Loding/>}>
                 <SignDetail sign={getSignBusNSub(sTmY,sTmX,eTmY,eTmX)}/>
             </Suspense>
-            <MenuBar/>
         </div>
     )
 }
