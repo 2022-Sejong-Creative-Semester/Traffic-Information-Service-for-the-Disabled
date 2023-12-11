@@ -22,7 +22,7 @@ const SignFormButton = ({value}:{value:string}) => {
     
     const ClickBtn = (event:React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        if(value==="submit") submitPosition();
+        if(value==="길찾기") submitPosition();
         else dispatch(SignActions.initialization(value));
     }
     

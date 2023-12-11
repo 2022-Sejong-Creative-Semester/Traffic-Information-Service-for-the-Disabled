@@ -5,7 +5,6 @@ import Header from "../../component/header/Header.tsx"
 import SubwayPanel from "../../component/subway-component/subwaypanel/SubwayPanel.tsx"
 import SubwayBar from "../../component/subway-component/subwaymenubar/SubwayBar.tsx"
 import SubwayTransferDetail from "../../component/subway-component/subwaytransfer/SubwayTransferDetail.tsx"
-import MenuBar from "../../component/menu/MenuBar.tsx"
 import Loding from "../../component/loding/Loding.tsx"
 
 import {getTransferInfo} from "../../utils/getSubwayApi.ts"
@@ -31,8 +30,6 @@ const SubwayTranferPage = () => {
                     <img className={classes.detailImge} alt={image} src={image}></img>
                 </Suspense>
             </div>
-            
-            <MenuBar/>
         </div>
     )
 }

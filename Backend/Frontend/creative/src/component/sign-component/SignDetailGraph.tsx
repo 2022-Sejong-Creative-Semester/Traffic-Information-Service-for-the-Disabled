@@ -20,6 +20,7 @@ const StyleSignDetailGraphLi = styled.div<graphItem>`
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 0.6em;
     height: 100%;
     min-width: ${props => ((props.portion/props.sum)*100)}%;
     background-color: ${props=>(props.label)};

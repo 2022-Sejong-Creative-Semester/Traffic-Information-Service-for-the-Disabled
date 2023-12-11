@@ -4,7 +4,7 @@ import SignFormButton from "./SignFormButton.tsx";
 
 import styled from "styled-components";
 
-const StyledForm = styled.form`
+const StyledForm = styled.div`
     display: flex;
     position: fixed;
     z-index: 10;
@@ -26,10 +26,9 @@ const StyledForm = styled.form`
 const SignForm = () =>{
     return (
         <StyledForm>
-            <input placeholder="장소를 입력해주세요." className="signFormInput"/>
-            <SignFormButton value="start"/>
-            <SignFormButton value="end"/>
-            <SignFormButton value="submit"/>
+            <SignFormButton value="시작위치 마커"/>
+            <SignFormButton value="도착 위치 마커"/>
+            <SignFormButton value="길찾기"/>
         </StyledForm>
     )
 }

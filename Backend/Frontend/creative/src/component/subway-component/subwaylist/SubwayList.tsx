@@ -14,11 +14,10 @@ flex-direction:column;
 align-items: center;
 box-sizing: border-box;
 width: 100%;
-max-height:40vh;
+max-height:36vh;
 padding: 0;
 margin:0;
-margin-bottom:18%;
-z-index: 1000;
+z-index: 10;
 overflow:scroll;
 a{ 
     text-decoration:none; 

@@ -7,7 +7,7 @@ import { SubwayActions } from "../../../store/Subway-slice.ts";
 const StyledForm = styled.form`
     display:flex;
     position: fixed;
-    z-index: 100;
+    z-index: 10;
     top: 15vh;
     width: 80vw;
     height: 1vh;

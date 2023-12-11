@@ -21,7 +21,7 @@ jobs:
           git pull origin main
           cd ${{ secrets.PWD }}/BackendJS/BackendTS
           npm install
-          pm2 restart Traffic
+          pm2 reload Traffic --time
     - if: github.event.pull_request.merged == true && github.head_ref == 'Frontend'
       uses: appleboy/ssh-action@master
       with:
@@ -34,9 +34,5 @@ jobs:
           cd ${{ secrets.PWD }}
           git pull origin main
           cd ${{ secrets.PWD }}/Backend/Frontend/creative
-          pm2 stop Traffic
           npm install
           npm run build
-          cd ${{ secrets.PWD }}/BackendJS/BackendTS
-          npm install
-          pm2 restart Traffic
