@@ -45,9 +45,9 @@ const SignDetailGraph = ({graph}:any) => {
                         color = busColor;
                     } 
                     return (
-                    <StyleSignDetailGraphLi key={index} label={color} sum={graph.info.totalTime} portion={ele.sectionTime}>
-                        {ele.sectionTime}분
-                    </StyleSignDetailGraphLi>
+                        <StyleSignDetailGraphLi key={index} label={color} sum={graph.info.totalTime} portion={ele.sectionTime}>
+                            {ele.sectionTime}분
+                        </StyleSignDetailGraphLi>
                     )
                 }
             })}
