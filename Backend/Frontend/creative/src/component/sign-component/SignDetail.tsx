@@ -19,11 +19,12 @@ const StyledSignDetail = styled.main`
     }
 `
 
-const SignDetail = () => {
-    const arr = useSignForm();
+const SignDetail = (props:any) => {
+    const {sign} = props;
+    const {signArr} = sign.signBS.read();
     return (
         <StyledSignDetail>
-            {arr[0].length!==0&&arr[0].map((ele:any,index:number)=>{
+            {signArr[0].map((ele:any,index:number)=>{
                 return (
                     <div className="detail" key={index}>
                         <span>{ele.info.totalTime}분</span>
