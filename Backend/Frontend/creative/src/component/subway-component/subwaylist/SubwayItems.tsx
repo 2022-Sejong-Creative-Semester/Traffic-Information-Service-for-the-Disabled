@@ -15,13 +15,12 @@ interface sbitem {
 }
 
 const SubwayItems = (props:any) => {
-    const [position, setPosition] = useState("");
     const [color, setColor] = useState<string>("false");
     const dispatch = useDispatch()
     const currentSubway = useSelector((state:RootState) => state.subway.currentSubway)
 
-    const {items,index} = props;
-    const { stNm, lnNm, stCd } = items
+    const {items} = props;
+    const { stNm, lnNm, stCd, tmX, tmY } = items
     const idColor = ["#0052A4", "#00A84D", "#EF7C1C", "#00A5DE", "#996CAC", "#CD7C2F", "#747F00", "#E6186C"];
     
     useEffect(() => {
@@ -29,22 +28,15 @@ const SubwayItems = (props:any) => {
             setColor("false")
         else 
             setColor("true")
-        const locationRecive = async () => {
-            await api.get(`/subway/stationInfo/${stCd}/${stNm}`)
-                .then(res => {
-                    const { data } = res;
-                    setPosition(data.stationinfo)
-                })
-        }
-        locationRecive()
     }, [currentSubway,stCd,stNm])
+    
     const ClickSubway = () => {
         if (currentSubway === stCd)
             window.location.href = `/#/subway/detail/${stCd}/${stNm}`;
         else if (currentSubway !== stCd) {
             setColor("false")
-            dispatch(MapActions.positioning(position))
-            dispatch(MapActions.makerchacking(position))
+            dispatch(MapActions.positioning({tmX, tmY}))
+            dispatch(MapActions.makerchacking({tmX, tmY}))
             dispatch(SubwayActions.clickSubway(stCd))
         }
     }

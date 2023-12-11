@@ -80,3 +80,19 @@ export const getTransferInfo = (stCd: any, stNm: any, railCd: any, lnCd: any, pr
         transferinfo : wrapPromise(getTransferInfoAPI())
     };
 };
+
+
+export const SubmitSubwayStation = (value:any) => {
+    if(typeof value==="undefined") return;
+    const getSubmitValueApi = async () => {
+         return await api.get(`/subway/stNm/${value}`)
+            .then(res => res.data)
+            .catch(error => {
+                console.log(error)
+                alert("해당하는 지하철이 없습니다. ")
+            });
+    }
+    return {
+        formData:wrapPromise(getSubmitValueApi())
+    }
+}

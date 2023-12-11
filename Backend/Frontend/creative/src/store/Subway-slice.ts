@@ -4,6 +4,7 @@ const SubwaySlice = createSlice({
   name: "Subway",
   initialState: {
     subway: [],
+    subwaykeyword: "",
     subwayCheck: false,
     subwayInfo: {},
     currentSubway: "",
@@ -21,6 +22,9 @@ const SubwaySlice = createSlice({
     addSubwayInfo(state, action) {
       state.subway = action.payload;
       state.subwayCheck = true;
+    },
+    addSubwayKeyword(state,action){
+      state.subwaykeyword = action.payload
     },
     saveSubway(state, action) {
       state.subwayInfo = action.payload;

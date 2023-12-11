@@ -2,10 +2,8 @@ import React from "react";
 import SubwayInput from "./SubwayInput.tsx";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { SubwayActions } from "../../../store/Subway-slice.ts";
-import { api } from "../../auth/Api.ts";
 import { MapActions } from "../../../store/Map-slice.ts";
-
+import { SubwayActions } from "../../../store/Subway-slice.ts";
 const StyledForm = styled.form`
     display:flex;
     position: fixed;
@@ -15,30 +13,15 @@ const StyledForm = styled.form`
     height: 1vh;
 `
 
-
 const SubwayForm = () => {
     const dispatch = useDispatch();
-
-    const SubmitSubwayStation = async (value:any) => {
-        await api.get(`/subway/stNm/${value}`)
-            .then(res => {
-                const { data } = res;
-                dispatch(SubwayActions.addSubwayInfo(data))
-                dispatch(MapActions.Onsubwaymode())
-            })
-            .catch(error => {
-                console.log(error)
-                alert("데이터를 받아오지 못했습니다.")
-            });
-
-    }
-
     const SubwayStationData = (event:any) => {
         event.preventDefault();
         const { target: [input] } = event
         const { value } = input
         input.value = "";
-        SubmitSubwayStation(value)
+        dispatch(MapActions.Onsubwaymode())
+        dispatch(SubwayActions.addSubwayKeyword(value))
     }
 
     return (

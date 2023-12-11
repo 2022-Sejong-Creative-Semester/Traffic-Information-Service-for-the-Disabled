@@ -2,9 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 import {moveSubway} from "./signUtil.tsx"
-import BusTimer from "../bus-component/buslist/BusTimer.tsx"
-
-import useBusTimer from "../../hook/useBusTImer.tsx";
 
 const StyledSignInfoList = styled.ul`
     display: flex;
@@ -26,14 +23,9 @@ const StyledSignInfoSubway = styled.button`
     padding: 0;
     margin: 1em 0;
 `
-const StyledSingBusTimer = styled.div`
-    display: flex;
-`
 
 
 const SignDetailInfoList = ({info}:any) => {
-
-    console.log(info)
     if(info.trafficType===2){//버스
         return (
             <StyledSignInfoList>

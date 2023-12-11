@@ -7,7 +7,7 @@ import styled from "styled-components";
 const StyledForm = styled.form`
     display: flex;
     position: fixed;
-    z-index: 100;
+    z-index: 10;
     top: 15vh;
     height: 1vh;
     width: 85vw;

@@ -11,6 +11,8 @@ const StyleButton = styled.button`
     color: #FFFFFF;
     background-color: #FFD12D;
     border: none;
+    font-family: 'Pretendard-Regular';
+    font-weight: 700;
 `
 
 const SignFormButton = ({value}:{value:string}) => {

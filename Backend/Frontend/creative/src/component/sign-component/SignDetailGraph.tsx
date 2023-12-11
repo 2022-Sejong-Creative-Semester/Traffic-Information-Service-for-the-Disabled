@@ -31,7 +31,7 @@ const StyleSignDetailGraphLi = styled.div<graphItem>`
 `
 
 const SignDetailGraph = ({graph}:any) => {
-    const idColor = ["#0052A4", "#00A84D", "#EF7C1C", "#00A5DE", "#996CAC", "#CD7C2F", "#747F00", "#E6186C","#BDB092"];
+    const idColor = ["#0052A4", "#00A84D", "#EF7C1C", "#00A5DE", "#996CAC", "#CD7C2F", "#747F00", "#E6186C","#BDB092","#A69500","#CD2234"];
     const busColor = "#70EB37"
     return (
         <StyleSignDetailGraph>
