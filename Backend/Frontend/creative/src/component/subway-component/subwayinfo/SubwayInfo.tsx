@@ -26,7 +26,8 @@ overflow:auto;
 `
 
 const SubwayInfo = (props:any) => {
-    const {info} = props;
+    const {bath} = props;
+    const info = bath.liftMove.read();
     return (
         <StyledInfo>
             {info.map((element:any) => {

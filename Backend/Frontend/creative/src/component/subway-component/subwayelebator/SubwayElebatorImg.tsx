@@ -7,7 +7,6 @@ const StyledElevatorImg = styled.img`
 
 const SubwayElebatorImg = (props:any) => {
     const {elevator} = props;
-    console.log(elevator.ele.read(), elevator.ele.read()[0].imgPath)
     return (
         <StyledElevatorImg alt="elevator" src={elevator.ele.read()[0].imgPath} />
     );

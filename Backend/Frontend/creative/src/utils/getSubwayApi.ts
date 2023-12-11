@@ -31,3 +31,16 @@ export const getBathChair = (stCd: any, stNm: any, railCd: any, lnCd: any) => {
         ele: wrapPromise(getBathChairDetail())
     };
 };
+
+
+export const getBathChairConvinence = (stCd: any, stNm: any, railCd: any, lnCd: any) => {
+    const getliftMoveData = async () => {
+        const liftMoveData = await api.get(`/subway/liftMove/${stCd}/${stNm}/${railCd}/${lnCd}`)
+            .then(res => res.data);
+        return liftMoveData
+    };
+
+    return {
+        liftMove: wrapPromise(getliftMoveData())
+    };
+};
