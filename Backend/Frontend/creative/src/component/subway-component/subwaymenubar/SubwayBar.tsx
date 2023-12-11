@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/index";
 
@@ -50,7 +49,7 @@ const SubwayBar = () => {
     const si:any = useSelector((state:RootState) => state.subway.subwayInfo)
     return (
         <StyleMenuBar>
-            <Link to={`/subway/elevator/${si.stCd}/${si.stNm}/${si.railCd}/${si.lnCd}`}><li>편의시설 위치</li></Link>
+            <Link to={`/subway/elevator/${si.stCd}/${si.stNm}/${si.railCd}/${si.lnCd}`}><li>엘리베이터 위치</li></Link>
             <Link to={`/subway/transfer/${si.stCd}/${si.stNm}/${si.railCd}/${si.lnCd}`}><li>환승 이동 경로</li></Link>
             <Link to={`/subway/bathchair/${si.stCd}/${si.stNm}/${si.railCd}/${si.lnCd}`} ><li>휠체어 관련 위치</li></Link>
         </StyleMenuBar>

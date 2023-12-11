@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { SubwayActions } from "../../../store/Subway-slice.ts";
 
 interface subDetail {
     idColor:string[];
@@ -7,15 +9,28 @@ interface subDetail {
 }
 
 const SubwayMain = (props:any) => {
+    const dispatch = useDispatch();
     const {info}:any = props;
     const {
-      lnCd,
+        lnCd,
         stNm,
         roadNm,
         wNum,
         eName,
         fCode,
-      } = info.subway.read();
+        railCd,
+        stCd
+      } = info.detail.read();
+      dispatch(SubwayActions.saveSubway({
+        lnCd,
+        stNm,
+        roadNm,
+        wNum,
+        eName,
+        fCode,
+        railCd,
+        stCd
+      }))
     const idColor = [
         "#0052A4",
         "#00A84D",

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import SubwayMain from "./SubwayMain";
 import Loding from "../../loding/Loding.tsx";
 
-import getBusDetail from "../../../utils/getBusDetail.tsx"
+import {getSubwayDetail} from "../../../utils/getSubwayApi.ts"
 import { useParams } from "react-router-dom"
 
 const StyledDetailMain = styled.main`
@@ -24,7 +24,7 @@ const SubwayDetailMain = () => {
     return (
         <StyledDetailMain>
             <Suspense fallback={<Loding/>}>
-                <SubwayMain info={getBusDetail(stCd,stNm)}/>
+                <SubwayMain info={getSubwayDetail(stCd,stNm)}/>
             </Suspense>
         </StyledDetailMain>
     )
