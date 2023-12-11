@@ -19,19 +19,57 @@ function getSubwayStationName(stNm:string, callback:(nameList:Array<SubwayStatio
 
 		let nameList:Array<SubwayStationNameList> = [];
 
-		connection.query(SQL, ["%"+stNm+"%"], function (err:Error, results:any, fields:any) {
+		const getGPS = (STIN_NM:string, STIN_CD:string, LN_CD:string, RAIL_OPR_ISTT_CD:string) => new Promise((req:any,rej)=>{
+			const url:string = 'https://openapi.kric.go.kr/openapi/convenientInfo/stationInfo';
+			let queryParams:string = '?' + encodeURI('serviceKey');
+			queryParams += '=' + serviceKey.subwayRailKey;
+			queryParams += '&' + encodeURI('format') + '=' + encodeURI('json');
+			queryParams += '&' + encodeURI('railOprIsttCd');
+			queryParams += '=' + encodeURI(RAIL_OPR_ISTT_CD);
+			queryParams += '&' + encodeURI('lnCd');
+			queryParams += '=' + encodeURI(LN_CD);
+			queryParams += '&' + encodeURI('stinCd');
+			queryParams += '=' + encodeURI(STIN_CD);
+			queryParams += '&' + encodeURI('stinNm');
+			queryParams += '=' + encodeURI(STIN_NM);
+
+			request({
+				url: url + queryParams,
+				method: 'GET'
+			}, function (error:Error, response:any, body:string) {
+
+				const stationinfo:SubwayStationInfoRequest = JSON.parse(body).body[0];
+
+				//NULL error
+				if (stationinfo === undefined) {
+					return callback(null);
+				}
+
+				req({
+					tmX: stationinfo.stinLocLon,
+					tmY: stationinfo.stinLocLat,
+				});
+
+			});
+		})
+
+		connection.query(SQL, ["%"+stNm+"%"], async function (err:Error, results:any, fields:any) {
 			if (err) {
 				console.log(err);
 			}
 
 			for (let i = 0; i < results.length; i++) {
-				
+
+				const tm:any = await getGPS(results[0].STIN_NM,results[0].STIN_CD,results[0].LN_CD,results[0].RAIL_OPR_ISTT_CD);
+
 				nameList.push({
 					railCd: results[i].RAIL_OPR_ISTT_CD,
 					lnCd: results[i].LN_CD,
 					lnNm: results[i].LN_CD,
 					stCd: results[i].STIN_CD,
 					stNm: results[i].STIN_NM,
+					tmX: tm.tmX,
+					tmY: tm.tmY
 				})
 			}
 

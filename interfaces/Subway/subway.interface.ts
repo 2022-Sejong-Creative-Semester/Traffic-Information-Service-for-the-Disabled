@@ -3,7 +3,9 @@ export interface SubwayStationNameList {
     lnCd: string,
     lnNm?: string,
     stCd: string,
-    stNm: string
+    stNm: string,
+    tmX: string,
+    tmY: string
 }
 
 export interface SubwayStationInfo {
