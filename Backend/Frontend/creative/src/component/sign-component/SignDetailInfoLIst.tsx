@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import {moveSubway} from "./signUtil.tsx"
 import BusTimer from "../bus-component/buslist/BusTimer.tsx"
+
 import useBusTimer from "../../hook/useBusTImer.tsx";
 
 const StyledSignInfoList = styled.ul`
@@ -32,8 +33,7 @@ const SignDetailInfoList = ({info}:any) => {
     if(info.trafficType===2){//버스
         return (
             <StyledSignInfoList>
-                {info.startName}
-                <BusTimer timer={timer}/>
+                <div>{info.startName} <BusTimer timer={timer}/></div>
                 {info.passStopList.stations.map((ele:any)=>(
                     <StyledSignInfoListDetail key={ele.stationName}>{ele.stationName}</StyledSignInfoListDetail>
                 ))}
