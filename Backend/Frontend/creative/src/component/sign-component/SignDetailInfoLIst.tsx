@@ -23,6 +23,9 @@ const StyledSignInfoSubway = styled.button`
     padding: 0;
     margin: 1em 0;
 `
+const StyledSingBusTimer = styled.div`
+    display: flex;
+`
 
 
 const SignDetailInfoList = ({info}:any) => {

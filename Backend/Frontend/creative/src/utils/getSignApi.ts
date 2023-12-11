@@ -12,6 +12,7 @@ export const getSignBusNSub = (sTmY: any, sTmX: any, eTmY: any, eTmX: any) => {
         } catch (error) {
             alert("잘못된 위치 입니다!")
             window.location.href = "/#/sign"
+            console.log(error);
         }
     };
     return {
