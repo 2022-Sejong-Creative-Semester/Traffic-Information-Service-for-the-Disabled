@@ -26,14 +26,18 @@ const StyledSignInfoSubway = styled.button`
     padding: 0;
     margin: 1em 0;
 `
+const StyledSingBusTimer = styled.div`
+    display: flex;
+`
 
 
 const SignDetailInfoList = ({info}:any) => {
-    const timer = useBusTimer(info.startArsID,info.lane[0].busNo)
+
+    console.log(info)
     if(info.trafficType===2){//버스
         return (
             <StyledSignInfoList>
-                <div>{info.startName} <BusTimer timer={timer}/></div>
+                {info.startName}
                 {info.passStopList.stations.map((ele:any)=>(
                     <StyledSignInfoListDetail key={ele.stationName}>{ele.stationName}</StyledSignInfoListDetail>
                 ))}
@@ -43,11 +47,11 @@ const SignDetailInfoList = ({info}:any) => {
     else if(info.trafficType===1){//지하철
         return (
             <StyledSignInfoList>
-                <StyledSignInfoSubway onClick={()=>moveSubway(info.passStopList.stations[0].stationID,info.passStopList.stations[0].stationName)}>{info.startName} 편의시설</StyledSignInfoSubway>
+                <StyledSignInfoSubway onClick={()=>moveSubway(info.passStopList.stations[0].stCd,info.passStopList.stations[0].stationName)}>{info.startName} 편의시설</StyledSignInfoSubway>
                 {info.passStopList.stations.map((ele:any)=>(
                     <StyledSignInfoListDetail key={ele.stationName}>{ele.stationName}</StyledSignInfoListDetail>
                 ))}
-                <StyledSignInfoSubway onClick={()=>moveSubway(info.passStopList.stations.at(-1).stationID,info.passStopList.stations.at(-1).stationName)}>{info.endName} 편의시설</StyledSignInfoSubway>
+                <StyledSignInfoSubway onClick={()=>moveSubway(info.passStopList.stations.at(-1).stCd,info.passStopList.stations.at(-1).stationName)}>{info.endName} 편의시설</StyledSignInfoSubway>
             </StyledSignInfoList>
         )
     }
