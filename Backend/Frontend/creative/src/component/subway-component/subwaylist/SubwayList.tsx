@@ -14,7 +14,7 @@ flex-direction:column;
 align-items: center;
 box-sizing: border-box;
 width: 100%;
-max-height:36vh;
+min-height:40vh;
 padding: 0;
 margin:0;
 z-index: 10;
@@ -33,7 +33,7 @@ const SubwayList = (props:any) => {
         dispatch(MapActions.positioning(subway[0]));
         dispatch(MapActions.makerchacking(subway[0]));
         dispatch(SubwayActions.addSubwayInfo(subway))
-    },[])
+    },[subway])
     return (
         <StyledList>
             {subwayCheck && <SubwayNumber count={subway.length} />}
