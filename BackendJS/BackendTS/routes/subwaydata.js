@@ -79,7 +79,7 @@ function getSubwayStationName(stNm, callback) {
                     console.log(err);
                 }
                 for (let i = 0; i < results.length; i++) {
-                    const tm = yield getGPS(results[0].STIN_NM, results[0].STIN_CD, results[0].LN_CD, results[0].RAIL_OPR_ISTT_CD);
+                    const tm = yield getGPS(results[i].STIN_NM, results[i].STIN_CD, results[i].LN_CD, results[i].RAIL_OPR_ISTT_CD);
                     nameList.push({
                         railCd: results[i].RAIL_OPR_ISTT_CD,
                         lnCd: results[i].LN_CD,
