@@ -45,20 +45,53 @@ function getSubwayStationName(stNm, callback) {
         const connection = db.return_connection();
         let SQL = "Select *  FROM subcode_1 a, 도우미번호 b WHERE (a.stin_nm = b.역명 and a.ln_cd = b.운영노선명) and a.STIN_NM like ?; ";
         let nameList = [];
-        connection.query(SQL, ["%" + stNm + "%"], function (err, results, fields) {
-            if (err) {
-                console.log(err);
-            }
-            for (let i = 0; i < results.length; i++) {
-                nameList.push({
-                    railCd: results[i].RAIL_OPR_ISTT_CD,
-                    lnCd: results[i].LN_CD,
-                    lnNm: results[i].LN_CD,
-                    stCd: results[i].STIN_CD,
-                    stNm: results[i].STIN_NM,
+        const getGPS = (STIN_NM, STIN_CD, LN_CD, RAIL_OPR_ISTT_CD) => new Promise((req, rej) => {
+            const url = 'https://openapi.kric.go.kr/openapi/convenientInfo/stationInfo';
+            let queryParams = '?' + encodeURI('serviceKey');
+            queryParams += '=' + serviceKey_json_1.default.subwayRailKey;
+            queryParams += '&' + encodeURI('format') + '=' + encodeURI('json');
+            queryParams += '&' + encodeURI('railOprIsttCd');
+            queryParams += '=' + encodeURI(RAIL_OPR_ISTT_CD);
+            queryParams += '&' + encodeURI('lnCd');
+            queryParams += '=' + encodeURI(LN_CD);
+            queryParams += '&' + encodeURI('stinCd');
+            queryParams += '=' + encodeURI(STIN_CD);
+            queryParams += '&' + encodeURI('stinNm');
+            queryParams += '=' + encodeURI(STIN_NM);
+            (0, request_1.default)({
+                url: url + queryParams,
+                method: 'GET'
+            }, function (error, response, body) {
+                const stationinfo = JSON.parse(body).body[0];
+                //NULL error
+                if (stationinfo === undefined) {
+                    return callback(null);
+                }
+                req({
+                    tmX: stationinfo.stinLocLon,
+                    tmY: stationinfo.stinLocLat,
                 });
-            }
-            callback(nameList);
+            });
+        });
+        connection.query(SQL, ["%" + stNm + "%"], function (err, results, fields) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (err) {
+                    console.log(err);
+                }
+                for (let i = 0; i < results.length; i++) {
+                    const tm = yield getGPS(results[0].STIN_NM, results[0].STIN_CD, results[0].LN_CD, results[0].RAIL_OPR_ISTT_CD);
+                    nameList.push({
+                        railCd: results[i].RAIL_OPR_ISTT_CD,
+                        lnCd: results[i].LN_CD,
+                        lnNm: results[i].LN_CD,
+                        stCd: results[i].STIN_CD,
+                        stNm: results[i].STIN_NM,
+                        tmX: tm.tmX,
+                        tmY: tm.tmY
+                    });
+                }
+                callback(nameList);
+            });
         });
     }
     catch (e) {
@@ -99,7 +132,6 @@ function getSubwayStationInfo(stCd, stNm, callback) {
                 if (stationinfo === undefined) {
                     return callback(null);
                 }
-                console.log(results[0]);
                 callback({
                     railCd: stationinfo.railOprIsttCd,
                     lnCd: stationinfo.lnCd,
