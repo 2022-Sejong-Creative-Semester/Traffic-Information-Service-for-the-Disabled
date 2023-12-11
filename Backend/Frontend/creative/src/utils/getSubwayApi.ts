@@ -44,3 +44,39 @@ export const getBathChairConvinence = (stCd: any, stNm: any, railCd: any, lnCd: 
         liftMove: wrapPromise(getliftMoveData())
     };
 };
+
+
+export const getTransferDetail = (stCd: any, stNm: any, railCd: any, lnCd: any) => {
+    const getTransferDetailData = async () => {
+            const subwaytransfer = await api.get(`/subway/transferMove/transferList/${stCd}/${stNm}/${railCd}/${lnCd}`)
+            .then(res=>{
+                const { data } = res;
+                const { sourceStation, transferStation } = data;
+                return { sourceStation, transferStation };  
+            }).catch (error => {
+                alert("환승역이 아닙니다!");
+                window.location.href = `/#/subway/detail/${stCd}/${stNm}`;
+            })
+            return subwaytransfer;
+    };
+
+    return {
+        transferDetail: wrapPromise(getTransferDetailData())
+    };
+};
+
+
+export const getTransferInfo = (stCd: any, stNm: any, railCd: any, lnCd: any, prevStinCd: any, chthTgtLn: any, chtnNextStinCd: any) => {
+    const getTransferInfoAPI  = async () => {
+        const transferDetail = await api.get(`/subway/transferMove/transferInfo/${stCd}/${stNm}/${railCd}/${lnCd}/${prevStinCd}/${chthTgtLn}/${chtnNextStinCd}`)
+            .then(res => res.data)
+            .catch(error=>{
+                console.log(error)
+            })
+        return transferDetail
+    }
+
+    return {
+        transferinfo : wrapPromise(getTransferInfoAPI())
+    };
+};
