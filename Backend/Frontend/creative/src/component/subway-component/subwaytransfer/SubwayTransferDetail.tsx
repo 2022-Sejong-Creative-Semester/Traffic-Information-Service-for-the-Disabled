@@ -19,35 +19,16 @@ const StyledTransferDetailLi = styled.span`
      font-size: 1em;
 `
 
-const SubwayTranferDetail = ({param,setImage}:any) => {
-    const [tranferInfo,setTransferInfo] = useState<any>();
-    useEffect(() => {
-        const stCd = param.stCd;
-        const stNm = param.stNm;
-        const railCd = param.railCd;
-        const lnCd = param.lnCd;
-        const prevStinCd = param.prevStinCd;
-        const chthTgtLn = param.chthTgtLn;
-        const chtnNextStinCd = param.chtnNextStinCd;
-        const getDetail = async () => {
-            await api.get(`/subway/transferMove/transferInfo/${stCd}/${stNm}/${railCd}/${lnCd}/${prevStinCd}/${chthTgtLn}/${chtnNextStinCd}`)
-                .then(res => {
-                    const { data } = res;
-                    setTransferInfo(data)
-                    setImage(data[0].imgPath)
-                }).catch(error=>{
-                    console.log(error)
-                })
-        }
-        getDetail()
-    }, [param])
+const SubwayTranferDetail = (props:any) => {
+    const {tranferdetail, setImage} = props;
+    const tranferInfo = tranferdetail.transferinfo.read();
+    setImage(tranferInfo[0].imgPath)
     return(
         <StyledSubwayTransferDetail>
-            {tranferInfo&&(
                 <StyledTransferDetailLi>
                     {tranferInfo[0].stMovePath} {">>"} {tranferInfo[0].edMovePath}
-                </StyledTransferDetailLi>)}
-            {tranferInfo&&tranferInfo.map((ele:any,index:number)=>(
+                </StyledTransferDetailLi>
+            {tranferInfo.map((ele:any,index:number)=>(
                 <StyledTransferDetailLi key={index}>
                     {ele.mvContDtl}
                 </StyledTransferDetailLi>

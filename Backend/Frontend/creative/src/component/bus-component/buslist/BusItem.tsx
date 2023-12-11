@@ -47,7 +47,7 @@ const StyledBusItem = styled.li`
     font-family: "Pretendard-Regular";
     font-style: normal;
     font-weight: 600;
-    font-size: 1em;
+    font-size: 0.8em;
     line-height: 29px;
   }
   .id {
@@ -55,7 +55,7 @@ const StyledBusItem = styled.li`
     font-family: "Pretendard-Regular";
     font-style: normal;
     font-weight: 600;
-    font-size: 1em;
+    font-size: 0.8em;
     line-height: 29px;
     color: #9c9c9c;
   }

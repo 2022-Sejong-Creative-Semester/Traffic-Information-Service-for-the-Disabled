@@ -4,7 +4,7 @@ import RefreshButton from "../buslist/RefreshButton.tsx";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/index";
 
-const StyledBusNumber = styled.header`
+const StyledBusNumber = styled.div`
 display:flex;
 justify-content: space-between;
 line-height: 60px;
