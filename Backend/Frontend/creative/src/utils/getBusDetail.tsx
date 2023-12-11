@@ -1,9 +1,7 @@
 import React from "react";
-import { useParams } from "react-router-dom";
 import { wrapPromise } from "../promise/warmPromise.ts";
 
 import { api } from "../component/auth/Api.ts";
-
 
 const getBusDetail = (stCd:any,stNm:any) =>{
     const getDetail = async () => {

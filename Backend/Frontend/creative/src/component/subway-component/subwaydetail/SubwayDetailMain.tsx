@@ -1,14 +1,18 @@
 import React,{Suspense} from "react";
 import styled from "styled-components";
 import SubwayMain from "./SubwayMain";
-import getBusDetail from "../../../hook/getBusDetail.tsx"
+import Loding from "../../loding/Loding.tsx";
+
+import getBusDetail from "../../../utils/getBusDetail.tsx"
 import { useParams } from "react-router-dom"
 
 const StyledDetailMain = styled.main`
 display:flex;
 flex-direction:column;
+justify-content: center;
+align-items: center;
 width: 98vw;
-height: 40vh;
+height: 36vh;
 background-color:white;
 border: 4px solid #FFD12D;
 `
@@ -19,7 +23,7 @@ const SubwayDetailMain = () => {
     const stNm = params.stNm;
     return (
         <StyledDetailMain>
-            <Suspense fallback={<div>Loding...</div>}>
+            <Suspense fallback={<Loding/>}>
                 <SubwayMain info={getBusDetail(stCd,stNm)}/>
             </Suspense>
         </StyledDetailMain>

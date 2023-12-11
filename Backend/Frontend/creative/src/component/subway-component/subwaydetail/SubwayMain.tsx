@@ -26,7 +26,6 @@ const SubwayMain = (props:any) => {
         "#747F00",
         "#E6186C",
     ];
-  console.log(info.subway.read())
   return (
     <StyledSubwayDeatil line={lnCd} idColor={idColor}>
       <div className="name">
@@ -51,7 +50,7 @@ const SubwayMain = (props:any) => {
 };
 
 const StyledSubwayDeatil = styled.div<subDetail>`
-
+  width: 100%;
   .info-image {
     width: 1em;
     height: 1em;
@@ -61,7 +60,7 @@ const StyledSubwayDeatil = styled.div<subDetail>`
     display: flex;
     align-items: center;
     width: 96%;
-    min-height: 24%;
+    min-height: 20%;
     font-weight: 600;
     font-size: 1em;
     padding-left: 4%;
