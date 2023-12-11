@@ -26,10 +26,11 @@ const Mapping = () => {
             center: new window.kakao.maps.LatLng(y, x),
             level: 3,
         };
+        console.log(marker)
         const map = new window.kakao.maps.Map(container, options);
         if (subwaymode)
             subwaymapcoordinate(marker, map)
-    },[tmX,tmY,subwaymode,position])
+    },[tmX,tmY,subwaymode,position,marker])
 
     const subwaymapcoordinate = (marker:any, map:any) => {
         const markerPosition = new window.kakao.maps.LatLng(parseFloat(String(marker.tmY - 0.0000005)).toFixed(6), parseFloat(String(marker.tmX - 0.0000005)).toFixed(6))

@@ -1,4 +1,7 @@
 .loding{
+    position: fixed;
+    top:50%;
+    right: 45%;
     animation: rotate_image 6s linear infinite;
     z-index: 1000;
 }
