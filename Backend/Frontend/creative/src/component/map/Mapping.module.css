@@ -1,4 +1,5 @@
 .busmap, .subwaymap, .signmap {
     width: 100vw;
-    height: 85vh;
+    height: 90%;
+
 }

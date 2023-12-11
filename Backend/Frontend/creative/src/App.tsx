@@ -4,7 +4,7 @@ import MainPage from "./page/MainPage.tsx"
 import BusPage from "./page/BusPage.tsx"
 import SubwayPage from "./page/subwaypage/SubwayPage.tsx"
 import SubwayDetailPage from "./page/subwaypage/SubwayDetailPage.tsx"
-import SubwayElevatorPage from "./page/subwaypage/SubwayElevator.tsx";
+import SubwayElevatorPage from "./page/subwaypage/SubwayElevatorPage.tsx"
 import SubwayBathChairPage from "./page/subwaypage/SubwayBathchair.tsx";
 import SubwayTransferPAge from "./page/subwaypage/SubwayTransferPage.tsx";
 import SubwayTranferDetailPage from "./page/subwaypage/SubwayTransferDetailPage.tsx";

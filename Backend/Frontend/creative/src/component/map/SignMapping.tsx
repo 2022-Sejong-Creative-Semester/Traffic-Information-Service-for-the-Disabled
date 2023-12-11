@@ -34,11 +34,13 @@ const Mapping = () => {
         setMap(map);
         const Startmarker = new window.kakao.maps.Marker({
             position:map.getCenter()
-        })            
+        })
         Startmarker.setMap(map);
         const Endmarker = new window.kakao.maps.Marker({
             position:map.getCenter()
-        })         
+        })
+        dispatch(SignActions.initializationStart(map.getCenter()))
+        dispatch(SignActions.initializationEnd(map.getCenter()))      
         Endmarker.setMap(map);
         setStart(Startmarker)
         setEnd(Endmarker);
