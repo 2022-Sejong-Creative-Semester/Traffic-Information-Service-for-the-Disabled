@@ -21,6 +21,7 @@ const StyledBusItem = styled.li`
   }
   a {
     width: 100%;
+    height: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -60,14 +61,14 @@ const StyledBusItem = styled.li`
     color: #9c9c9c;
   }
 `;
-
+//https://map.naver.com/p/search/[버스번호]%EB%B2%88%EB%B2%84%EC%8A%A4?c=15.00,0,0,0,dh
 const BusItem = (props:any) => {
   const { busrouteid, busrouteAbrv, adirection, arrmsg1 } = props.items;
-
+  console.log(props)
   return (
     <StyledBusItem>
       <a
-        href={`https://map.naver.com/v5/search/${busrouteAbrv}번버스/bus-route/${busrouteid}?c=0,0`}
+        href={`https://map.naver.com/p/search/${busrouteAbrv}%EB%B2%88%EB%B2%84%EC%8A%A4?c=15.00,0,0,0,dh`}
         target="_blank"
         rel="noreferrer"
       >
