@@ -508,23 +508,31 @@ router.get('/:startX/:startY/:endX/:endY/:type',async(req:Request,res:Response)=
           //지하철인 경우
           else if(element.trafficType === 1){
             delete element.lane[0].subwayCityCode;
-            if(element.lane[0].name === "수도권 분당선(급행)"){
-              element.lane[0].subwayCode = 10;
+            if(element.lane[0].name === "수도권 분당선(급행)" || element.lane[0].name === "수도권 분당선"){
+              element.lane[0].subwayCode = "K1";
             }
-            else if(element.lane[0].name === "수도권 신분당선"){
-              element.lane[0].subwayCode = 11;
+            else if(element.lane[0].name === "수도권 신분당선" || element.lane[0].name === "수도권 신분당선(급행)"){
+              element.lane[0].subwayCode = "D1";
             }
 
             const getSationInfo = (name:string, subwayCode:number) => new Promise((res,rej)=>{
               const SQL:string = "Select * from subcode_1 where STIN_NM LIKE ? and LN_CD = ?;";
               const connection:any = db.return_connection();
-              
+
               connection.query(SQL, ['%' + name + '%',subwayCode],function(err:Error,results:any,fields:any){
                 if (err) {
                   console.log(err);
                   return rej(err);
                 }
                 else{
+                  if(results.length === 0){
+                    return res({
+                      stCd: null,
+                      lnCd: null,
+                      railCd: null,
+                      stNm: null,
+                    })
+                  }
                   return res({
                     stCd: results[0].STIN_CD,
                     lnCd: results[0].LN_CD,
