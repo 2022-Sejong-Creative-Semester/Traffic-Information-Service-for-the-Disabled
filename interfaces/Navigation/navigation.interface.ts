@@ -59,7 +59,7 @@ interface NavigationLane {
     busLocalBlID?: number,
     busCityCode?: number,
     busProviderCode?: number,
-    subwayCode?: number,
+    subwayCode?: any,
     subwayCityCode?: number
 }
 
