@@ -4,7 +4,6 @@ import Header from "../../component/header/Header.tsx"
 import SubwayBar from "../../component/subway-component/subwaymenubar/SubwayBar.tsx"
 import SubwayElebatorImg from "../../component/subway-component/subwayelebator/SubwayElebatorImg.tsx"
 import SubwayPanel from "../../component/subway-component/subwaypanel/SubwayPanel.tsx"
-import MenuBar from "../../component/menu/MenuBar.tsx";
 import Loding from "../../component/loding/Loding.tsx";
 
 import { useParams } from "react-router-dom"
@@ -30,7 +29,6 @@ const SubwayElevatorPage = () => {
                     <SubwayElebatorImg elevator={getBathChair(stCd,stNm,railCd,lnCd)}/>
                 </Suspense>
             </div>
-            <MenuBar/>
         </div>
     )
 }

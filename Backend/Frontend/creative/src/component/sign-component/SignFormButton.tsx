@@ -11,6 +11,8 @@ const StyleButton = styled.button`
     color: #FFFFFF;
     background-color: #FFD12D;
     border: none;
+    font-family: 'Pretendard-Regular';
+    font-weight: 700;
 `
 
 const SignFormButton = ({value}:{value:string}) => {
@@ -20,7 +22,7 @@ const SignFormButton = ({value}:{value:string}) => {
     
     const ClickBtn = (event:React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        if(value==="submit") submitPosition();
+        if(value==="길찾기") submitPosition();
         else dispatch(SignActions.initialization(value));
     }
     

@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { SubwayActions } from "../../../store/Subway-slice.ts";
@@ -21,16 +21,18 @@ const SubwayMain = (props:any) => {
         railCd,
         stCd
       } = info.detail.read();
-      dispatch(SubwayActions.saveSubway({
-        lnCd,
-        stNm,
-        roadNm,
-        wNum,
-        eName,
-        fCode,
-        railCd,
-        stCd
-      }))
+      useEffect(()=>{
+        dispatch(SubwayActions.saveSubway({
+          lnCd,
+          stNm,
+          roadNm,
+          wNum,
+          eName,
+          fCode,
+          railCd,
+          stCd
+        }))
+      },[])
     const idColor = [
         "#0052A4",
         "#00A84D",

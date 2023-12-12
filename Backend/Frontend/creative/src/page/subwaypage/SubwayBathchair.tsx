@@ -4,7 +4,6 @@ import Header from "../../component/header/Header.tsx"
 import SubwayPanel from "../../component/subway-component/subwaypanel/SubwayPanel.tsx"
 import SubwayBar from "../../component/subway-component/subwaymenubar/SubwayBar.tsx"
 import SubwayInfo from "../../component/subway-component/subwayinfo/SubwayInfo.tsx"
-import MenuBar from "../../component/menu/MenuBar.tsx";
 import SubwayElebatorImg from "../../component/subway-component/subwayelebator/SubwayElebatorImg.tsx";
 import Loding from "../../component/loding/Loding.tsx";
 
@@ -31,7 +30,6 @@ const SubwayBathchair = () => {
                    <SubwayElebatorImg elevator={getBathChair(stCd,stNm,railCd,lnCd)}/>
                 </Suspense>
             </div>
-            <MenuBar/>
         </div>
     )
 }

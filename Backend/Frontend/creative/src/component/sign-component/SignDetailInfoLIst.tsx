@@ -2,8 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 import {moveSubway} from "./signUtil.tsx"
-import BusTimer from "../bus-component/buslist/BusTimer.tsx"
-import useBusTimer from "../../hook/useBusTImer.tsx";
 
 const StyledSignInfoList = styled.ul`
     display: flex;

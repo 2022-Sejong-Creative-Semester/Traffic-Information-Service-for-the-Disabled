@@ -5,7 +5,6 @@ import Header from "../../component/header/Header.tsx"
 import SubwayPanel from "../../component/subway-component/subwaypanel/SubwayPanel.tsx"
 import SubwayBar from "../../component/subway-component/subwaymenubar/SubwayBar.tsx"
 import SubwayTranferList from "../../component/subway-component/subwaytransfer/SubwayTransferLIst.tsx"
-import MenuBar from "../../component/menu/MenuBar.tsx"
 import Loding from "../../component/loding/Loding.tsx"
 import {getTransferDetail} from "../../utils/getSubwayApi.ts"
 
@@ -26,7 +25,6 @@ const SubwayTranferPage = () => {
                     <SubwayTranferList tranfer={getTransferDetail(stCd,stNm,railCd,lnCd)}/>
                 </Suspense>
             </div>
-            <MenuBar/>
         </div>
     )
 }
